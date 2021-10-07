@@ -15,4 +15,15 @@
         <servlet-name>Deco</servlet-name>
         <url-pattern>/Deco</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <description></description>
+        <display-name>CastVote</display-name>
+        <servlet-name>CastVote</servlet-name>
+        <servlet-class>fr.univlyon1.m1if.m1if03.C09.servlets.CastVote</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>CastVote</servlet-name>
+        <url-pattern>/castVote</url-pattern>
+    </servlet-mapping>
+
 </web-app>

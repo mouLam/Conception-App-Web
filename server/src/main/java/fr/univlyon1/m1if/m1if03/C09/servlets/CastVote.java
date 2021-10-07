@@ -34,13 +34,14 @@ public class CastVote extends HttpServlet {
         try {
             //Gestion de session
             HttpSession session = req.getSession();
-            String user_session = (String) session.getAttribute("user");
-            if (user_session == null) {
+
+            if (session.getAttribute("user") == null) {
                 resp.sendRedirect("index.html");
             }
 
             // Recuperer le candidat selectionné
             String selectedCandidat = req.getParameter("selectCandidat");
+            System.out.println("Candidat selectionné : "+ selectedCandidat);
             if(selectedCandidat.equals("----")) {
                 resp.sendRedirect("vote.jsp");
             }
@@ -48,8 +49,12 @@ public class CastVote extends HttpServlet {
             if (selectedCandidat != null && !selectedCandidat.equals("")) {
 
                 candidats = (Map<String, Candidat>) req.getServletContext().getAttribute("candidats");
+                req.getServletContext().setAttribute("selectCandidat", selectedCandidat);
                 Candidat candidat = candidats.get(selectedCandidat);
+                System.out.println(candidat.getNom()+ " " +candidat.getPrenom());
                 Bulletin bulletin = new Bulletin(candidat);
+                req.getServletContext().setAttribute("monBulletin", bulletin);
+                System.out.println("Dans bulletin :"+bulletin.getCandidat().getNom()+ " " +bulletin.getCandidat().getPrenom());
                 bulletins = (List<Bulletin>) req.getServletContext().getAttribute("bulletins");
                 bulletins.add(bulletin);
                 req.getServletContext().setAttribute("bulletins", bulletins);

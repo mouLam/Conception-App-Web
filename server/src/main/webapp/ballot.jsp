@@ -1,6 +1,8 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="fr.univlyon1.m1if.m1if03.C09.classes.Ballot" %>
 <%@ page import="java.util.HashMap" %>
+<%@ page import="java.util.List" %>
+<%@ page import="fr.univlyon1.m1if.m1if03.C09.classes.Bulletin" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
@@ -41,15 +43,14 @@
         </aside>
         <article class="contenu">
             <%
-                Map<String, String> monVote = new HashMap<>();
-                ballots = (Map<String, Ballot>) application.getAttribute("ballots");
-
+                Bulletin monVote = (Bulletin) pageContext.getServletContext().getAttribute("monBulletin");
+                pageContext.setAttribute("monVote", monVote);
             %>
 
             <c:choose>
-                <c:when test="${pageContext.request.getAttribute(\"selectCandidat\") != null}">
-
-                    <p>Votre vote : ${ballots.values().size()}</p>
+                <c:when test="${pageContext.servletContext.getAttribute(\"selectCandidat\") != null}">
+                    <%--${pageContext.servletContext.getAttribute("monBulletin").getCandidat().getNom() --%>
+                    <p>Votre vote : ${monVote.getCandidat().getPrenom()}  ${monVote.getCandidat().getNom()}</p>
                 </c:when>
                 <c:otherwise>
                     <h2>Vous n'avez pas encore voté.</h2>
