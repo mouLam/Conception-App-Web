@@ -18,9 +18,14 @@
 </head>
 <body>
     <header>
-        <c:if test="${sessionScope.user != null}">
-            <p class="header-user"> Bonjour ${sessionScope.user.nom}</p>
-        </c:if>
+        <c:choose>
+            <c:when test="${sessionScope.user != null}">
+                <p class="header-user"> Bonjour ${sessionScope.user.nom}</p>
+            </c:when>
+            <c:otherwise>
+                <c:redirect url="index.html" />
+            </c:otherwise>
+        </c:choose>
         <h1 class="header-titre">Votez pour qui vous voulez</h1>
     </header>
 
@@ -36,7 +41,7 @@
         </aside>
         <article class="contenu">
 
-            <form action="ballot.jsp" method="post">
+            <form action="castVote" method="post">
                 <div>
                     <label for="candidatselect">Sélectionnez un candidat :</label>
                     <select name="selectCandidat" id="candidatselect" required>
