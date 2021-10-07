@@ -1,4 +1,6 @@
-
+<%@ page import="java.util.Map" %>
+<%@ page import="java.util.HashMap" %>
+<%@ page import="fr.univlyon1.m1if.m1if03.C09.classes.Candidat" %>
 <%--
   Created by IntelliJ IDEA.
   User: mou_lamine
@@ -33,7 +35,32 @@
             </ul>
         </aside>
         <article class="contenu">
-            
+
+            <form action="ballot.jsp" method="post">
+                <div>
+                    <label for="candidatselect">Sélectionnez un candidat :</label>
+                    <select name="selectCandidat" id="candidatselect" required>
+                        <option value="----" selected disabled>---- </option>
+                        <%
+                            Map<String, Integer> listeCandidats = new HashMap<>();
+                            for (String nomCandidat : ((Map<String, Candidat>) application.getAttribute("candidats")).keySet()) {
+                                listeCandidats.put(nomCandidat, 0);
+                            }
+                        %>
+
+                        <c:forEach items="<%= listeCandidats.keySet() %>" var="nomCandidat" >
+                            <option value="${nomCandidat}"> ${nomCandidat} </option>
+                        </c:forEach>
+
+
+                    </select>
+                </div>
+
+                <div class="btnVote">
+                    <button type="submit">Envoyer votre vote</button>
+                </div>
+            </form>
+
 
         </article>
 

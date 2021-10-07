@@ -1,3 +1,4 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%--
   Created by IntelliJ IDEA.
   User: mou_lamine
@@ -9,8 +10,30 @@
 <html>
 <head>
     <title>Ballot</title>
+    <link rel="stylesheet" type="text/css" href="static/vote.css">
 </head>
 <body>
+    <header>
+        <c:if test="${sessionScope.user != null}">
+            <p class="header-user"> Bonjour ${sessionScope.user.nom}</p>
+        </c:if>
+        <h1 class="header-titre">Votre preuve de vote</h1>
+    </header>
 
+    <main id="contenu" class="wrapper">
+        <aside class="menu">
+            <h2>Menu</h2>
+            <ul>
+                <li><a href="vote.jsp">Voter</a></li>
+                <li><a href="ballot.jsp">Votre vote</a></li>
+                <li><a href="resultats.jsp">Résultats</a></li>
+                <li><a href="Deco">Déconnexion</a></li>
+            </ul>
+        </aside>
+        <article class="contenu">
+
+        </article>
+
+    </main>
 </body>
 </html>
