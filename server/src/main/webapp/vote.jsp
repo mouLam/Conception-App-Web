@@ -41,31 +41,35 @@
         </aside>
         <article class="contenu">
 
-            <form action="castVote" method="post">
-                <div>
-                    <label for="candidatselect">Sélectionnez un candidat :</label>
-                    <select name="selectCandidat" id="candidatselect" required>
-                        <option value="----" selected disabled>---- </option>
-                        <%
-                            Map<String, Integer> listeCandidats = new HashMap<>();
-                            for (String nomCandidat : ((Map<String, Candidat>) application.getAttribute("candidats")).keySet()) {
-                                listeCandidats.put(nomCandidat, 0);
-                            }
-                        %>
-
-                        <c:forEach items="<%= listeCandidats.keySet() %>" var="nomCandidat" >
-                            <option value="${nomCandidat}"> ${nomCandidat} </option>
-                        </c:forEach>
-
-
-                    </select>
-                </div>
-
-                <div class="btnVote">
-                    <button type="submit">Envoyer votre vote</button>
-                </div>
-            </form>
-
+            <!-- Verification s'il a déjà voté -->
+            <c:choose>
+                <c:when test="${pageContext.servletContext.getAttribute(\"selectCandidat\") != null}">
+                    <p> Vous avez déjà voté !</p>
+                </c:when>
+                <c:otherwise>
+                    <form action="castVote" method="post">
+                        <div>
+                            <label for="candidatselect">Sélectionnez un candidat :</label>
+                            <select name="selectCandidat" id="candidatselect" required>
+                                <option value="----" selected disabled>---- </option>
+                                <%
+                                    Map<String, Integer> listeCandidats = new HashMap<>();
+                                    for (String nomCandidat
+                                            : ((Map<String, Candidat>) application.getAttribute("candidats")).keySet()) {
+                                        listeCandidats.put(nomCandidat, 0);
+                                    }
+                                %>
+                                <c:forEach items="<%= listeCandidats.keySet() %>" var="nomCandidat" >
+                                    <option value="${nomCandidat}"> ${nomCandidat} </option>
+                                </c:forEach>
+                            </select>
+                        </div>
+                        <div class="btnVote">
+                            <button type="submit">Envoyer votre vote</button>
+                        </div>
+                    </form>
+                </c:otherwise>
+            </c:choose>
 
         </article>
 

@@ -48,9 +48,16 @@
             %>
 
             <c:choose>
-                <c:when test="${pageContext.servletContext.getAttribute(\"selectCandidat\") != null}">
-                    <%--${pageContext.servletContext.getAttribute("monBulletin").getCandidat().getNom() --%>
+                <c:when test="${pageContext.servletContext.getAttribute(\"selectCandidat\") != null &&
+                        pageContext.getAttribute(\"monVote\") != null }">
                     <p>Votre vote : ${monVote.getCandidat().getPrenom()}  ${monVote.getCandidat().getNom()}</p>
+                    <br>
+                    <br>
+                    <form name="deleteVote" method="post">
+                        <p>
+                            <input type="submit" name="actiondelete" value="Supprimer">
+                        </p>
+                    </form>
                 </c:when>
                 <c:otherwise>
                     <h2>Vous n'avez pas encore voté.</h2>

@@ -25,5 +25,15 @@
         <servlet-name>CastVote</servlet-name>
         <url-pattern>/castVote</url-pattern>
     </servlet-mapping>
+    <servlet>
+        <description></description>
+        <display-name>DeleteVote</display-name>
+        <servlet-name>DeleteVote</servlet-name>
+        <servlet-class>fr.univlyon1.m1if.m1if03.C09.servlets.DeleteVote</servlet-class>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>DeleteVote</servlet-name>
+        <url-pattern>/deleteVote</url-pattern>
+    </servlet-mapping>
 
 </web-app>

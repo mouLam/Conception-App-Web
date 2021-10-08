@@ -26,7 +26,6 @@ public class CastVote extends HttpServlet {
     Map<String, Ballot> ballots = new HashMap<>();
     List<Bulletin> bulletins = new ArrayList<>();
 
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //super.doPost(req, resp);
@@ -51,10 +50,10 @@ public class CastVote extends HttpServlet {
                 candidats = (Map<String, Candidat>) req.getServletContext().getAttribute("candidats");
                 req.getServletContext().setAttribute("selectCandidat", selectedCandidat);
                 Candidat candidat = candidats.get(selectedCandidat);
-                System.out.println(candidat.getNom()+ " " +candidat.getPrenom());
+                //System.out.println(candidat.getNom()+ " " +candidat.getPrenom());
                 Bulletin bulletin = new Bulletin(candidat);
                 req.getServletContext().setAttribute("monBulletin", bulletin);
-                System.out.println("Dans bulletin :"+bulletin.getCandidat().getNom()+ " " +bulletin.getCandidat().getPrenom());
+                //System.out.println("Dans bulletin :"+bulletin.getCandidat().getNom()+ " " +bulletin.getCandidat().getPrenom());
                 bulletins = (List<Bulletin>) req.getServletContext().getAttribute("bulletins");
                 bulletins.add(bulletin);
                 req.getServletContext().setAttribute("bulletins", bulletins);
