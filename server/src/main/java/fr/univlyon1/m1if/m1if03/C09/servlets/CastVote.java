@@ -58,8 +58,10 @@ public class CastVote extends HttpServlet {
                 bulletins.add(bulletin);
                 req.getServletContext().setAttribute("bulletins", bulletins);
                 Ballot ballot = new Ballot(bulletin);
+                User user = (User) session.getAttribute("user");
                 ballots = (Map<String, Ballot>) req.getServletContext().getAttribute("ballots");
-                ballots.put(bulletin.getCandidat().getNom(), ballot);
+                //System.out.println("user login : "+user.getLogin());
+                ballots.put(user.getLogin(), ballot);
                 req.getServletContext().setAttribute("ballots", ballots);
 
                 req.getRequestDispatcher("ballot.jsp").forward(req, resp);
