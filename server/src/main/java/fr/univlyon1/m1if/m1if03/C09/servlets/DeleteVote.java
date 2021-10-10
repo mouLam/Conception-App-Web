@@ -28,28 +28,31 @@ public class DeleteVote extends HttpServlet {
         try {
             HttpSession session = req.getSession();
             if (session.getAttribute("user") == null) {
-                //resp.sendRedirect("index.html");
                 resp.sendError(HttpServletResponse.SC_FORBIDDEN); //403
             }
-
-            // Récupérer le ballot de vote correspondant à l'utilisateur
-            ballots = (Map<String, Ballot>) req.getServletContext().getAttribute("ballots");
-            User user = (User) session.getAttribute("user");
-            Ballot ballot = ballots.get(user.getLogin());
-            Bulletin bulletin = ballot.getBulletin();
-            bulletins = (List<Bulletin>) req.getServletContext().getAttribute("bulletins");
-            for (Bulletin b: bulletins) {
-                if(b.getCandidat().getNom() == bulletin.getCandidat().getNom()){
-                    bulletins.remove(b);
-                    break;
+            if (req.getParameter("actiondelete") != null) {
+                // Récupérer le ballot de vote correspondant à l'utilisateur
+                ballots = (Map<String, Ballot>) req.getServletContext().getAttribute("ballots");
+                User user = (User) session.getAttribute("user");
+                Ballot ballot = ballots.get(user.getLogin());
+                Bulletin bulletin = ballot.getBulletin();
+                bulletins = (List<Bulletin>) req.getServletContext().getAttribute("bulletins");
+                for (Bulletin b: bulletins) {
+                    if(b.getCandidat().getNom().equals(bulletin.getCandidat().getNom())
+                            && b.getCandidat().getPrenom().equals(bulletin.getCandidat().getPrenom())){
+                        bulletins.remove(b);
+                        break;
+                    }
                 }
+                ballot.setBulletin(null);
+                ballots.remove(user.getLogin());
+                req.getServletContext().setAttribute("bulletins", bulletins);
+                req.getServletContext().setAttribute("ballots", ballots);
+                req.getServletContext().removeAttribute("selectCandidat");
+                req.getRequestDispatcher("/vote.jsp").forward(req, resp);
             }
-            ballots.remove(user.getLogin());
-            req.getServletContext().setAttribute("bulletins", bulletins);
-            req.getServletContext().setAttribute("ballots", ballots);
-            req.getServletContext().removeAttribute("selectedCandidat");
 
-            req.getRequestDispatcher("/castVote").forward(req, resp);
+
 
         } catch (IOException e) {
             e.printStackTrace();
@@ -61,7 +64,12 @@ public class DeleteVote extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendRedirect("index.html");
+        //resp.sendRedirect("index.html");
+        HttpSession session = req.getSession();
+        if (session.getAttribute("user") == null) {
+            //resp.sendRedirect("index.html");
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN); //403
+        }
     }
 
 }

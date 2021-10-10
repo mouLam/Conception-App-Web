@@ -46,8 +46,10 @@
 
             <!-- Verification s'il a déjà voté -->
             <c:choose>
-                <c:when test="${pageContext.servletContext.getAttribute(\"selectCandidat\") != null}">
+                <c:when test="${pageContext.servletContext.getAttribute(\"selectCandidat\") != null
+                        && pageContext.request.getParameter(\"actiondelete\") != null}">
                     <p> Vous avez déjà voté !</p>
+
                 </c:when>
                 <c:otherwise>
                     <form action="castVote" method="post">

@@ -26,6 +26,7 @@ public class CastVote extends HttpServlet {
     Map<String, Candidat> candidats = null;
     Map<String, Ballot> ballots = new HashMap<>();
     List<Bulletin> bulletins = new ArrayList<>();
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //super.doPost(req, resp);
@@ -34,13 +35,11 @@ public class CastVote extends HttpServlet {
             //Gestion de session
             HttpSession session = req.getSession();
             if (session.getAttribute("user") == null) {
-                //resp.sendRedirect("index.html");
                 resp.sendError(HttpServletResponse.SC_FORBIDDEN); //403
             }
 
             // Recuperer le candidat selectionné
             String selectedCandidat = req.getParameter("selectCandidat");
-            System.out.println("Candidat selectionné : "+ selectedCandidat);
             if(selectedCandidat != null && selectedCandidat.equals("----") ) {
                 resp.sendRedirect("vote.jsp");
             }
@@ -71,6 +70,11 @@ public class CastVote extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        resp.sendRedirect("index.html");
+        //resp.sendRedirect("index.html");
+        HttpSession session = req.getSession();
+        if (session.getAttribute("user") == null) {
+            //resp.sendRedirect("index.html");
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN); //403
+        }
     }
 }

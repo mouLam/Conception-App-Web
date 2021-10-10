@@ -54,7 +54,7 @@
                     <p>Votre vote : ${monVote.getCandidat().getPrenom()}  ${monVote.getCandidat().getNom()}</p>
                     <br>
                     <br>
-                    <form name="deleteVote" method="post">
+                    <form action="deleteVote" method="post">
                         <p>
                             <input type="submit" name="actiondelete" value="Supprimer">
                         </p>
