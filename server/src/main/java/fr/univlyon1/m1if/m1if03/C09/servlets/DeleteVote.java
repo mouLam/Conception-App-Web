@@ -28,7 +28,8 @@ public class DeleteVote extends HttpServlet {
         try {
             HttpSession session = req.getSession();
             if (session.getAttribute("user") == null) {
-                resp.sendRedirect("index.html");
+                //resp.sendRedirect("index.html");
+                resp.sendError(HttpServletResponse.SC_FORBIDDEN); //403
             }
 
             // Récupérer le ballot de vote correspondant à l'utilisateur

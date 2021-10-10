@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.logging.Logger;
 
 @WebServlet(name = "CastVote", value = "/castVote")
 public class CastVote extends HttpServlet {
@@ -25,7 +26,6 @@ public class CastVote extends HttpServlet {
     Map<String, Candidat> candidats = null;
     Map<String, Ballot> ballots = new HashMap<>();
     List<Bulletin> bulletins = new ArrayList<>();
-
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         //super.doPost(req, resp);
@@ -33,34 +33,30 @@ public class CastVote extends HttpServlet {
         try {
             //Gestion de session
             HttpSession session = req.getSession();
-
             if (session.getAttribute("user") == null) {
-                resp.sendRedirect("index.html");
+                //resp.sendRedirect("index.html");
+                resp.sendError(HttpServletResponse.SC_FORBIDDEN); //403
             }
 
             // Recuperer le candidat selectionné
             String selectedCandidat = req.getParameter("selectCandidat");
             System.out.println("Candidat selectionné : "+ selectedCandidat);
-            if(selectedCandidat.equals("----")) {
+            if(selectedCandidat != null && selectedCandidat.equals("----") ) {
                 resp.sendRedirect("vote.jsp");
             }
 
-            if (selectedCandidat != null && !selectedCandidat.equals("")) {
-
+            if (selectedCandidat != null && !selectedCandidat.equals("") && session.getAttribute("user") != null) {
                 candidats = (Map<String, Candidat>) req.getServletContext().getAttribute("candidats");
                 req.getServletContext().setAttribute("selectCandidat", selectedCandidat);
                 Candidat candidat = candidats.get(selectedCandidat);
-                //System.out.println(candidat.getNom()+ " " +candidat.getPrenom());
                 Bulletin bulletin = new Bulletin(candidat);
                 req.getServletContext().setAttribute("monBulletin", bulletin);
-                //System.out.println("Dans bulletin :"+bulletin.getCandidat().getNom()+ " " +bulletin.getCandidat().getPrenom());
                 bulletins = (List<Bulletin>) req.getServletContext().getAttribute("bulletins");
                 bulletins.add(bulletin);
                 req.getServletContext().setAttribute("bulletins", bulletins);
                 Ballot ballot = new Ballot(bulletin);
                 User user = (User) session.getAttribute("user");
                 ballots = (Map<String, Ballot>) req.getServletContext().getAttribute("ballots");
-                //System.out.println("user login : "+user.getLogin());
                 ballots.put(user.getLogin(), ballot);
                 req.getServletContext().setAttribute("ballots", ballots);
 

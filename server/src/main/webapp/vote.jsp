@@ -1,6 +1,7 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="fr.univlyon1.m1if.m1if03.C09.classes.Candidat" %>
+<%@ page import="java.util.logging.Logger" %>
 <%--
   Created by IntelliJ IDEA.
   User: mou_lamine
@@ -23,7 +24,9 @@
                 <p class="header-user"> Bonjour ${sessionScope.user.nom}</p>
             </c:when>
             <c:otherwise>
-                <c:redirect url="index.html" />
+                <%
+                    response.sendError(response.SC_FORBIDDEN, "AUTHENTIFICATION REQUISE"); //403
+                %>
             </c:otherwise>
         </c:choose>
         <h1 class="header-titre">Votez pour qui vous voulez</h1>
@@ -54,9 +57,14 @@
                                 <option value="----" selected disabled>---- </option>
                                 <%
                                     Map<String, Integer> listeCandidats = new HashMap<>();
-                                    for (String nomCandidat
-                                            : ((Map<String, Candidat>) application.getAttribute("candidats")).keySet()) {
-                                        listeCandidats.put(nomCandidat, 0);
+                                    Map<String, Candidat> recupCandidat = (Map<String, Candidat>) pageContext
+                                            .getServletContext()
+                                            .getAttribute("candidats");
+                                    if (recupCandidat != null) {
+                                        for (String nomCandidat
+                                                : (recupCandidat.keySet())) {
+                                            listeCandidats.put(nomCandidat, 0);
+                                        }
                                     }
                                 %>
                                 <c:forEach items="<%= listeCandidats.keySet() %>" var="nomCandidat" >

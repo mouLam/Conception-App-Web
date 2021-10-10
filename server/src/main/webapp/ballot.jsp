@@ -12,7 +12,6 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<jsp:useBean id="ballots" type="java.util.Map" beanName="ballots" scope="application"/>
 <html>
 <head>
     <title>Ballot</title>
@@ -25,7 +24,9 @@
                 <p class="header-user"> Bonjour ${sessionScope.user.nom}</p>
             </c:when>
             <c:otherwise>
-                <c:redirect url="index.html" />
+                <%
+                    response.sendError(response.SC_FORBIDDEN, "AUTHENTIFICATION REQUISE"); //403
+                %>
             </c:otherwise>
         </c:choose>
         <h1 class="header-titre">Votre preuve de vote</h1>
