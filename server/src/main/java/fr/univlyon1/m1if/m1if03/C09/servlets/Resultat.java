@@ -36,7 +36,7 @@ public class Resultat extends HttpServlet {
             // afin d'éviter l'erreur qui s'affiche quand on clique sur le lien resultats
             // quand l'utilisateur n'est pas encore connecté, on remplit le map candidats
             String login = req.getParameter("login");
-            if (login == null || req.getServletContext().getAttribute("candidats") == null) {
+            if (login == null && req.getServletContext().getAttribute("candidats") == null) {
                 candidats = CandidatListGenerator.getCandidatList();
                 for (String b : candidats.keySet()) {
                     Candidat candidat = candidats.get(b);
