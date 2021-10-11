@@ -21,6 +21,7 @@ import java.util.Map;
 import java.util.logging.Logger;
 
 @WebServlet(name = "CastVote", value = "/castVote")
+@SuppressWarnings("unchecked")
 public class CastVote extends HttpServlet {
 
     Map<String, Candidat> candidats = null;
