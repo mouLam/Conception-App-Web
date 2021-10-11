@@ -41,6 +41,7 @@
                                 <label for="candidatselect">Sélectionnez un candidat :</label>
                                 <select name="selectCandidat" id="candidatselect" required>
                                     <option value="----" selected disabled>---- </option>
+                                    <option value="blanc">Vote Blanc</option>
                                     <%
                                         Map<String, Integer> listeCandidats = new HashMap<>();
                                         Map<String, Candidat> recupCandidat = (Map<String, Candidat>) pageContext

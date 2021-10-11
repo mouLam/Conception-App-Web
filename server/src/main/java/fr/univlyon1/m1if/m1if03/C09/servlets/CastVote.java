@@ -26,38 +26,59 @@ public class CastVote extends HttpServlet {
     Map<String, Candidat> candidats = null;
     Map<String, Ballot> ballots = new HashMap<>();
     List<Bulletin> bulletins = new ArrayList<>();
+    Bulletin bulletin;
+    int blancs = 0;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         try {
-            //Gestion de session
+            /* Gestion de la session utilisateur */
             HttpSession session = req.getSession();
             if (session.getAttribute("user") == null) {
                 resp.sendError(HttpServletResponse.SC_FORBIDDEN); //403
             }
 
-            // Recuperer le candidat selectionné
+            /* Récuperer le candidat selectionné */
             String selectedCandidat = req.getParameter("selectCandidat");
             if(selectedCandidat != null && selectedCandidat.equals("----") ) {
                 resp.sendRedirect("vote.jsp");
             }
 
             if (selectedCandidat != null && !selectedCandidat.equals("") && session.getAttribute("user") != null) {
-                candidats = (Map<String, Candidat>) req.getServletContext().getAttribute("candidats");
-                req.getServletContext().setAttribute("selectCandidat", selectedCandidat);
-                Candidat candidat = candidats.get(selectedCandidat);
-                Bulletin bulletin = new Bulletin(candidat);
+                if(!selectedCandidat.equals("blanc")){
+                    /* Récupération du candidat sélectionné par l'utilisateur dans la liste de candidats */
+                    candidats = (Map<String, Candidat>) req.getServletContext().getAttribute("candidats");
+                    req.getServletContext().setAttribute("selectCandidat", selectedCandidat);
+                    Candidat candidat = candidats.get(selectedCandidat);
+
+                    /* Création d'un nouveau bulletin de vote avec un attribut candidat */
+                    this.bulletin = new Bulletin(candidat);
+                }else{
+                    /* Incrémentation du compteur de votes blancs et mise à jour de l'attribut */
+                    blancs++;
+                    req.getServletContext().setAttribute("selectCandidat", selectedCandidat);
+                    req.getServletContext().setAttribute("blancs", blancs);
+
+                    /* Création d'un nouveau bulletin de vote blanc */
+                    this.bulletin = new Bulletin(true);
+                    System.out.println("Nombre de votes blancs :"+(int) req.getServletContext().getAttribute("blancs"));
+                }
+
+                /* Ajout du bulletin à la liste des bulletins */
                 req.getServletContext().setAttribute("monBulletin", bulletin);
                 bulletins = (List<Bulletin>) req.getServletContext().getAttribute("bulletins");
                 bulletins.add(bulletin);
                 req.getServletContext().setAttribute("bulletins", bulletins);
+
+                /* Ajout d'un ballot dans la liste */
                 Ballot ballot = new Ballot(bulletin);
                 User user = (User) session.getAttribute("user");
                 ballots = (Map<String, Ballot>) req.getServletContext().getAttribute("ballots");
                 ballots.put(user.getLogin(), ballot);
                 req.getServletContext().setAttribute("ballots", ballots);
 
+                /* Redirection interne vers la page ballot.jsp */
                 req.getRequestDispatcher("ballot.jsp").forward(req, resp);
             }
         } catch (IOException e) {
