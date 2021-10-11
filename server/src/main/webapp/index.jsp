@@ -8,13 +8,12 @@
     <link rel="stylesheet" type="text/css" href="static/vote.css">
 </head>
 <body>
-<header>
-    <h1 class="header-titre">Bienvenue sur notre application de vote révolutionnaire !</h1>
-</header>
+<%-- include file="./WEB-INF/components/header.jsp" --%>
+<jsp:include page="./WEB-INF/components/header.jsp">
+    <jsp:param name="title" value="${'Bienvenue sur notre application de vote révolutionnaire !'}"/>
+</jsp:include>
 <main id="contenu" class="wrapper">
-
     <%@ include file="./WEB-INF/components/menu.jsp" %>
-
     <article class="contenu">
         <form method="post" action="init">
             <h2>Connectez-vous pour pouvoir voter</h2>

@@ -18,24 +18,12 @@
     <link rel="stylesheet" type="text/css" href="static/vote.css">
 </head>
 <body>
-    <header>
-        <c:choose>
-            <c:when test="${sessionScope.user != null}">
-                <p class="header-user"> Bonjour ${sessionScope.user.nom}</p>
-            </c:when>
-            <c:otherwise>
-                <%
-                    response.sendError(response.SC_FORBIDDEN, "AUTHENTIFICATION REQUISE"); //403
-                %>
-            </c:otherwise>
-        </c:choose>
-        <h1 class="header-titre">Votre preuve de vote</h1>
-    </header>
-
+    <jsp:include page="./WEB-INF/components/header.jsp">
+        <jsp:param name="title" value="${'Votre vote'}"/>
+    </jsp:include>
     <main id="contenu" class="wrapper">
 
         <%@ include file="./WEB-INF/components/menu.jsp" %>
-
         <article class="contenu">
             <%
                 Bulletin monVote = (Bulletin) pageContext.getServletContext().getAttribute("monBulletin");

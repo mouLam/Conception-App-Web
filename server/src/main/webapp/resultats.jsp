@@ -20,22 +20,18 @@
 <%@ page import="fr.univlyon1.m1if.m1if03.C09.classes.Candidat" %>
 <%@ page import="java.util.List" %>
 <jsp:useBean id="bulletins" type="java.util.List" beanName="bulletins" scope="application"/>
+
 <html>
     <head>
         <title>Resultats Vote</title>
         <link rel="stylesheet" type="text/css" href="static/vote.css">
     </head>
     <body>
-    <header>
-        <c:if test="${sessionScope.user != null}">
-            <p class="header-user"> Bonjour ${sessionScope.user.nom}</p>
-        </c:if>
-        <h1 class="header-titre">Résultats actuels de l'élection</h1>
-    </header>
+    <jsp:include page="./WEB-INF/components/header.jsp">
+        <jsp:param name="title" value="Résultats de l'élection"/>
+    </jsp:include>
     <main id="contenu" class="wrapper">
-
         <%@ include file="./WEB-INF/components/menu.jsp" %>
-
         <article class="contenu">
             <h2>Voici le résultat courant de l'élection</h2>
             <%-- jsp:useBean id="votes" scope="request" class="java.util.HashMap" /--%>
