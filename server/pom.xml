@@ -49,8 +49,33 @@
                 <version>3.3.1</version>
                 <configuration>
                     <webXml>src\main\webapp\WEB-INF\web.xml</webXml>
+                    <warName>v1</warName>
                 </configuration>
             </plugin>
+
+            <!--<plugin>
+                 https://maven.apache.org/plugins/maven-checkstyle-plugin/usage.html
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-checkstyle-plugin</artifactId>
+                <version>3.0.0</version>
+                <executions>
+                    <execution>
+                        <id>validate</id>
+                        <phase>test</phase>
+                        <configuration>
+                            <configLocation>src/main/config/checkstyle.xml</configLocation>
+                            <encoding>UTF-8</encoding>
+                            <consoleOutput>true</consoleOutput>
+
+                            <failsOnError>true</failsOnError>
+                            <violationSeverity>warning</violationSeverity>
+                        </configuration>
+                        <goals>
+                            <goal>check</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>-->
         </plugins>
     </build>
 
