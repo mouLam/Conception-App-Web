@@ -28,18 +28,26 @@
             <%
                 Bulletin monVote = (Bulletin) pageContext.getServletContext().getAttribute("monBulletin");
                 pageContext.setAttribute("monVote", monVote);
+                System.out.println(pageContext.getServletContext().getAttribute("selectCandidat"));
             %>
 
             <c:choose>
-                <c:when test="${pageContext.servletContext.getAttribute(\"selectCandidat\") != null &&
-                        pageContext.getAttribute(\"monVote\") != null }">
+                <c:when test="${pageContext.servletContext.getAttribute(\"selectCandidat\") != null
+                                && pageContext.servletContext.getAttribute(\"selectCandidat\") != 'blanc'
+                                && pageContext.getAttribute(\"monVote\") != null }">
                     <p>Votre vote : ${monVote.getCandidat().getPrenom()}  ${monVote.getCandidat().getNom()}</p>
                     <br>
                     <br>
                     <form action="deleteVote" method="post">
-                        <p>
-                            <input type="submit" name="actiondelete" value="Supprimer">
-                        </p>
+                        <input type="submit" name="actiondelete" value="Supprimer">
+                    </form>
+                </c:when>
+                <c:when test="${pageContext.servletContext.getAttribute(\"selectCandidat\") != null
+                                && pageContext.servletContext.getAttribute(\"selectCandidat\") == 'blanc'
+                                && pageContext.getAttribute(\"monVote\") != null }">
+                    <p>Votre vote : vous avez voté blanc</p>
+                    <form action="deleteVote" method="post">
+                        <input type="submit" name="actiondelete" value="Supprimer">
                     </form>
                 </c:when>
                 <c:otherwise>

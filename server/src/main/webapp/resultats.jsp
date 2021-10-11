@@ -41,6 +41,7 @@
                 <c:forEach items="<%= votes.keySet()%>" var="nomCandidat">
                     <li><c:out value="${nomCandidat}"/> : <%= votes.get(pageContext.getAttribute("nomCandidat")) %> vote(s)</li>
                 </c:forEach>
+                <li>vote blanc : ${pageContext.servletContext.getAttribute("blancs")}</li>
             </ul>
         </article>
     </main>
