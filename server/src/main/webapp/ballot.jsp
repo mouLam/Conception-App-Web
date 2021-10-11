@@ -33,15 +33,9 @@
     </header>
 
     <main id="contenu" class="wrapper">
-        <aside class="menu">
-            <h2>Menu</h2>
-            <ul>
-                <li><a href="vote.jsp">Voter</a></li>
-                <li><a href="ballot.jsp">Votre vote</a></li>
-                <li><a href="resultats.jsp">Résultats</a></li>
-                <li><a href="Deco">Déconnexion</a></li>
-            </ul>
-        </aside>
+
+        <%@ include file="./WEB-INF/components/menu.jsp" %>
+
         <article class="contenu">
             <%
                 Bulletin monVote = (Bulletin) pageContext.getServletContext().getAttribute("monBulletin");
@@ -67,5 +61,8 @@
         </article>
 
     </main>
+
+    <%@ include file="./WEB-INF/components/footer.html" %>
+
 </body>
 </html>

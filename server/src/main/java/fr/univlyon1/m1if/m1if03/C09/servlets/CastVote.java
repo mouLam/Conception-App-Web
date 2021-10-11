@@ -61,7 +61,6 @@ public class CastVote extends HttpServlet {
 
                 req.getRequestDispatcher("ballot.jsp").forward(req, resp);
             }
-
         } catch (IOException e) {
             e.printStackTrace();
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
@@ -70,10 +69,8 @@ public class CastVote extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //resp.sendRedirect("index.html");
         HttpSession session = req.getSession();
         if (session.getAttribute("user") == null) {
-            //resp.sendRedirect("index.html");
             resp.sendError(HttpServletResponse.SC_FORBIDDEN); //403
         }
     }

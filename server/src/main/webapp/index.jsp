@@ -1,3 +1,5 @@
+<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -10,12 +12,9 @@
     <h1 class="header-titre">Bienvenue sur notre application de vote révolutionnaire !</h1>
 </header>
 <main id="contenu" class="wrapper">
-    <aside class="menu">
-        <h2>Menu</h2>
-        <ul>
-            <li><a href="resultats.jsp">Résultats</a></li>
-        </ul>
-    </aside>
+
+    <%@ include file="./WEB-INF/components/menu.jsp" %>
+
     <article class="contenu">
         <form method="post" action="init">
             <h2>Connectez-vous pour pouvoir voter</h2>
@@ -37,5 +36,8 @@
         </form>
     </article>
 </main>
+
+<%@ include file="./WEB-INF/components/footer.html" %>
+
 </body>
 </html>
