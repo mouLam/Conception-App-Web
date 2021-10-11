@@ -35,6 +35,9 @@
         <c:when test="${pageName == 'Deco'}">
             <h1 class="header-titre">Bienvenue sur notre application de vote révolutionnaire !</h1>
         </c:when>
+        <c:when test="${pageName == 'update.jsp'}">
+            <h1 class="header-titre"><%= request.getParameter("title")%></h1>
+        </c:when>
         <c:when test="${pageName == 'resultats.jsp'}">
             <h1 class="header-titre"><%= request.getParameter("title")%></h1>
         </c:when>
