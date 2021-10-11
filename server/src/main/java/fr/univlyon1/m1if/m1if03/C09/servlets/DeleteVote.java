@@ -24,7 +24,6 @@ public class DeleteVote extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        //super.doPost(req,resp);
         try {
             HttpSession session = req.getSession();
             if (session.getAttribute("user") == null) {
