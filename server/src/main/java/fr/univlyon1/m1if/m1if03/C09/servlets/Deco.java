@@ -11,7 +11,6 @@ import java.io.PrintWriter;
 
 @WebServlet(name = "Deco", value = "/deco")
 public class Deco extends HttpServlet {
-    boolean loggedin = true;
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setContentType("text/html");
         PrintWriter out=response.getWriter();

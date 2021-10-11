@@ -19,7 +19,7 @@
 <%@ page import="fr.univlyon1.m1if.m1if03.C09.classes.Bulletin" %>
 <%@ page import="fr.univlyon1.m1if.m1if03.C09.classes.Candidat" %>
 <%@ page import="java.util.List" %>
-<jsp:useBean id="bulletins" type="java.util.List" beanName="bulletins" scope="application"/>
+<%--jsp:useBean id="bulletins" type="java.util.List" beanName="bulletins" scope="application"/--%>
 
 <html>
     <head>
@@ -34,21 +34,12 @@
         <%@ include file="./WEB-INF/components/menu.jsp" %>
         <article class="contenu">
             <h2>Voici le résultat courant de l'élection</h2>
-            <%-- jsp:useBean id="votes" scope="request" class="java.util.HashMap" /--%>
-            <%
-                Map<String, Integer> votes = new HashMap<>();
-                for (String nomCandidat : ((Map<String, Candidat>) application.getAttribute("candidats")).keySet()) {
-                    votes.put(nomCandidat, 0);
-                }
-                for (Bulletin bulletin : (List<Bulletin>) bulletins) {
-                    int score = ((Map<String, Integer>) votes).get(bulletin.getCandidat().getNom());
-                    votes.put(bulletin.getCandidat().getNom(), ++score);
-                }
-            %>
 
+            <jsp:useBean id="votes" scope="request" class="java.util.HashMap" />
+            <% votes = (HashMap) request.getServletContext().getAttribute("votes"); %>
             <ul>
                 <c:forEach items="<%= votes.keySet()%>" var="nomCandidat">
-                    <li><c:out value="${nomCandidat}"/> : <%= votes.get((String)pageContext.getAttribute("nomCandidat")) %> vote(s)</li>
+                    <li><c:out value="${nomCandidat}"/> : <%= votes.get(pageContext.getAttribute("nomCandidat")) %> vote(s)</li>
                 </c:forEach>
             </ul>
         </article>

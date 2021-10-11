@@ -17,6 +17,7 @@ import java.util.List;
 import java.util.Map;
 
 @WebServlet(name = "DeleteVote", value = "/deleteVote")
+@SuppressWarnings("unchecked")
 public class DeleteVote extends HttpServlet {
 
     Map<String, Ballot> ballots = new HashMap<>();
