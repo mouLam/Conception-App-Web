@@ -47,7 +47,9 @@ public class Init extends HttpServlet {
             String login = request.getParameter("login");
             if (login != null && !login.equals("")) {
                 HttpSession session = request.getSession(true);
-                session.setAttribute("user", new User(login, request.getParameter("nom") != null ? request.getParameter("nom") : ""));
+                session.setAttribute("user", new User(login,
+                        request.getParameter("nom") != null ? request.getParameter("nom") : "",
+                        request.getParameter("admin") != null && request.getParameter("admin").equals("on")));
                 request.getRequestDispatcher("vote.jsp").forward(request, response);
             } else {
                 response.sendRedirect("index.jsp");

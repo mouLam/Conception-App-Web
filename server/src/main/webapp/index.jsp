@@ -30,6 +30,10 @@
                 </label>
             </p>
             <p>
+                <label for="admin">Êtes-vous administrateur ?</label>
+                <input type="checkbox" name="admin" id="admin">
+            </p>
+            <p>
                 <input type="submit" name="action" value="Connexion">
             </p>
         </form>

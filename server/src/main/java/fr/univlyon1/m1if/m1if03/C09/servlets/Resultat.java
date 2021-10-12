@@ -32,34 +32,18 @@ public class Resultat extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
-
-            // afin d'éviter l'erreur qui s'affiche quand on clique sur le lien resultats
-            // quand l'utilisateur n'est pas encore connecté, on remplit le map candidats
-            String login = req.getParameter("login");
-            if (login == null && req.getServletContext().getAttribute("candidats") == null) {
-                candidats = CandidatListGenerator.getCandidatList();
-                for (String b : candidats.keySet()) {
-                    Candidat candidat = candidats.get(b);
-                    Bulletin bulletin = new Bulletin(candidat);
-                    bulletins.add(bulletin);
-                    votes.put(b, 0);
-                }
-                req.getServletContext().setAttribute("votes", votes);
-                req.getRequestDispatcher("resultats.jsp").forward(req, resp);
-            } else {
-                candidats = (Map<String, Candidat>) req.getServletContext().getAttribute("candidats");
-                for (String nomCandidat :  candidats.keySet()) {
-                    votes.put(nomCandidat, 0);
-                }
-                bulletins = (List<Bulletin>) req.getServletContext().getAttribute("bulletins");
-                for (Bulletin bulletin : bulletins) {
-                    int score = votes.get(bulletin.getCandidat().getNom());
-                    votes.put(bulletin.getCandidat().getNom(), ++score);
-                }
-                req.getServletContext().setAttribute("votes", votes);
-
-                req.getRequestDispatcher("resultats.jsp").forward(req, resp);
+            candidats = (Map<String, Candidat>) req.getServletContext().getAttribute("candidats");
+            for (String nomCandidat :  candidats.keySet()) {
+                votes.put(nomCandidat, 0);
             }
+            bulletins = (List<Bulletin>) req.getServletContext().getAttribute("bulletins");
+            for (Bulletin bulletin : bulletins) {
+                int score = votes.get(bulletin.getCandidat().getNom());
+                votes.put(bulletin.getCandidat().getNom(), ++score);
+            }
+            req.getServletContext().setAttribute("votes", votes);
+
+            req.getRequestDispatcher("resultats.jsp").forward(req, resp);
 
         } catch (IOException e) {
             e.printStackTrace();
