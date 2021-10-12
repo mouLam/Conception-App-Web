@@ -15,3 +15,6 @@ Le vote blanc est choisi dans la même liste que les candidats.
 
    * Concernant le fichier index.jsp, il n'a pas été généré par notre IDE (IntelliJ).
     nous avons créé le fichier WEB-INF et insérer le fichier web.xml dedans.
+     
+   * A l'accueil,le lien vers la page _résultat_ quand l'utilisateur n'est pas connecté génére une erreur.
+    Nous avons donc rectifié cela pour qu'il affiche les résultats actuels même étant déconnecté.
