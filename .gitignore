@@ -1,0 +1,12 @@
+.idea
+*.iml
+target
+
+.DS_Store
+.project
+.settings
+.classpath
+.metadata
+
+CI_SSH_KEY
+
