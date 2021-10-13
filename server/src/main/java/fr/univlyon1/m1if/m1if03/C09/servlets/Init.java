@@ -17,7 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(name = "Init", value = "/init")
+@WebServlet(name = "Init", value = "/init", loadOnStartup = 1)
 public class Init extends HttpServlet {
     Map<String, Candidat> candidats = null;
     final Map<String, Ballot> ballots = new HashMap<>();
@@ -30,19 +30,20 @@ public class Init extends HttpServlet {
         ServletContext context = config.getServletContext();
         context.setAttribute("ballots", ballots);
         context.setAttribute("bulletins", bulletins);
+        try {
+            candidats = CandidatListGenerator.getCandidatList();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.out.println(e.getCause() + " : " + e.getMessage());
+            candidats.put("vide", new Candidat("vide", "vide"));
+            throw new ServletException("Error creating map of candidats", e);
+        }
+        context.setAttribute("candidats", candidats);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        // On intercepte le premier appel à Init pour mettre en place la liste des candidats,
-        // car en cas d'erreur de chargement, il faut pouvoir renvoyer une erreur HTTP.
-        // Fait dans un bloc try/catch pour le cas où la liste des candidats ne s'est pas construite correctement.
         try {
-            if (candidats == null) {
-                candidats = CandidatListGenerator.getCandidatList();
-                request.getServletContext().setAttribute("candidats", candidats);
-            }
-
             // Gestion de la session utilisateur
             String login = request.getParameter("login");
             if (login != null && !login.equals("")) {
