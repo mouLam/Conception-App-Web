@@ -41,29 +41,4 @@ public class Init extends HttpServlet {
         context.setAttribute("candidats", candidats);
     }
 
-    @Override
-    protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        try {
-            // Gestion de la session utilisateur
-            String login = request.getParameter("login");
-            if (login != null && !login.equals("")) {
-                HttpSession session = request.getSession(true);
-                session.setAttribute("user", new User(login,
-                        request.getParameter("nom") != null ? request.getParameter("nom") : "",
-                        request.getParameter("admin") != null && request.getParameter("admin").equals("on")));
-                request.getRequestDispatcher("vote.jsp").forward(request, response);
-            } else {
-                response.sendRedirect("index.jsp");
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-//            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Erreur dans la récupération de la liste des candidats.");
-            response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
-        }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        response.sendRedirect("index.jsp");
-    }
 }

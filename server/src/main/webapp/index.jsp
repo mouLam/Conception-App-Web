@@ -5,7 +5,9 @@
 <head>
     <meta charset="UTF-8">
     <title>Vote - accueil</title>
-    <link rel="stylesheet" type="text/css" href="static/vote.css">
+    <style type="text/css">
+        <%@include file="static/vote.css" %>
+    </style>
 </head>
 <body>
 <%-- include file="./WEB-INF/components/header.jsp" --%>
@@ -15,7 +17,7 @@
 <main id="contenu" class="wrapper">
     <%@ include file="./WEB-INF/components/menu.jsp" %>
     <article class="contenu">
-        <form method="post" action="init">
+        <form method="post" action="vote.jsp">
             <h2>Connectez-vous pour pouvoir voter</h2>
             <p>
                 <label>

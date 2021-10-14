@@ -54,4 +54,13 @@
         <servlet-name>Update</servlet-name>
         <url-pattern>/update</url-pattern>
     </servlet-mapping>
+    <filter>
+        <filter-name>Authentification</filter-name>
+        <filter-class>fr.univlyon1.m1if.m1if03.C09.filters.Authentification</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>Authentification</filter-name>
+        <url-pattern>/*</url-pattern>
+    </filter-mapping>
+
 </web-app>

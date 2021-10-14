@@ -15,7 +15,9 @@
 <html>
     <head>
         <title>Vote</title>
-        <link rel="stylesheet" type="text/css" href="static/vote.css">
+        <style type="text/css">
+            <%@include file="static/vote.css" %>
+        </style>
     </head>
     <body>
         <jsp:include page="./WEB-INF/components/header.jsp">
