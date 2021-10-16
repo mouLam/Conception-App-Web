@@ -8,13 +8,8 @@ public class Bulletin {
         this.candidat = candidat;
     }
 
-    public Bulletin(boolean blanc) {
-        this.blanc = blanc;
-    }
-
     public Candidat getCandidat() {
         return candidat;
     }
 
-    public boolean getVoteBlanc() { return blanc; }
 }

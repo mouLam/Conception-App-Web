@@ -33,8 +33,7 @@ public class Authentification extends HttpFilter implements Filter {
         if (req.getRequestURI().endsWith("index.jsp")) {
             chain.doFilter(req, res);
             return;
-        }
-        else {
+        } else {
             if (session.getAttribute("user") != null ) {
                 chain.doFilter(req, res);
                 return;

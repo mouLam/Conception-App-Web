@@ -36,18 +36,12 @@ public class DeleteVote extends HttpServlet {
                 User user = (User) session.getAttribute("user");
                 Ballot ballot = ballots.get(user.getLogin());
                 Bulletin bulletin = ballot.getBulletin();
-                if(bulletin.getVoteBlanc()){
-                    int blancs = (int) req.getServletContext().getAttribute("blancs");
-                    blancs--;
-                    req.getServletContext().setAttribute("blancs", blancs);
-                }else{
-                    bulletins = (List<Bulletin>) req.getServletContext().getAttribute("bulletins");
-                    for (Bulletin b: bulletins) {
-                        if(b.getCandidat().getNom().equals(bulletin.getCandidat().getNom())
-                                && b.getCandidat().getPrenom().equals(bulletin.getCandidat().getPrenom())){
-                            bulletins.remove(b);
-                            break;
-                        }
+                bulletins = (List<Bulletin>) req.getServletContext().getAttribute("bulletins");
+                for (Bulletin b: bulletins) {
+                    if(b.getCandidat().getNom().equals(bulletin.getCandidat().getNom())
+                            && b.getCandidat().getPrenom().equals(bulletin.getCandidat().getPrenom())){
+                        bulletins.remove(b);
+                        break;
                     }
                 }
 

@@ -1,7 +1,6 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="fr.univlyon1.m1if.m1if03.C09.classes.Candidat" %>
-<%@ page import="java.util.logging.Logger" %>
 <%--
   Created by IntelliJ IDEA.
   User: mou_lamine
@@ -38,12 +37,11 @@
 
                     </c:when>
                     <c:otherwise>
-                        <form action="castVote" method="post">
+                        <form action="${pageContext.request.contextPath}/election/vote" method="post">
                             <div>
                                 <label for="candidatselect">Sélectionnez un candidat :</label>
                                 <select name="selectCandidat" id="candidatselect" required>
                                     <option value="----" selected disabled>---- </option>
-                                    <option value="blanc">Vote Blanc</option>
                                     <%
                                         Map<String, Integer> listeCandidats = new HashMap<>();
                                         Map<String, Candidat> recupCandidat = (Map<String, Candidat>) pageContext

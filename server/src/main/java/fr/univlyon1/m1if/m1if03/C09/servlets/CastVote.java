@@ -28,7 +28,6 @@ public class CastVote extends HttpServlet {
     Map<String, Ballot> ballots = new HashMap<>();
     List<Bulletin> bulletins = new ArrayList<>();
     Bulletin bulletin;
-    int blancs = 0;
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -47,24 +46,14 @@ public class CastVote extends HttpServlet {
             }
 
             if (selectedCandidat != null && !selectedCandidat.equals("") && session.getAttribute("user") != null) {
-                if(!selectedCandidat.equals("blanc")){
-                    /* Récupération du candidat sélectionné par l'utilisateur dans la liste de candidats */
-                    candidats = (Map<String, Candidat>) req.getServletContext().getAttribute("candidats");
-                    req.getServletContext().setAttribute("selectCandidat", selectedCandidat);
-                    Candidat candidat = candidats.get(selectedCandidat);
 
-                    /* Création d'un nouveau bulletin de vote avec un attribut candidat */
-                    this.bulletin = new Bulletin(candidat);
-                }else{
-                    /* Incrémentation du compteur de votes blancs et mise à jour de l'attribut */
-                    blancs++;
-                    req.getServletContext().setAttribute("selectCandidat", selectedCandidat);
-                    req.getServletContext().setAttribute("blancs", blancs);
+                /* Récupération du candidat sélectionné par l'utilisateur dans la liste de candidats */
+                candidats = (Map<String, Candidat>) req.getServletContext().getAttribute("candidats");
+                req.getServletContext().setAttribute("selectCandidat", selectedCandidat);
+                Candidat candidat = candidats.get(selectedCandidat);
 
-                    /* Création d'un nouveau bulletin de vote blanc */
-                    this.bulletin = new Bulletin(true);
-                    System.out.println("Nombre de votes blancs :"+(int) req.getServletContext().getAttribute("blancs"));
-                }
+                /* Création d'un nouveau bulletin de vote avec un attribut candidat */
+                this.bulletin = new Bulletin(candidat);
 
                 /* Ajout du bulletin à la liste des bulletins */
                 req.getServletContext().setAttribute("monBulletin", bulletin);

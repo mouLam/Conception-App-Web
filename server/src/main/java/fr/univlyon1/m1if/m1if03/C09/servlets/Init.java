@@ -8,9 +8,6 @@ import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +29,7 @@ public class Init extends HttpServlet {
         context.setAttribute("bulletins", bulletins);
         try {
             candidats = CandidatListGenerator.getCandidatList();
+            candidats.put("Blanc", new Candidat("Vote", "Blanc"));
         } catch (IOException e) {
             e.printStackTrace();
             System.out.println(e.getCause() + " : " + e.getMessage());
