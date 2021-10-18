@@ -26,16 +26,6 @@
     </servlet-mapping>
     <servlet>
         <description></description>
-        <display-name>DeleteVote</display-name>
-        <servlet-name>DeleteVote</servlet-name>
-        <servlet-class>fr.univlyon1.m1if.m1if03.C09.servlets.DeleteVote</servlet-class>
-    </servlet>
-    <servlet-mapping>
-        <servlet-name>DeleteVote</servlet-name>
-        <url-pattern>/deleteVote</url-pattern>
-    </servlet-mapping>
-    <servlet>
-        <description></description>
         <display-name>Resultat</display-name>
         <servlet-name>Resultat</servlet-name>
         <servlet-class>fr.univlyon1.m1if.m1if03.C09.servlets.Resultat</servlet-class>

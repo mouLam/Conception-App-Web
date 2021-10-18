@@ -16,9 +16,9 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(name = "DeleteVote", value = "/deleteVote")
+@WebServlet(name = "DeleteVoteController", value = "/election/deleteVote")
 @SuppressWarnings("unchecked")
-public class DeleteVote extends HttpServlet {
+public class DeleteVoteController extends HttpServlet {
 
     Map<String, Ballot> ballots = new HashMap<>();
     List<Bulletin> bulletins = new ArrayList<>();
@@ -27,9 +27,7 @@ public class DeleteVote extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         try {
             HttpSession session = req.getSession();
-            if (session.getAttribute("user") == null) {
-                resp.sendError(HttpServletResponse.SC_FORBIDDEN); //403
-            }
+
             if (req.getParameter("actiondelete") != null) {
                 System.out.println("delete button has been pressed");
                 // Récupérer le ballot de vote correspondant à l'utilisateur
@@ -56,14 +54,6 @@ public class DeleteVote extends HttpServlet {
         } catch (IOException e) {
             e.printStackTrace();
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
-        }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        if (session.getAttribute("user") == null) {
-            resp.sendError(HttpServletResponse.SC_FORBIDDEN); //403
         }
     }
 
