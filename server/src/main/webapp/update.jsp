@@ -21,7 +21,7 @@
 
     <%@ include file="./WEB-INF/components/menu.jsp" %>
     <article class="contenu">
-        <form action="update" method="post">
+        <form action="${pageContext.request.contextPath}/election/user" method="post">
             <div>
                 <label>Votre vouveau nom :
                     <input type="text" name="newname" required>

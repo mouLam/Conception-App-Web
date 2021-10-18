@@ -13,6 +13,7 @@
 
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>Vote</title>
         <style type="text/css">
             <%@include file="static/vote.css" %>
