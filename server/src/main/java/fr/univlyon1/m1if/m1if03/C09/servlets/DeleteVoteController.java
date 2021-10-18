@@ -51,7 +51,7 @@ public class DeleteVoteController extends HttpServlet {
                 req.getServletContext().setAttribute("bulletins", bulletins);
                 req.getServletContext().setAttribute("ballots", ballots);
                 req.getServletContext().removeAttribute("selectCandidat");
-                req.getRequestDispatcher("/vote.jsp").include(req, resp);
+                req.getRequestDispatcher("/WEB-INF/components/vote.jsp").include(req, resp);
             }
         } catch (IOException e) {
             e.printStackTrace();

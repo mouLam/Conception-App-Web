@@ -16,17 +16,17 @@
         <meta charset="UTF-8">
         <title>Vote</title>
         <style type="text/css">
-            <%@include file="static/vote.css" %>
+            <%@include file="../../static/vote.css" %>
         </style>
     </head>
     <body>
-        <jsp:include page="./WEB-INF/components/header.jsp">
+        <jsp:include page="header.jsp">
             <jsp:param name="title" value="${'Votez pour qui vous voulez'}"/>
         </jsp:include>
 
         <main id="contenu" class="wrapper">
 
-            <%@ include file="./WEB-INF/components/menu.jsp" %>
+            <%@ include file="menu.jsp" %>
 
             <article class="contenu">
 
@@ -70,6 +70,6 @@
             </article>
 
         </main>
-        <%@ include file="./WEB-INF/components/footer.html" %>
+        <%@ include file="footer.html" %>
     </body>
 </html>

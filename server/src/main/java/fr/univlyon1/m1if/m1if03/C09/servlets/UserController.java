@@ -14,7 +14,7 @@ public class UserController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
-        req.getRequestDispatcher("/update.jsp").forward(req, resp);
+        req.getRequestDispatcher("/WEB-INF/components/update.jsp").forward(req, resp);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class UserController extends HttpServlet {
             if (nouveaunom != null && !nouveaunom.equals("")) {
                 user.setNom(nouveaunom);
                 session.setAttribute("user", user);
-                req.getRequestDispatcher("/update.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/components/update.jsp").forward(req, resp);
             } else {
                 resp.sendError(
                         HttpServletResponse.SC_NOT_MODIFIED,

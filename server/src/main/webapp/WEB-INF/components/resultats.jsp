@@ -21,15 +21,15 @@
         <meta charset="UTF-8">
         <title>Resultats Vote</title>
         <style type="text/css">
-            <%@include file="static/vote.css" %>
+            <%@include file="../../static/vote.css" %>
         </style>
     </head>
     <body>
-    <jsp:include page="./WEB-INF/components/header.jsp">
+    <jsp:include page="header.jsp">
         <jsp:param name="title" value="Résultats de l'élection"/>
     </jsp:include>
     <main id="contenu" class="wrapper">
-        <%@ include file="./WEB-INF/components/menu.jsp" %>
+        <%@ include file="menu.jsp" %>
         <article class="contenu">
             <h2>Voici le résultat courant de l'élection</h2>
 
@@ -42,6 +42,6 @@
             </ul>
         </article>
     </main>
-    <%@ include file="./WEB-INF/components/footer.html" %>
+    <%@ include file="footer.html" %>
     </body>
 </html>

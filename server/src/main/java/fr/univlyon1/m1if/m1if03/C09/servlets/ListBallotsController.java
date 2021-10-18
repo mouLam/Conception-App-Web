@@ -21,7 +21,7 @@ public class ListBallotsController extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         User user = (User)req.getSession().getAttribute("user");
         if(user.isAdmin()){
-            req.getRequestDispatcher("/listBallots.jsp").include(req,resp);
+            req.getRequestDispatcher("/WEB-INF/components/listBallots.jsp").include(req,resp);
         } else {
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED); //403
         }

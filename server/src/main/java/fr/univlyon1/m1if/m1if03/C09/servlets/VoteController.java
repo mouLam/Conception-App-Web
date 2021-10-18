@@ -55,9 +55,9 @@ public class VoteController extends HttpServlet {
 
             /* Mise à jour de la liste des ballots (attribut de requête) et redirection interne vers la page ballot.jsp */
             req.getServletContext().setAttribute("ballots", this.ballots);
-            req.getRequestDispatcher("/ballot.jsp").include(req,resp);
+            req.getRequestDispatcher("/WEB-INF/components/ballot.jsp").include(req,resp);
         }else{
-            req.getRequestDispatcher("/vote.jsp").include(req,resp);
+            req.getRequestDispatcher("/WEB-INF/components/vote.jsp").include(req,resp);
         }
     }
 
@@ -65,6 +65,6 @@ public class VoteController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
-        req.getRequestDispatcher("/vote.jsp").include(req,resp);
+        req.getRequestDispatcher("/WEB-INF/components/vote.jsp").include(req,resp);
     }
 }

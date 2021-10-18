@@ -17,16 +17,16 @@
     <meta charset="UTF-8">
     <title>Ballot</title>
     <style type="text/css">
-        <%@include file="static/vote.css" %>
+        <%@include file="../../static/vote.css" %>
     </style>
 </head>
 <body>
-    <jsp:include page="./WEB-INF/components/header.jsp">
+    <jsp:include page="header.jsp">
         <jsp:param name="title" value="${'Votre vote'}"/>
     </jsp:include>
     <main id="contenu" class="wrapper">
 
-        <%@ include file="./WEB-INF/components/menu.jsp" %>
+        <%@ include file="menu.jsp" %>
         <article class="contenu">
             <%
                 Bulletin monVote = (Bulletin) pageContext.getServletContext().getAttribute("monBulletin");
@@ -53,7 +53,7 @@
 
     </main>
 
-    <%@ include file="./WEB-INF/components/footer.html" %>
+    <%@ include file="footer.html" %>
 
 </body>
 </html>

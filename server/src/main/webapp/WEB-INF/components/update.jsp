@@ -10,16 +10,16 @@
 <head>
     <title>Update</title>
     <style type="text/css">
-        <%@include file="static/vote.css" %>
+        <%@include file="../../static/vote.css" %>
     </style>
 </head>
 <body>
-<jsp:include page="./WEB-INF/components/header.jsp">
+<jsp:include page="header.jsp">
     <jsp:param name="title" value="${'Mise à jour de votre profil'}"/>
 </jsp:include>
 <main id="contenu" class="wrapper">
 
-    <%@ include file="./WEB-INF/components/menu.jsp" %>
+    <%@ include file="menu.jsp" %>
     <article class="contenu">
         <form action="${pageContext.request.contextPath}/election/user" method="post">
             <div>
@@ -35,7 +35,7 @@
 
 </main>
 
-<%@ include file="./WEB-INF/components/footer.html" %>
+<%@ include file="footer.html" %>
 
 </body>
 </html>

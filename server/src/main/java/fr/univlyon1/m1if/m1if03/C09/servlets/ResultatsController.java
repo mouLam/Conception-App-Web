@@ -33,7 +33,7 @@ public class ResultatsController extends HttpServlet {
                 votes.put(bulletin.getCandidat().getNom(), ++score);
             }
             request.getServletContext().setAttribute("votes", votes);
-            request.getRequestDispatcher("/resultats.jsp").include(request, response);
+            request.getRequestDispatcher("/WEB-INF/components/resultats.jsp").include(request, response);
         } catch (IOException e) {
             e.printStackTrace();
             response.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());

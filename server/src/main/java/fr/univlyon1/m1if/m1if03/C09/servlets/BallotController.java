@@ -11,6 +11,6 @@ public class BallotController extends HttpServlet {
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         response.setCharacterEncoding("UTF-8");
         response.setContentType("text/html; charset=UTF-8");
-        request.getRequestDispatcher("/ballot.jsp").include(request, response);
+        request.getRequestDispatcher("/WEB-INF/components/ballot.jsp").include(request, response);
     }
 }

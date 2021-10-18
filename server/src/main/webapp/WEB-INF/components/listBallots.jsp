@@ -21,13 +21,13 @@
 <head>
     <title>Liste des ballots (admin)</title>
     <style type="text/css">
-        <%@include file="static/vote.css" %>
+        <%@include file="../../static/vote.css" %>
     </style>
 </head>
 <body>
-<jsp:include page="./WEB-INF/components/header.jsp?title=Liste des ballots (admin)"/>
+<jsp:include page="header.jsp?title=Liste des ballots (admin)"/>
 <main id="contenu" class="wrapper">
-    <jsp:include page="WEB-INF/components/menu.jsp"/>
+    <jsp:include page="menu.jsp"/>
     <article class="contenu">
         <h2>Voici la liste des <c:out value="${ballots.size()}" /> votants</h2>
 
