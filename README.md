@@ -1,20 +1,25 @@
-# TP2 - v1.4 - C09
+# TP3 - v2.2 - C09
 
-Toutes les fonctionnalités ont été implémentées jusqu'à l'ajout du vote blanc. L'utilisateur a la possibilité de voter blanc et de consulter ce vote, cependant le vote blanc n'est pas encore comptabilisé sur la page resultats.jsp
+## 2.1 Pattern Contexte
+L'initialisation de la liste de candidats est réalisée dans la méthode init(). Une exception est levée en cas de problème durant le chargement et un candidat vide est ajouté à la liste.
 
-### Vote blanc
-L'implémentation du vote blanc a été réalisée via l'ajout d'un attribut "blanc" de type booléen à la classe Bulletin. Une surcharge du constructeur de la classe Bulletin a permit de l'instancier soit avec un Candidat ou avec un vote blanc en fonction du choix de l'utilisateur. 
-Le vote blanc est choisi dans la même liste que les candidats.
+## 2.2 Pattern Chaine de Responsabilité
 
-## Auteurs
+Création et ajout des filtres Authentification et Autorisation dans le fichire web.xml .
 
-    - CHARLERY Océane
-    - MBOUP Mouhamadou Lamine
-  
-## TP 2 :
+### 2.2.1 
+Création du filtre Authentification qui permet de vérifier l'existence d'une session utilisateur ou non et de rediriger un utilisateur non connecté essayant d'accéder à certaines ressources interdites.
 
-   * Concernant le fichier index.jsp, il n'a pas été généré par notre IDE (IntelliJ).
-    nous avons créé le fichier WEB-INF et insérer le fichier web.xml dedans.
-     
-   * A l'accueil,le lien vers la page _résultat_ quand l'utilisateur n'est pas connecté génére une erreur.
-    Nous avons donc rectifié cela pour qu'il affiche les résultats actuels même étant déconnecté.
+### 2.2.2
+Création du filtre Autorisation permettant à l'administrateur d'accéder à la liste des ballots.
+
+## 2.3 Pattern MVC
+Création des servlets :
+- Controleur : controleur principal
+- VoteControleur : contrôle l'accès à la page vote.jsp si appelé via une méthode GET ou ballot.jsp si appelé via le formulaire de vote avec une méthode POST
+- DecoControleur : contrôleur de déconnexion
+- ResultatsControleur : comptabilise les votes et affiche les résultats de l'élection
+- UserControleur : affiche le profil utilisateur via la méthode GET et met à jour le nom d'utilisateur via la méthode POST
+- DeleteVoteControleur : supprime le ballot via une méthode POST
+- BallotControleur : affiche le ballot de l'utilisateur (GET)
+- ListBallotsControleur : affiche la liste des ballots
