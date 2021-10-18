@@ -40,7 +40,7 @@
                     <p>Votre vote : ${monVote.getCandidat().getPrenom()}  ${monVote.getCandidat().getNom()}</p>
                     <br>
                     <br>
-                    <form action="deleteVote" method="post">
+                    <form action="${pageContext.request.contextPath}/deleteVote" method="post">
                         <input type="submit" name="actiondelete" value="Supprimer">
                     </form>
                 </c:when>

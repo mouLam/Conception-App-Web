@@ -31,6 +31,7 @@ public class DeleteVote extends HttpServlet {
                 resp.sendError(HttpServletResponse.SC_FORBIDDEN); //403
             }
             if (req.getParameter("actiondelete") != null) {
+                System.out.println("delete button has been pressed");
                 // Récupérer le ballot de vote correspondant à l'utilisateur
                 ballots = (Map<String, Ballot>) req.getServletContext().getAttribute("ballots");
                 User user = (User) session.getAttribute("user");
@@ -50,7 +51,7 @@ public class DeleteVote extends HttpServlet {
                 req.getServletContext().setAttribute("bulletins", bulletins);
                 req.getServletContext().setAttribute("ballots", ballots);
                 req.getServletContext().removeAttribute("selectCandidat");
-                req.getRequestDispatcher("/vote.jsp").forward(req, resp);
+                req.getRequestDispatcher("/vote.jsp").include(req, resp);
             }
         } catch (IOException e) {
             e.printStackTrace();
