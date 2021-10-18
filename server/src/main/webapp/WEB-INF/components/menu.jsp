@@ -22,6 +22,9 @@
                 <li><a href="${pageContext.request.contextPath}/election/vote">Voter</a></li>
                 <li><a href="${pageContext.request.contextPath}/election/ballot">Votre vote</a></li>
                 <li><a href="${pageContext.request.contextPath}/election/resultats">Résultats</a></li>
+                <c:if test="${sessionScope.user.admin}">
+                    <li><a href="${pageContext.request.contextPath}/election/listBallots">Liste de ballots</a></li>
+                </c:if>
                 <li><a href="${pageContext.request.contextPath}/DecoController">Déconnexion</a></li>
             </c:otherwise>
         </c:choose>
