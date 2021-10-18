@@ -14,6 +14,7 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
+    <meta charset="UTF-8">
     <title>Ballot</title>
     <style type="text/css">
         <%@include file="static/vote.css" %>
@@ -41,14 +42,6 @@
                     <br>
                     <br>
                     <form action="${pageContext.request.contextPath}/election/deleteVote" method="post">
-                        <input type="submit" name="actiondelete" value="Supprimer">
-                    </form>
-                </c:when>
-                <c:when test="${pageContext.servletContext.getAttribute(\"selectCandidat\") != null
-                                && pageContext.servletContext.getAttribute(\"selectCandidat\") == 'blanc'
-                                && pageContext.getAttribute(\"monVote\") != null }">
-                    <p>Votre vote : vous avez voté blanc</p>
-                    <form action="deleteVote" method="post">
                         <input type="submit" name="actiondelete" value="Supprimer">
                     </form>
                 </c:when>

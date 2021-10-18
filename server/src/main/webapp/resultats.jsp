@@ -14,15 +14,11 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="fr.univlyon1.m1if.m1if03.C09.classes.Bulletin" %>
-<%@ page import="fr.univlyon1.m1if.m1if03.C09.classes.Candidat" %>
-<%@ page import="java.util.List" %>
-<%--jsp:useBean id="bulletins" type="java.util.List" beanName="bulletins" scope="application"/--%>
 
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>Resultats Vote</title>
         <style type="text/css">
             <%@include file="static/vote.css" %>
