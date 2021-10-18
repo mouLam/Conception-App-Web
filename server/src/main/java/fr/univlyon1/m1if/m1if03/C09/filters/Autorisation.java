@@ -32,7 +32,7 @@ public class Autorisation extends HttpFilter implements Filter {
             chain.doFilter(req, res);
             return;
         } else {
-            res.sendRedirect("ballot.jsp");
+            req.getRequestDispatcher("/election/ballot").forward(req, res);
         }
     }
 }

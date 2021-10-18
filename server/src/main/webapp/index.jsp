@@ -17,7 +17,7 @@
 <main id="contenu" class="wrapper">
     <%@ include file="./WEB-INF/components/menu.jsp" %>
     <article class="contenu">
-        <form method="post" action="vote.jsp">
+        <form method="post" action="${pageContext.request.contextPath}/election/vote">
             <h2>Connectez-vous pour pouvoir voter</h2>
             <p>
                 <label>

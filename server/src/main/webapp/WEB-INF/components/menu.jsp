@@ -18,11 +18,11 @@
                 <li><a href="${pageContext.request.contextPath}/resultat">Résultats</a></li>
             </c:when>
             <c:otherwise>
-                <li><a href="update.jsp">Mettre à jour mon profil</a></li>
-                <li><a href="vote.jsp">Voter</a></li>
-                <li><a href="ballot.jsp">Votre vote</a></li>
-                <li><a href="${pageContext.request.contextPath}/resultat">Résultats</a></li>
-                <li><a href="Deco">Déconnexion</a></li>
+                <li><a href="${pageContext.request.contextPath}/election/user">Mettre à jour mon profil</a></li>
+                <li><a href="${pageContext.request.contextPath}/election/vote">Voter</a></li>
+                <li><a href="${pageContext.request.contextPath}/election/ballot">Votre vote</a></li>
+                <li><a href="${pageContext.request.contextPath}/election/resultats">Résultats</a></li>
+                <li><a href="${pageContext.request.contextPath}/DecoController">Déconnexion</a></li>
             </c:otherwise>
         </c:choose>
     </ul>

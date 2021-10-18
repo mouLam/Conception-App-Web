@@ -25,6 +25,8 @@ public class DeleteVoteController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
         try {
             HttpSession session = req.getSession();
 

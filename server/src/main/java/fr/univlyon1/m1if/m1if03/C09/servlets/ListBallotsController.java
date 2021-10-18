@@ -14,18 +14,17 @@ import java.util.HashMap;
 import java.util.Map;
 @WebServlet(name = "ListBallotsController", urlPatterns = "/election/listBallots")
 public class ListBallotsController extends HttpServlet {
-    Map<String, Ballot> ballots = new HashMap<>();
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
         User user = (User)req.getSession().getAttribute("user");
         if(user.isAdmin()){
             req.getRequestDispatcher("/listBallots.jsp").include(req,resp);
         } else {
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED); //403
         }
-
-
     }
 
     /** Ajouter la méthode doPost pour la gestion du bouton supprimer (plus tard) */

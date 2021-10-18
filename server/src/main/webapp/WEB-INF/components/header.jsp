@@ -19,10 +19,10 @@
         <c:when test="${sessionScope.user != null}">
             <p class="header-user"> Bonjour ${sessionScope.user.nom}</p>
             <c:choose>
-                <c:when test="${pageName == 'vote.jsp'}">
+                <c:when test="${pageName == 'vote'}">
                     <h1 class="header-titre"><%= request.getParameter("title")%></h1>
                 </c:when>
-                <c:when test="${pageName == 'ballot.jsp'}">
+                <c:when test="${pageName == 'ballot'}">
                     <h1 class="header-titre"><%= request.getParameter("title")%></h1>
                 </c:when>
             </c:choose>
@@ -32,13 +32,13 @@
         </c:otherwise>
     </c:choose>
     <c:choose>
-        <c:when test="${pageName == 'Deco'}">
+        <c:when test="${pageName == 'DecoController'}">
             <h1 class="header-titre">Bienvenue sur notre application de vote révolutionnaire !</h1>
         </c:when>
-        <c:when test="${pageName == 'update.jsp'}">
+        <c:when test="${pageName == 'user'}">
             <h1 class="header-titre"><%= request.getParameter("title")%></h1>
         </c:when>
-        <c:when test="${pageName == 'resultats.jsp'}">
+        <c:when test="${pageName == 'resultats'}">
             <h1 class="header-titre"><%= request.getParameter("title")%></h1>
         </c:when>
         <c:when test="${pageName == 'index.jsp' || pageName == '' }">

@@ -27,6 +27,8 @@ public class VoteController extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
         String selection = req.getParameter("selectCandidat");
         HttpSession session = req.getSession();
 
@@ -54,11 +56,15 @@ public class VoteController extends HttpServlet {
             /* Mise à jour de la liste des ballots (attribut de requête) et redirection interne vers la page ballot.jsp */
             req.getServletContext().setAttribute("ballots", this.ballots);
             req.getRequestDispatcher("/ballot.jsp").include(req,resp);
+        }else{
+            req.getRequestDispatcher("/vote.jsp").include(req,resp);
         }
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
         req.getRequestDispatcher("/vote.jsp").include(req,resp);
     }
 }

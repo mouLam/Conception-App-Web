@@ -13,8 +13,9 @@ public class Controller extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
         String action = req.getRequestURI();
-
         if(action.endsWith("vote")){
             req.getRequestDispatcher("/election/vote").forward(req,resp);
         }else if(action.endsWith("user")){
@@ -26,6 +27,8 @@ public class Controller extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
         String action = req.getRequestURI();
         if(action.endsWith("listBallots")){
             req.getRequestDispatcher("/election/listBallots").forward(req,resp);
@@ -33,6 +36,10 @@ public class Controller extends HttpServlet {
             req.getRequestDispatcher("/election/vote").forward(req,resp);
         }else if(action.endsWith("user")){
             req.getRequestDispatcher("/election/user").forward(req,resp);
+        }else if(action.endsWith("ballot")){
+            req.getRequestDispatcher("/election/ballot").forward(req, resp);
+        }else if(action.endsWith("resultats")){
+            req.getRequestDispatcher("/election/resultats").forward(req, resp);
         }
     }
 }
