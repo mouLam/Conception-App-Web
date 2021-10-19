@@ -6,7 +6,7 @@
   Time: 00:30
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java"  pageEncoding="UTF-8" %>
 
 
 <aside class="menu">
@@ -15,17 +15,17 @@
     <ul>
         <c:choose>
             <c:when test="${sessionScope.user == null}">
-                <li><a href="resultat">Résultats</a></li>
+                <li><a href="<c:url value="resultat"/>">Résultats</a></li>
             </c:when>
             <c:otherwise>
-                <li><a href="election/user">Mettre à jour mon profil</a></li>
-                <li><a href="election/vote">Voter</a></li>
-                <li><a href="election/ballot">Votre vote</a></li>
-                <li><a href="election/resultats">Résultats</a></li>
+                <li><a href="<c:url value="/election/user"/>">Mettre à jour mon profil</a></li>
+                <li><a href="<c:url value="/election/vote"/>">Voter</a></li>
+                <li><a href="<c:url value="/election/ballot"/>">Votre vote</a></li>
+                <li><a href="<c:url value="/election/resultats"/>">Résultats</a></li>
                 <c:if test="${sessionScope.user.admin}">
-                    <li><a href="election/listBallots">Liste de ballots</a></li>
+                    <li><a href="<c:url value="/election/listBallots"/>">Liste de ballots</a></li>
                 </c:if>
-                <li><a href="DecoController">Déconnexion</a></li>
+                <li><a href="<c:url value="/DecoController"/>">Déconnexion</a></li>
             </c:otherwise>
         </c:choose>
     </ul>

@@ -21,7 +21,7 @@
 
     <%@ include file="menu.jsp" %>
     <article class="contenu">
-        <form action="election/user" method="post">
+        <form action="<c:url value="/election/user"/>" method="post">
             <div>
                 <label>Votre vouveau nom :
                     <input type="text" name="newname" required>

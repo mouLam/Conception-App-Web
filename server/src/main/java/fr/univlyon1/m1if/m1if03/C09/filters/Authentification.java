@@ -30,6 +30,8 @@ public class Authentification extends HttpFilter implements Filter {
         HttpSession session = req.getSession(true);
         String login = req.getParameter("login");
         res.setCharacterEncoding("UTF-8");
+        req.setCharacterEncoding("UTF-8");
+        res.setContentType("text/html; charset=UTF-8");
         if (req.getRequestURI().endsWith("index.jsp")) {
             chain.doFilter(req, res);
             return;

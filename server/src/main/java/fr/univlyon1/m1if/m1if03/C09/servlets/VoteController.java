@@ -12,12 +12,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.nio.charset.StandardCharsets;
+import java.util.*;
 
-@WebServlet(name = "VoteController", urlPatterns = "/election/vote")
+@WebServlet(name = "VoteController", value = "/election/vote")
 
 public class VoteController extends HttpServlet {
     Map<String, Candidat> candidats = null;
@@ -29,7 +27,9 @@ public class VoteController extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException{
         resp.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
+        req.setCharacterEncoding("UTF-8");
         String selection = req.getParameter("selectCandidat");
+        System.out.println("Selection : "+ selection);
         HttpSession session = req.getSession();
 
         if(selection != null && !selection.isEmpty() && !selection.equals("----") ){
@@ -37,6 +37,8 @@ public class VoteController extends HttpServlet {
             this.candidats = (Map<String, Candidat>) req.getServletContext().getAttribute("candidats");
             req.getServletContext().setAttribute("selectCandidat", selection);
             Candidat candidat = this.candidats.get(selection);
+            System.out.println("candidat nom : "+ candidat.getNom());
+            System.out.println("candidat pre : "+ candidat.getPrenom());
 
             // Création d'un nouveau bulletin et ajout de ce bulletin en attribut de requête
             this.bulletin = new Bulletin(candidat);
@@ -64,6 +66,7 @@ public class VoteController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         resp.setCharacterEncoding("UTF-8");
+        req.setCharacterEncoding("UTF-8");
         resp.setContentType("text/html; charset=UTF-8");
         req.getRequestDispatcher("/WEB-INF/components/vote.jsp").include(req,resp);
     }
