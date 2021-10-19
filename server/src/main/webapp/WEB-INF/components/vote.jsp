@@ -33,7 +33,7 @@
                 <!-- Verification s'il a déjà voté -->
                 <c:choose>
                     <c:when test="${pageContext.servletContext.getAttribute(\"selectCandidat\") != null
-                            && pageContext.request.getParameter(\"actiondelete\") != null}">
+                            && pageContext.request.getParameter(\"selectCandidat\") != \"\"}">
                         <p> Vous avez déjà voté !</p>
 
                     </c:when>
