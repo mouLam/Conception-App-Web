@@ -15,17 +15,17 @@
     <ul>
         <c:choose>
             <c:when test="${sessionScope.user == null}">
-                <li><a href="${pageContext.servletContext.contextPath}/resultat">Résultats</a></li>
+                <li><a href="resultat">Résultats</a></li>
             </c:when>
             <c:otherwise>
-                <li><a href="${pageContext.servletContext.contextPath}/election/user">Mettre à jour mon profil</a></li>
-                <li><a href="${pageContext.servletContext.contextPath}/election/vote">Voter</a></li>
-                <li><a href="${pageContext.servletContext.contextPath}/election/ballot">Votre vote</a></li>
-                <li><a href="${pageContext.servletContext.contextPath}/election/resultats">Résultats</a></li>
+                <li><a href="election/user">Mettre à jour mon profil</a></li>
+                <li><a href="election/vote">Voter</a></li>
+                <li><a href="election/ballot">Votre vote</a></li>
+                <li><a href="election/resultats">Résultats</a></li>
                 <c:if test="${sessionScope.user.admin}">
-                    <li><a href="${pageContext.servletContext.contextPath}/election/listBallots">Liste de ballots</a></li>
+                    <li><a href="election/listBallots">Liste de ballots</a></li>
                 </c:if>
-                <li><a href="${pageContext.servletContext.contextPath}/DecoController">Déconnexion</a></li>
+                <li><a href="DecoController">Déconnexion</a></li>
             </c:otherwise>
         </c:choose>
     </ul>

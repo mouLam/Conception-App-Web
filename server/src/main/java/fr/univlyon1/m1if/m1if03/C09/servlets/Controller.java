@@ -40,6 +40,8 @@ public class Controller extends HttpServlet {
             req.getRequestDispatcher("/election/ballot").forward(req, resp);
         }else if(action.endsWith("resultats")){
             req.getRequestDispatcher("/election/resultats").forward(req, resp);
+        }else if(action.endsWith("DecoController")) {
+            req.getRequestDispatcher("/DecoController").forward(req, resp);
         }
     }
 }

@@ -16,7 +16,7 @@ public class DecoController extends HttpServlet {
         PrintWriter out=response.getWriter();
 
         HttpSession session=request.getSession();
-        Objects.requireNonNull(request.getSession()).invalidate();
+        session.invalidate();
         out.print("Vous êtes déconnecté.");
         request.getRequestDispatcher("./index.jsp").include(request, response);
         out.close();
