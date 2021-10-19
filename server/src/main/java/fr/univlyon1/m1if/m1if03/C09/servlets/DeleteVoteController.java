@@ -16,38 +16,33 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(name = "DeleteVote", value = "/deleteVote")
+@WebServlet(name = "DeleteVoteController", value = "/election/deleteVote")
 @SuppressWarnings("unchecked")
-public class DeleteVote extends HttpServlet {
+public class DeleteVoteController extends HttpServlet {
 
     Map<String, Ballot> ballots = new HashMap<>();
     List<Bulletin> bulletins = new ArrayList<>();
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        resp.setCharacterEncoding("UTF-8");
+        resp.setContentType("text/html; charset=UTF-8");
         try {
             HttpSession session = req.getSession();
-            if (session.getAttribute("user") == null) {
-                resp.sendError(HttpServletResponse.SC_FORBIDDEN); //403
-            }
+
             if (req.getParameter("actiondelete") != null) {
+                System.out.println("delete button has been pressed");
                 // Récupérer le ballot de vote correspondant à l'utilisateur
                 ballots = (Map<String, Ballot>) req.getServletContext().getAttribute("ballots");
                 User user = (User) session.getAttribute("user");
                 Ballot ballot = ballots.get(user.getLogin());
                 Bulletin bulletin = ballot.getBulletin();
-                if(bulletin.getVoteBlanc()){
-                    int blancs = (int) req.getServletContext().getAttribute("blancs");
-                    blancs--;
-                    req.getServletContext().setAttribute("blancs", blancs);
-                }else{
-                    bulletins = (List<Bulletin>) req.getServletContext().getAttribute("bulletins");
-                    for (Bulletin b: bulletins) {
-                        if(b.getCandidat().getNom().equals(bulletin.getCandidat().getNom())
-                                && b.getCandidat().getPrenom().equals(bulletin.getCandidat().getPrenom())){
-                            bulletins.remove(b);
-                            break;
-                        }
+                bulletins = (List<Bulletin>) req.getServletContext().getAttribute("bulletins");
+                for (Bulletin b: bulletins) {
+                    if(b.getCandidat().getNom().equals(bulletin.getCandidat().getNom())
+                            && b.getCandidat().getPrenom().equals(bulletin.getCandidat().getPrenom())){
+                        bulletins.remove(b);
+                        break;
                     }
                 }
 
@@ -56,19 +51,11 @@ public class DeleteVote extends HttpServlet {
                 req.getServletContext().setAttribute("bulletins", bulletins);
                 req.getServletContext().setAttribute("ballots", ballots);
                 req.getServletContext().removeAttribute("selectCandidat");
-                req.getRequestDispatcher("/vote.jsp").forward(req, resp);
+                req.getRequestDispatcher("/WEB-INF/components/vote.jsp").include(req, resp);
             }
         } catch (IOException e) {
             e.printStackTrace();
             resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, e.getMessage());
-        }
-    }
-
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession();
-        if (session.getAttribute("user") == null) {
-            resp.sendError(HttpServletResponse.SC_FORBIDDEN); //403
         }
     }
 

@@ -14,24 +14,22 @@
 --%>
 <%@ page contentType="text/html;charset=UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
-<%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
-<%@ page import="fr.univlyon1.m1if.m1if03.C09.classes.Bulletin" %>
-<%@ page import="fr.univlyon1.m1if.m1if03.C09.classes.Candidat" %>
-<%@ page import="java.util.List" %>
-<%--jsp:useBean id="bulletins" type="java.util.List" beanName="bulletins" scope="application"/--%>
 
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>Resultats Vote</title>
-        <link rel="stylesheet" type="text/css" href="static/vote.css">
+        <style type="text/css">
+            <%@include file="../../static/vote.css" %>
+        </style>
     </head>
     <body>
-    <jsp:include page="./WEB-INF/components/header.jsp">
+    <jsp:include page="header.jsp">
         <jsp:param name="title" value="Résultats de l'élection"/>
     </jsp:include>
     <main id="contenu" class="wrapper">
-        <%@ include file="./WEB-INF/components/menu.jsp" %>
+        <%@ include file="menu.jsp" %>
         <article class="contenu">
             <h2>Voici le résultat courant de l'élection</h2>
 
@@ -41,10 +39,9 @@
                 <c:forEach items="<%= votes.keySet()%>" var="nomCandidat">
                     <li><c:out value="${nomCandidat}"/> : <%= votes.get(pageContext.getAttribute("nomCandidat")) %> vote(s)</li>
                 </c:forEach>
-                <li>vote blanc : ${pageContext.servletContext.getAttribute("blancs")}</li>
             </ul>
         </article>
     </main>
-    <%@ include file="./WEB-INF/components/footer.html" %>
+    <%@ include file="footer.html" %>
     </body>
 </html>

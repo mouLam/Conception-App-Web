@@ -5,17 +5,19 @@
 <head>
     <meta charset="UTF-8">
     <title>Vote - accueil</title>
-    <link rel="stylesheet" type="text/css" href="static/vote.css">
+    <style type="text/css">
+        <%@include file="static/vote.css" %>
+    </style>
 </head>
 <body>
 <%-- include file="./WEB-INF/components/header.jsp" --%>
-<jsp:include page="./WEB-INF/components/header.jsp">
+<jsp:include page="WEB-INF/components/header.jsp">
     <jsp:param name="title" value="${'Bienvenue sur notre application de vote révolutionnaire !'}"/>
 </jsp:include>
 <main id="contenu" class="wrapper">
-    <%@ include file="./WEB-INF/components/menu.jsp" %>
+    <%@ include file="WEB-INF/components/menu.jsp" %>
     <article class="contenu">
-        <form method="post" action="init">
+        <form method="post" action="election/vote">
             <h2>Connectez-vous pour pouvoir voter</h2>
             <p>
                 <label>
@@ -30,13 +32,17 @@
                 </label>
             </p>
             <p>
+                <label for="admin">Êtes-vous administrateur ?</label>
+                <input type="checkbox" name="admin" id="admin">
+            </p>
+            <p>
                 <input type="submit" name="action" value="Connexion">
             </p>
         </form>
     </article>
 </main>
 
-<%@ include file="./WEB-INF/components/footer.html" %>
+<%@ include file="WEB-INF/components/footer.html" %>
 
 </body>
 </html>

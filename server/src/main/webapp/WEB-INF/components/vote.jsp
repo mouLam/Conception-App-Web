@@ -1,7 +1,6 @@
 <%@ page import="java.util.Map" %>
 <%@ page import="java.util.HashMap" %>
 <%@ page import="fr.univlyon1.m1if.m1if03.C09.classes.Candidat" %>
-<%@ page import="java.util.logging.Logger" %>
 <%--
   Created by IntelliJ IDEA.
   User: mou_lamine
@@ -14,17 +13,20 @@
 
 <html>
     <head>
+        <meta charset="UTF-8">
         <title>Vote</title>
-        <link rel="stylesheet" type="text/css" href="static/vote.css">
+        <style type="text/css">
+            <%@include file="../../static/vote.css" %>
+        </style>
     </head>
     <body>
-        <jsp:include page="./WEB-INF/components/header.jsp">
+        <jsp:include page="header.jsp">
             <jsp:param name="title" value="${'Votez pour qui vous voulez'}"/>
         </jsp:include>
 
         <main id="contenu" class="wrapper">
 
-            <%@ include file="./WEB-INF/components/menu.jsp" %>
+            <%@ include file="menu.jsp" %>
 
             <article class="contenu">
 
@@ -36,12 +38,11 @@
 
                     </c:when>
                     <c:otherwise>
-                        <form action="castVote" method="post">
+                        <form action="${pageContext.request.contextPath}/election/vote" method="post">
                             <div>
                                 <label for="candidatselect">Sélectionnez un candidat :</label>
                                 <select name="selectCandidat" id="candidatselect" required>
                                     <option value="----" selected disabled>---- </option>
-                                    <option value="blanc">Vote Blanc</option>
                                     <%
                                         Map<String, Integer> listeCandidats = new HashMap<>();
                                         Map<String, Candidat> recupCandidat = (Map<String, Candidat>) pageContext
@@ -69,6 +70,6 @@
             </article>
 
         </main>
-        <%@ include file="./WEB-INF/components/footer.html" %>
+        <%@ include file="footer.html" %>
     </body>
 </html>
