@@ -32,7 +32,7 @@ public class Authentification extends HttpFilter implements Filter {
         res.setCharacterEncoding("UTF-8");
         req.setCharacterEncoding("UTF-8");
         res.setContentType("text/html; charset=UTF-8");
-        if (req.getRequestURI().endsWith("index.jsp")) {
+        if (req.getRequestURI().endsWith("index.jsp") || req.getRequestURI().endsWith("/")) {
             chain.doFilter(req, res);
             return;
         } else {
