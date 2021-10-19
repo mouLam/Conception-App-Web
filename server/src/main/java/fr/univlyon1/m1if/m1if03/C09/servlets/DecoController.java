@@ -18,7 +18,8 @@ public class DecoController extends HttpServlet {
         session.invalidate();
 
         if(session == null || !request.isRequestedSessionIdValid() ){
-            request.getRequestDispatcher("/index.jsp").include(request, response);
+            request.getRequestDispatcher("./index.jsp").include(request, response);
+            request.getSession().invalidate();
             out.print("Vous êtes déconnecté.");
         }
         out.close();

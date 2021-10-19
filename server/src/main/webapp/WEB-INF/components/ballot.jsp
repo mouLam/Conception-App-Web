@@ -12,6 +12,7 @@
   To change this template use File | Settings | File Templates.
 --%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<jsp:useBean id="ballots" type="java.util.Map" scope="application" beanName="ballots"/>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -31,8 +32,10 @@
             <%
                 Bulletin monVote = (Bulletin) pageContext.getServletContext().getAttribute("monBulletin");
                 pageContext.setAttribute("monVote", monVote);
-                System.out.println(pageContext.getServletContext().getAttribute("selectCandidat"));
+                //System.out.println(pageContext.getServletContext().getAttribute("selectCandidat"));
             %>
+
+            <h3>Il y'a en ce moment <c:out value="${ballots.size()}" /> votants</h3>
 
             <c:choose>
                 <c:when test="${pageContext.servletContext.getAttribute(\"selectCandidat\") != null

@@ -18,7 +18,7 @@ public class Authentification extends HttpFilter implements Filter {
     public void init(FilterConfig config) throws ServletException {
         super.init(config);
         context = config.getServletContext();
-        System.out.println("--- Initialisation du filtre Authtification");
+        System.out.println("--- Initialisation du filtre Authentification");
     }
 
     public void destroy() {
@@ -44,7 +44,7 @@ public class Authentification extends HttpFilter implements Filter {
                 session.setAttribute("user", user);
                 req.getRequestDispatcher("/election/vote").forward(req, res);
             } else {
-                res.sendRedirect("index.jsp");
+                res.sendRedirect("./index.jsp");
             }
         }
     }

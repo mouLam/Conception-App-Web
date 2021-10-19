@@ -11,10 +11,16 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-@WebFilter(filterName = "CacheBallots", urlPatterns = {"/election/vote", "/election/listBallots"})
+@WebFilter(filterName = "CacheBallots")
 public class CacheBallots extends HttpFilter implements Filter {
+
+    private ServletContext context;
     private Date date;
+
     public void init(FilterConfig config) throws ServletException {
+        super.init(config);
+        context = config.getServletContext();
+        System.out.println("--- Initialisation du filtre CacheBallots");
     }
 
     public void destroy() {
