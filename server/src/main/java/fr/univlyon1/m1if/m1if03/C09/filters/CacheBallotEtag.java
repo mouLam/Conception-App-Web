@@ -42,7 +42,6 @@ public class CacheBallotEtag extends HttpFilter implements Filter {
         if (req.getMethod().equals("GET")) {
             String eTag = req.getHeader("If-None-Match");
             String monTag = this.getTag(user);
-            System.out.println("monTag : "+ monTag);
             if (monTag.equals(eTag)) {
                 res.setStatus(HttpServletResponse.SC_NOT_MODIFIED);
             } else {
@@ -55,7 +54,10 @@ public class CacheBallotEtag extends HttpFilter implements Filter {
     private String getTag(User user) {
         String votes =  Integer.toString(this.bulletins.size());
         Ballot b = this.ballots.get(user.getLogin());
-        String nomCandidat = b.getBulletin().getCandidat().getNom();
+        String nomCandidat = "";
+        if (b != null) {
+            nomCandidat = b.getBulletin().getCandidat().getNom();
+        }
         return user.getNom()+" : "+nomCandidat+" nbVote: "+votes;
     }
 }
