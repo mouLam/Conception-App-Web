@@ -38,7 +38,7 @@
 
                     </c:when>
                     <c:otherwise>
-                        <form action="${pageContext.servletContext.contextPath}/election/vote" method="post">
+                        <form action="election/vote" method="post">
                             <div>
                                 <label for="candidatselect">Sélectionnez un candidat :</label>
                                 <select name="selectCandidat" id="candidatselect" required>
