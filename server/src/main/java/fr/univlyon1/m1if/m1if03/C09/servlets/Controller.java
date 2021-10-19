@@ -18,11 +18,11 @@ public class Controller extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         String action = req.getRequestURI();
         if(action.endsWith("vote")){
-            req.getRequestDispatcher("election/vote").forward(req,resp);
+            req.getRequestDispatcher("/election/vote").forward(req,resp);
         }else if(action.endsWith("user")){
-            req.getRequestDispatcher("election/user").forward(req,resp);
+            req.getRequestDispatcher("/election/user").forward(req,resp);
         }else if(action.endsWith("deleteVote")){
-            req.getRequestDispatcher("election/deleteVote").forward(req,resp);
+            req.getRequestDispatcher("/election/deleteVote").forward(req,resp);
         }
     }
 
@@ -33,17 +33,17 @@ public class Controller extends HttpServlet {
         resp.setContentType("text/html; charset=UTF-8");
         String action = req.getRequestURI();
         if(action.endsWith("listBallots")){
-            req.getRequestDispatcher("election/listBallots").forward(req,resp);
+            req.getRequestDispatcher("/election/listBallots").forward(req,resp);
         }else if(action.endsWith("vote")){
-            req.getRequestDispatcher("election/vote").forward(req,resp);
+            req.getRequestDispatcher("/election/vote").forward(req,resp);
         }else if(action.endsWith("user")){
-            req.getRequestDispatcher("election/user").forward(req,resp);
+            req.getRequestDispatcher("/election/user").forward(req,resp);
         }else if(action.endsWith("ballot")){
-            req.getRequestDispatcher("election/ballot").forward(req, resp);
+            req.getRequestDispatcher("/election/ballot").forward(req, resp);
         }else if(action.endsWith("resultats")){
-            req.getRequestDispatcher("election/resultats").forward(req, resp);
+            req.getRequestDispatcher("/election/resultats").forward(req, resp);
         }else if(action.endsWith("DecoController")) {
-            req.getRequestDispatcher("DecoController").forward(req, resp);
+            req.getRequestDispatcher("/DecoController").forward(req, resp);
         }
     }
 }

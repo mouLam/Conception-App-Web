@@ -15,7 +15,7 @@
     <ul>
         <c:choose>
             <c:when test="${sessionScope.user == null}">
-                <li><a href="<c:url value="resultat"/>">Résultats</a></li>
+                <li><a href="<c:url value="/resultat"/>">Résultats</a></li>
             </c:when>
             <c:otherwise>
                 <li><a href="<c:url value="/election/user"/>">Mettre à jour mon profil</a></li>
