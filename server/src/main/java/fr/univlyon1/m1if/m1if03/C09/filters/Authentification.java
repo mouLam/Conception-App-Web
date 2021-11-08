@@ -44,7 +44,7 @@ public class Authentification extends HttpFilter implements Filter {
                         req.getParameter("nom") != null ? req.getParameter("nom") : "",
                         req.getParameter("admin") != null && req.getParameter("admin").equals("on"));
                 session.setAttribute("user", user);
-                req.getRequestDispatcher("/election/vote").forward(req, res);
+                req.getRequestDispatcher("election/vote").forward(req, res);
             } else {
                 res.sendRedirect("./index.jsp");
             }

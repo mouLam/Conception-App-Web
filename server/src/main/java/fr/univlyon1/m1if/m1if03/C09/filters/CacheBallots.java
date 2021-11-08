@@ -30,7 +30,6 @@ public class CacheBallots extends HttpFilter implements Filter {
     protected void doFilter(HttpServletRequest req, HttpServletResponse res, FilterChain chain) throws IOException, ServletException {
 
         String uri = req.getRequestURI();
-        System.out.println("uri : "+uri);
         if (uri.endsWith("/vote") || uri.endsWith("/listBallots")) {
             if (req.getMethod().equals("POST")) {
                 this.date = new Date();
