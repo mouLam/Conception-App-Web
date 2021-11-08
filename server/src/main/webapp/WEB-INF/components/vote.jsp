@@ -8,7 +8,7 @@
   Time: 17:07
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 
 <html>
@@ -33,12 +33,12 @@
                 <!-- Verification s'il a déjà voté -->
                 <c:choose>
                     <c:when test="${pageContext.servletContext.getAttribute(\"selectCandidat\") != null
-                            && pageContext.request.getParameter(\"actiondelete\") != null}">
+                            && pageContext.request.getParameter(\"selectCandidat\") != \"\"}">
                         <p> Vous avez déjà voté !</p>
 
                     </c:when>
                     <c:otherwise>
-                        <form action="${pageContext.request.contextPath}/election/vote" method="post">
+                        <form action="<c:url value="/election/vote"/>" method="post">
                             <div>
                                 <label for="candidatselect">Sélectionnez un candidat :</label>
                                 <select name="selectCandidat" id="candidatselect" required>
@@ -57,6 +57,7 @@
                                     %>
                                     <c:forEach items="<%= listeCandidats.keySet() %>" var="nomCandidat" >
                                         <option value="${nomCandidat}"> ${nomCandidat} </option>
+                                        <%request.setCharacterEncoding("UTF-8");%>
                                     </c:forEach>
                                 </select>
                             </div>

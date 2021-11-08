@@ -11,13 +11,13 @@
 </head>
 <body>
 <%-- include file="./WEB-INF/components/header.jsp" --%>
-<jsp:include page="WEB-INF/components/header.jsp">
+<jsp:include page="./WEB-INF/components/header.jsp">
     <jsp:param name="title" value="${'Bienvenue sur notre application de vote révolutionnaire !'}"/>
 </jsp:include>
 <main id="contenu" class="wrapper">
-    <%@ include file="WEB-INF/components/menu.jsp" %>
+    <%@ include file="./WEB-INF/components/menu.jsp" %>
     <article class="contenu">
-        <form method="post" action="election/vote">
+        <form method="post" action="<c:url value="/election/vote"/>">
             <h2>Connectez-vous pour pouvoir voter</h2>
             <p>
                 <label>
@@ -42,7 +42,7 @@
     </article>
 </main>
 
-<%@ include file="WEB-INF/components/footer.html" %>
+<%@ include file="./WEB-INF/components/footer.html" %>
 
 </body>
 </html>

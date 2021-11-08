@@ -31,7 +31,7 @@ public class DeleteVoteController extends HttpServlet {
             HttpSession session = req.getSession();
 
             if (req.getParameter("actiondelete") != null) {
-                System.out.println("delete button has been pressed");
+                //System.out.println("delete button has been pressed");
                 // Récupérer le ballot de vote correspondant à l'utilisateur
                 ballots = (Map<String, Ballot>) req.getServletContext().getAttribute("ballots");
                 User user = (User) session.getAttribute("user");

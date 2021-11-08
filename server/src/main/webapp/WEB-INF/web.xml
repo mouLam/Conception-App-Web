@@ -1,10 +1,9 @@
 <web-app
+        version="4.0"
+        xmlns="http://xmlns.jcp.org/xml/ns/javaee"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-        xmlns="http://java.sun.com/xml/ns/javaee"
-        xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-        xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd"
-        version="3.0">
-    <servlet>
+        xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd">
+    <!--<servlet>
         <description></description>
         <display-name>Deco</display-name>
         <servlet-name>Deco</servlet-name>
@@ -43,7 +42,7 @@
     <servlet-mapping>
         <servlet-name>Update</servlet-name>
         <url-pattern>/update</url-pattern>
-    </servlet-mapping>
+    </servlet-mapping>-->
     <filter>
         <filter-name>Authentification</filter-name>
         <filter-class>fr.univlyon1.m1if.m1if03.C09.filters.Authentification</filter-class>
@@ -59,6 +58,24 @@
     <filter-mapping>
         <filter-name>Autorisation</filter-name>
         <url-pattern>/listBallots.jsp</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>CacheBallots</filter-name>
+        <filter-class>fr.univlyon1.m1if.m1if03.C09.filters.CacheBallots</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CacheBallots</filter-name>
+        <url-pattern>/election/vote</url-pattern>
+        <url-pattern>/election/listBallots</url-pattern>
+    </filter-mapping>
+    <filter>
+        <filter-name>CacheBallotEtag</filter-name>
+        <filter-class>fr.univlyon1.m1if.m1if03.C09.filters.CacheBallotEtag</filter-class>
+    </filter>
+    <filter-mapping>
+        <filter-name>CacheBallotEtag</filter-name>
+        <url-pattern>/election/ballot</url-pattern>
+        <url-pattern>/ballot.jsp</url-pattern>
     </filter-mapping>
 
 </web-app>

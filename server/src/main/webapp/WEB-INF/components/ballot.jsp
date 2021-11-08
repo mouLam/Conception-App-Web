@@ -11,7 +11,8 @@
   Time: 17:07
   To change this template use File | Settings | File Templates.
 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html;charset=UTF-8" language="java" pageEncoding="UTF-8"%>
+<jsp:useBean id="ballots" type="java.util.Map" scope="application" beanName="ballots"/>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -30,9 +31,13 @@
         <article class="contenu">
             <%
                 Bulletin monVote = (Bulletin) pageContext.getServletContext().getAttribute("monBulletin");
+                //System.out.println("first : "+ monVote.getCandidat().getNom());
                 pageContext.setAttribute("monVote", monVote);
-                System.out.println(pageContext.getServletContext().getAttribute("selectCandidat"));
+                System.out.println("vote : "+pageContext.getServletContext().getAttribute("selectCandidat"));
+
             %>
+
+            <h3>Il y'a en ce moment <c:out value="${ballots.size()}" /> votants</h3>
 
             <c:choose>
                 <c:when test="${pageContext.servletContext.getAttribute(\"selectCandidat\") != null
@@ -41,7 +46,7 @@
                     <p>Votre vote : ${monVote.getCandidat().getPrenom()}  ${monVote.getCandidat().getNom()}</p>
                     <br>
                     <br>
-                    <form action="${pageContext.request.contextPath}/election/deleteVote" method="post">
+                    <form action="<c:url value="/election/deleteVote"/>" method="post">
                         <input type="submit" name="actiondelete" value="Supprimer">
                     </form>
                 </c:when>

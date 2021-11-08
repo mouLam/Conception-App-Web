@@ -18,7 +18,7 @@ public class Authentification extends HttpFilter implements Filter {
     public void init(FilterConfig config) throws ServletException {
         super.init(config);
         context = config.getServletContext();
-        System.out.println("--- Initialisation du filtre Authtification");
+        System.out.println("--- Initialisation du filtre Authentification");
     }
 
     public void destroy() {
@@ -30,7 +30,9 @@ public class Authentification extends HttpFilter implements Filter {
         HttpSession session = req.getSession(true);
         String login = req.getParameter("login");
         res.setCharacterEncoding("UTF-8");
-        if (req.getRequestURI().endsWith("index.jsp")) {
+        req.setCharacterEncoding("UTF-8");
+        res.setContentType("text/html; charset=UTF-8");
+        if (req.getRequestURI().endsWith("index.jsp") || req.getRequestURI().endsWith("/")) {
             chain.doFilter(req, res);
             return;
         } else {
@@ -42,9 +44,9 @@ public class Authentification extends HttpFilter implements Filter {
                         req.getParameter("nom") != null ? req.getParameter("nom") : "",
                         req.getParameter("admin") != null && req.getParameter("admin").equals("on"));
                 session.setAttribute("user", user);
-                req.getRequestDispatcher("/election/vote").forward(req, res);
+                req.getRequestDispatcher("election/vote").forward(req, res);
             } else {
-                res.sendRedirect("index.jsp");
+                res.sendRedirect("./index.jsp");
             }
         }
     }

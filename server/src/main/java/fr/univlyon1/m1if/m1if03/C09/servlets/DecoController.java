@@ -5,6 +5,7 @@ import javax.servlet.http.*;
 import javax.servlet.annotation.*;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.Objects;
 
 @WebServlet(name = "DecoController", value = "/DecoController")
 public class DecoController extends HttpServlet {
@@ -16,11 +17,8 @@ public class DecoController extends HttpServlet {
 
         HttpSession session=request.getSession();
         session.invalidate();
-
-        if(session == null || !request.isRequestedSessionIdValid() ){
-            request.getRequestDispatcher("/index.jsp").include(request, response);
-            out.print("Vous êtes déconnecté.");
-        }
+        out.print("Vous êtes déconnecté.");
+        request.getRequestDispatcher("./index.jsp").include(request, response);
         out.close();
     }
 

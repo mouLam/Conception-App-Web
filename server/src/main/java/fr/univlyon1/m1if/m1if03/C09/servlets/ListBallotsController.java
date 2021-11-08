@@ -12,7 +12,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
-@WebServlet(name = "ListBallotsController", urlPatterns = "/election/listBallots")
+@WebServlet(name = "ListBallotsController", value = "/election/listBallots")
 public class ListBallotsController extends HttpServlet {
 
     @Override
