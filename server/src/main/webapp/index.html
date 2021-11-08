@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Vote - accueil</title>
+    <link rel="stylesheet" type="text/css" href="static/vote.css">
+</head>
+<body>
+<header>
+    <h1 class="header-titre">Bienvenue sur notre application de vote révolutionnaire !</h1>
+</header>
+<main id="contenu" class="wrapper">
+    <aside class="menu">
+        <h2>Menu</h2>
+        <ul>
+            <li><a href="election/resultats">Résultats</a></li>
+        </ul>
+    </aside>
+    <article class="contenu">
+        <form method="post" action="election/login">
+            <h2>Connectez-vous pour pouvoir voter</h2>
+            <p>
+                <label for="login">Entrez votre login :</label>
+                <input type="text" name="login" id="login" autofocus>
+            </p>
+            <p>
+                <label for="nom">Entrez votre nom :</label>
+                <input type="text" name="nom" id="nom">
+            </p>
+            <p>
+                <label for="admin">Êtes-vous administrateur ?</label>
+                <input type="checkbox" name="admin" id="admin">
+            </p>
+            <p>
+                <input type="submit" name="action" value="Connexion">
+            </p>
+        </form>
+    </article>
+</main>
+</body>
+</html>
