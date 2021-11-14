@@ -20,7 +20,7 @@
     <jsp:include page="menu.jsp"/>
     <article class="contenu">
         <h2>Vous pouvez uniquement modifier votre nom.</h2>
-        <form method="post" action="election/user">
+        <form method="post" action="users/{login}/nom">
             <label for="login">Login : </label><input type="text" name="login" id="login" value="${user.login}" disabled><br>
             <label for="nom">Nom : </label><input type="text" name="nom" id="nom" value="${user.nom}"><br>
             <input type="submit" value="Modifier">

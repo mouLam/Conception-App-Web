@@ -30,9 +30,6 @@ public class Election extends HttpServlet {
         req.setAttribute("action", action); // Utilisé dans electionHome.jsp
 
         switch(action) {
-            case "login":
-                this.getServletContext().getNamedDispatcher("Home").forward(req, resp);
-                break;
             case "resultats":
                 this.getServletContext().getNamedDispatcher("Resultats").forward(req, resp);
                 break;
@@ -47,9 +44,6 @@ public class Election extends HttpServlet {
                 break;
             case "listBallots":
                 this.getServletContext().getNamedDispatcher("Ballots").forward(req, resp);
-                break;
-            case "user":
-                this.getServletContext().getNamedDispatcher("UpdateAccount").forward(req, resp);
                 break;
             default:
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);
