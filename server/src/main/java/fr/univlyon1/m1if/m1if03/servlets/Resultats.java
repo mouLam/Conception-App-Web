@@ -1,7 +1,9 @@
 package fr.univlyon1.m1if.m1if03.servlets;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.univlyon1.m1if.m1if03.classes.Bulletin;
 import fr.univlyon1.m1if.m1if03.classes.Candidat;
+import fr.univlyon1.m1if.m1if03.classes.ResultatCandidat;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
@@ -10,13 +12,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @WebServlet(name = "Resultats", value = {})
 public class Resultats extends HttpServlet {
-    Map<String, Candidat> candidats;
+     Map<String, Candidat> candidats;
     List<Bulletin> bulletins;
 
     @SuppressWarnings("unchecked")
@@ -42,7 +46,34 @@ public class Resultats extends HttpServlet {
             int score = votes.get(bulletin.getCandidat().getNom());
             votes.put(bulletin.getCandidat().getNom(), ++score);
         }
+
+        Map<String, List<ResultatCandidat>> results = new HashMap<>();
+        String v = "Elections";
+        results.put(v, new ArrayList<ResultatCandidat>());
+        for (String vote : votes.keySet()) {
+            ResultatCandidat resultatCandidat =
+                    new ResultatCandidat(vote, votes.get(vote));
+            results.get(v).add(resultatCandidat);
+        }
+        sendDataAsJSON(resp, results);
+
         req.setAttribute("votes", votes);
-        req.getRequestDispatcher("/WEB-INF/components/resultats.jsp").forward(req, resp);
+
+        //req.getRequestDispatcher("/WEB-INF/components/resultats.jsp").forward(req, resp);
+    }
+
+    /**
+     * Transforme une donnée en JSON avant de l'afficher dans la reponse.
+     * @param response HttpServletResponse
+     * @param data donnée
+     * @throws IOException exception
+     */
+    private void sendDataAsJSON(HttpServletResponse response, Object data) throws IOException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String valueToString = objectMapper.writeValueAsString(data);
+        response.setContentType("application/json");
+        PrintWriter printWriter = response.getWriter();
+        printWriter.print(valueToString);
+        printWriter.flush();
     }
 }

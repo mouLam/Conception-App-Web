@@ -29,6 +29,10 @@ public class Election extends HttpServlet {
         String action = req.getRequestURI().replace(req.getContextPath() + "/election/", "");
         req.setAttribute("action", action); // Utilisé dans electionHome.jsp
 
+        if (action.contains("candidats")) {
+            this.getServletContext().getNamedDispatcher("Candidats").forward(req, resp);
+        }
+
         switch(action) {
             case "resultats":
                 this.getServletContext().getNamedDispatcher("Resultats").forward(req, resp);

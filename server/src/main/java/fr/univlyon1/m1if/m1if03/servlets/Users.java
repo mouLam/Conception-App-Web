@@ -1,6 +1,5 @@
 package fr.univlyon1.m1if.m1if03.servlets;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.univlyon1.m1if.m1if03.classes.Ballot;
@@ -47,14 +46,14 @@ public class Users extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utilisateur non authentifié");
         }
         assert userSession != null;
-        if (this.pathUri.length == 1) {
+        if (this.pathUri.length == 1) { // /users
             // retrieve list user and send it as JSON
             if (!userSession.isAdmin()) {
                 resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Utilisateur non administrateur");
             }
             List<User> userList = new ArrayList<User>(this.users.values());
             sendDataAsJSON(resp, userList);
-        } else if (this.pathUri.length == 2) {
+        } else if (this.pathUri.length == 2) { // /users/{userId}
             // retrieve a user from his login
             String loginInURI = this.pathUri[1];
             if (!userSession.isAdmin() && !userSession.getLogin().equals(loginInURI)) {
@@ -71,14 +70,14 @@ public class Users extends HttpServlet {
         } else if (this.pathUri.length == 3) {
             String loginInURI = this.pathUri[1];
             String lastValueURI = this.pathUri[2];
-            if (lastValueURI.equals("ballot")) {
+            if (lastValueURI.equals("ballot")) {  // /users/{userId}/ballot
                 if (!userSession.isAdmin()
                         && !this.ballots.containsKey(userSession.getLogin())) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                             "Utilisateur non administrateur ou non propriétaire du ballot");
                 }
                 resp.sendRedirect("election/ballots/byUser/"+loginInURI);
-            } else if (lastValueURI.equals("vote")) {
+            } else if (lastValueURI.equals("vote")) {  // /users/{userId}/vote
                 Bulletin sonBulletin = this.ballots.get(userSession.getLogin()).getBulletin();
                 boolean voteOwner = (sonBulletin != null && this.bulletins.contains(sonBulletin));
                 //TODO : vérifier si l'égalite peut marcher ainsi
