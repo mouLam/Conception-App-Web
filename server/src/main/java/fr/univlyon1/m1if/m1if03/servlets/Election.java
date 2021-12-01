@@ -29,14 +29,14 @@ public class Election extends HttpServlet {
         String action = req.getRequestURI().replace(req.getContextPath() + "/election/", "");
         req.setAttribute("action", action); // Utilisé dans electionHome.jsp
 
+        System.out.println("Action : " + action);
         if (action.contains("candidats")) {
             this.getServletContext().getNamedDispatcher("Candidats").forward(req, resp);
+        } else if (action.contains("resultats")) {
+            this.getServletContext().getNamedDispatcher("Resultats").forward(req, resp);
         }
 
         switch(action) {
-            case "resultats":
-                this.getServletContext().getNamedDispatcher("Resultats").forward(req, resp);
-                break;
             case "ballot":
                 this.getServletContext().getNamedDispatcher("Ballot").forward(req, resp);
                 break;
@@ -49,8 +49,8 @@ public class Election extends HttpServlet {
             case "listBallots":
                 this.getServletContext().getNamedDispatcher("Ballots").forward(req, resp);
                 break;
-            default:
-                resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            /*default:
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND);*/
         }
     }
 }

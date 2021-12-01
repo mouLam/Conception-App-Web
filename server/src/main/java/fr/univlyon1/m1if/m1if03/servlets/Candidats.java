@@ -18,7 +18,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet(name = "Candidats", urlPatterns = {"/Candidats", "/Candidats/*"})
+@WebServlet(name = "Candidats", urlPatterns = {"/candidats", "/candidats/*"})
 public class Candidats extends HttpServlet {
 
     Map<String, Candidat> candidats;
@@ -42,6 +42,9 @@ public class Candidats extends HttpServlet {
             this.candidatsIds.put(i, this.candidats.get(name));
             i++;
         }
+
+        //TODO: ??? is it necessary OR Do it in Init Class also
+        req.setAttribute("candidatsIds", this.candidatsIds);
 
         splitPathUri(req);
         if (this.pathUri.length == 2) { // /election/candidats
@@ -71,7 +74,29 @@ public class Candidats extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        super.doPost(req, resp);
+        HttpSession session = req.getSession(false);
+        User userSession = (User) session.getAttribute("user");
+        splitPathUri(req);
+
+        if (userSession == null) {
+            resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utilisateur non authentifié");
+        } else if (!userSession.isAdmin()) {
+            resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Utilisateur non administrateur");
+        }
+
+        if (this.pathUri.length == 3 && this.pathUri[2].equals("update")) { // /election/candidats/update
+            this.candidats = (Map<String, Candidat>) req.getServletContext().getAttribute("candidats");
+            if (this.candidats.size() == 0) {
+                resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
+                        "Erreur lors du chargement de la liste");
+            } else {
+                this.candidats = (Map<String, Candidat>) req.getServletContext().getAttribute("candidats");
+                if (this.candidats.size() > 0) {
+                    resp.sendError(HttpServletResponse.SC_NO_CONTENT,
+                            "liste mise à jour");
+                }
+            }
+        }
     }
 
     /**
