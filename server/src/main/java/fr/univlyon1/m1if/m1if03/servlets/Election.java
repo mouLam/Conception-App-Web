@@ -31,13 +31,15 @@ public class Election extends HttpServlet {
 
         if (action.contains("candidats")) {
             this.getServletContext().getNamedDispatcher("Candidats").forward(req, resp);
+        } else if (action.contains("resultats")) {
+            this.getServletContext().getNamedDispatcher("Resultats").forward(req, resp);
         }else if(action.contains("ballots")) {
             this.getServletContext().getNamedDispatcher("Ballots").forward(req, resp);
         }
 
         switch(action) {
-            case "resultats":
-                this.getServletContext().getNamedDispatcher("Resultats").forward(req, resp);
+            case "ballot":
+                this.getServletContext().getNamedDispatcher("Ballot").forward(req, resp);
                 break;
             case "vote":
                 this.getServletContext().getNamedDispatcher("Vote").forward(req, resp);
@@ -48,8 +50,8 @@ public class Election extends HttpServlet {
             case "listBallots":
                 this.getServletContext().getNamedDispatcher("Ballots").forward(req, resp);
                 break;
-            default:
-                resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+            /*default:
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND);*/
         }
     }
 }
