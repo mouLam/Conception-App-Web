@@ -24,6 +24,9 @@ public class Init extends HttpServlet {
     final List<Bulletin> bulletins = new ArrayList<>();
     final Map<String, User> users = new HashMap<>();
 
+    //Identifier les candidats par des Identifiants
+    Map<Integer, Candidat> candidatsIds = new HashMap<>();
+
     @Override
     public void init(ServletConfig config) throws ServletException {
         // Cette instruction doit toujours être au début de la méthode init() pour pouvoir accéder à l'objet config.
@@ -36,15 +39,21 @@ public class Init extends HttpServlet {
         context.setAttribute("bulletins", bulletins);
         context.setAttribute("users", users);
 
+
         // Fait dans un bloc try/catch pour le cas où la liste des candidats ne s'est pas construite correctement.
         try {
-            if (candidats == null) {
+            if (candidats == null || candidatsIds == null) {
                 candidats = CandidatListGenerator.getCandidatList();
+                candidatsIds = CandidatListGenerator.getCandidatIDList();
                 context.setAttribute("candidats", candidats);
                 System.out.println(candidats.size() + " candidats.");
+                context.setAttribute("candidatsIds", candidatsIds);
+                System.out.println(candidatsIds.size() + " candidatsIds.");
+
             }
         } catch (IOException e) {
             e.printStackTrace();
         }
+
     }
 }

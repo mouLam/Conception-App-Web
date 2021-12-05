@@ -36,15 +36,11 @@ public class Candidats extends HttpServlet {
 
         this.candidatsIds = new HashMap<>();
         int i = 0;
-
         // identifie les candidats grâce à un entier.
         for (String name: this.candidats.keySet()) {
             this.candidatsIds.put(i, this.candidats.get(name));
             i++;
         }
-
-        //TODO: ??? is it necessary OR Do it in Init Class also
-        req.setAttribute("candidatsIds", this.candidatsIds);
 
         splitPathUri(req);
         if (this.pathUri.length == 2) { // /election/candidats

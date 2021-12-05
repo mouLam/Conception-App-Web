@@ -29,6 +29,23 @@ public class CandidatListGenerator {
         return resultat;
     }
 
+    public static Map<Integer, Candidat> getCandidatIDList() throws IOException {
+        // Lecture du ficher de candidats avec Jackson
+        ObjectMapper mapper = new ObjectMapper();
+        // Voir : https://www.baeldung.com/jackson-collection-array
+        CollectionType javaType = mapper.getTypeFactory().constructCollectionType(List.class, Item.class);
+        List<Item> items = mapper.readValue(new URL("https://perso.liris.cnrs.fr/lionel.medini/enseignement/M1IF03/TP/candidats.json"), javaType);
+
+        // Création d'une liste de candidats
+        Map<Integer, Candidat> resultat = new HashMap<>();
+        int j = 0;
+        for (Item i : items) {
+            resultat.put(j, new Candidat(i.getPrenom(), i.getNom()));
+            j++;
+        }
+        return resultat;
+    }
+
     private static class Item {
         String prenom, nom;
 

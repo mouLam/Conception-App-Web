@@ -38,6 +38,9 @@ public class Users extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String url = req.getScheme() + "://" +
+                req.getServerName() + ":" +
+                req.getServerPort() + req.getContextPath() + "/users/";
 
         splitPathUri(req);
         HttpSession session = req.getSession(false);
@@ -46,14 +49,14 @@ public class Users extends HttpServlet {
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utilisateur non authentifié");
         }
         assert userSession != null;
-        if (this.pathUri.length == 1) { // /users
+        if (this.pathUri.length == 1 && this.pathUri[0].equals("users")) { // /users
             // retrieve list user and send it as JSON
             if (!userSession.isAdmin()) {
                 resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Utilisateur non administrateur");
             }
             List<User> userList = new ArrayList<User>(this.users.values());
             sendDataAsJSON(resp, userList);
-        } else if (this.pathUri.length == 2) { // /users/{userId}
+        } else if (this.pathUri.length == 2 && this.pathUri[0].equals("users")) { // /users/{userId}
             // retrieve a user from his login
             String loginInURI = this.pathUri[1];
             if (!userSession.isAdmin() && !userSession.getLogin().equals(loginInURI)) {
@@ -67,28 +70,32 @@ public class Users extends HttpServlet {
             req.setAttribute("user", userToRetrieve);
             sendDataAsJSON(resp, userToRetrieve);
 
-        } else if (this.pathUri.length == 3) {
+        } else if (this.pathUri.length == 3 && this.pathUri[0].equals("users")) {
             String loginInURI = this.pathUri[1];
             String lastValueURI = this.pathUri[2];
             if (lastValueURI.equals("ballot")) {  // /users/{userId}/ballot
-                if (!userSession.isAdmin()
-                        && !this.ballots.containsKey(userSession.getLogin())) {
+                if ( ! (userSession.isAdmin() ||
+                        this.ballots.containsKey(userSession.getLogin())) ) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                             "Utilisateur non administrateur ou non propriétaire du ballot");
-                }
-                resp.sendRedirect("election/ballots/byUser/"+loginInURI);
-            } else if (lastValueURI.equals("vote")) {  // /users/{userId}/vote
-                Bulletin sonBulletin = this.ballots.get(userSession.getLogin()).getBulletin();
-                boolean voteOwner = (sonBulletin != null && this.bulletins.contains(sonBulletin));
-                //TODO : vérifier si l'égalite peut marcher ainsi
+                } else {
+                    resp.sendError(HttpServletResponse.SC_SEE_OTHER, "Redirection vers l'URL du ballot de cet utilisateur");
+                    resp.setHeader("Location", "election/ballots/byUser/" + loginInURI);
+                    sendDataAsJSON(resp, url + loginInURI + "/ballot");
 
-                if (!userSession.isAdmin() && !voteOwner) {
+                }
+            } else if (lastValueURI.equals("vote")) {  // /users/{userId}/vote
+                if ( ! (userSession.isAdmin() ||
+                        this.ballots.containsKey(userSession.getLogin())) ) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                             "Utilisateur non administrateur ou non propriétaire du vote");
+                } else {
+                    resp.sendError(HttpServletResponse.SC_SEE_OTHER
+                            , "Redirection vers l'URL du vote de cet utilisateur");
+                    resp.setHeader("Location", "election/votes/byUser/" + loginInURI);
+                    sendDataAsJSON(resp, url + loginInURI + "/vote");
                 }
-                resp.sendRedirect("election/votes/byUser/"+loginInURI);
-            } else {
-                resp.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE, "GET - More than 3");
+
             }
         }
     }
@@ -115,10 +122,11 @@ public class Users extends HttpServlet {
                 User userSession = (User) session.getAttribute("user");
                 if (userSession == null) {
                     resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utilisateur non authentifié");
+                } else {
+                    session.invalidate();
+                    //this.users.remove(userSession.getLogin());
+                    resp.sendError(HttpServletResponse.SC_NO_CONTENT, "Successful operation");
                 }
-                session.invalidate();
-                resp.sendError(HttpServletResponse.SC_NO_CONTENT, "Successful operation");
-                this.getServletContext().getNamedDispatcher("Home").forward(req, resp);
 
             } else {
                 resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Paramètres de la requéte non acceptables");
@@ -157,11 +165,6 @@ public class Users extends HttpServlet {
         } else {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Paramètres de la requéte non acceptables");
         }
-    }
-
-    protected void processRequest(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String action = req.getRequestURI().replace(req.getContextPath() + "/users/", "");
-        req.setAttribute("action", action); // Utilisé dans electionHome.jsp
     }
 
     /**

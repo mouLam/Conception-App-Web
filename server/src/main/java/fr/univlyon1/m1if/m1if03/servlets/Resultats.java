@@ -20,7 +20,7 @@ import java.util.Map;
 
 @WebServlet(name = "Resultats", value = {})
 public class Resultats extends HttpServlet {
-     Map<String, Candidat> candidats;
+    Map<String, Candidat> candidats;
     List<Bulletin> bulletins;
 
     @SuppressWarnings("unchecked")
@@ -41,6 +41,7 @@ public class Resultats extends HttpServlet {
         for (String nomCandidat : candidats.keySet()) {
             votes.put(nomCandidat, 0);
         }
+        this.bulletins = (List<Bulletin>) req.getServletContext().getAttribute("bulletins");
 
         for (Bulletin bulletin : bulletins) {
             int score = votes.get(bulletin.getCandidat().getNom());
@@ -59,7 +60,6 @@ public class Resultats extends HttpServlet {
 
         req.setAttribute("votes", votes);
 
-        //req.getRequestDispatcher("/WEB-INF/components/resultats.jsp").forward(req, resp);
     }
 
     /**
