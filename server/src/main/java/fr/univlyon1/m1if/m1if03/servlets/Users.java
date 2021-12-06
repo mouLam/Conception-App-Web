@@ -72,6 +72,7 @@ public class Users extends HttpServlet {
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Utilisateur non trouvé");
             }
             req.setAttribute("user", userToRetrieve);
+            resp.setHeader("Authorization", (String) req.getAttribute("token"));
             sendDataAsJSON(resp, userToRetrieve);
 
         } else if (this.pathUri.length == 3 && this.pathUri[0].equals("users")) {
@@ -83,6 +84,7 @@ public class Users extends HttpServlet {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                             "Utilisateur non administrateur ou non propriétaire du ballot");
                 } else {
+                    resp.setHeader("Authorization", (String) req.getAttribute("token"));
                     resp.sendError(HttpServletResponse.SC_SEE_OTHER, "Redirection vers l'URL du ballot de cet utilisateur");
                     resp.setHeader("Location", "election/ballots/byUser/" + loginInURI);
                     sendDataAsJSON(resp, url + loginInURI + "/ballot");
@@ -94,6 +96,7 @@ public class Users extends HttpServlet {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
                             "Utilisateur non administrateur ou non propriétaire du vote");
                 } else {
+                    resp.setHeader("Authorization", (String) req.getAttribute("token"));
                     resp.sendError(HttpServletResponse.SC_SEE_OTHER
                             , "Redirection vers l'URL du vote de cet utilisateur");
                     resp.setHeader("Location", "election/votes/byUser/" + loginInURI);
@@ -121,12 +124,10 @@ public class Users extends HttpServlet {
                 String uriUser = req.getRequestURI() + "/" + newUser.getLogin();
 
                 String token = ElectionM1if03JwtHelper.generateToken(uriUser, newUser.isAdmin(), req);
-
-                //resp.setHeader("Authorization", "Bearer "+token);
-
-                // add in session
-                //session = req.getSession(true);
+                resp.setHeader("Authorization", "Bearer "+token);
                 req.getServletContext().setAttribute("user", newUser);
+                this.users.put(newUser.getLogin(), newUser);
+                req.getServletContext().setAttribute("users", this.users);
                 sendDataAsJSON(resp, token);
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else if (this.pathUri[1].equals("logout")) {
@@ -134,7 +135,7 @@ public class Users extends HttpServlet {
                 if (userSession == null) {
                     resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utilisateur non authentifié");
                 } else {
-                    //session.invalidate();
+                    req.getSession().invalidate();
                     req.getServletContext().setAttribute("user", null);
                     //this.users.remove(userSession.getLogin());
                     resp.sendError(HttpServletResponse.SC_NO_CONTENT, "Successful operation");
@@ -172,6 +173,7 @@ public class Users extends HttpServlet {
             Map<String, String > body = mapper.readValue(req.getReader(), new TypeReference<Map<String,String>>(){});
             assert user != null;
             user.setNom(body.get("nom"));
+            resp.setHeader("Authorization", (String) req.getAttribute("token"));
             sendDataAsJSON(resp, user);
             resp.sendError(HttpServletResponse.SC_NO_CONTENT, "User correctement modifié");
         } else {
