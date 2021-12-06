@@ -1,33 +1,42 @@
-# TP3 - v2.2 - C09
+# TP4 - v3 - C09
 
-## 2.1 Pattern Contexte
+## 1. Ressources
 
-L'initialisation de la liste de candidats est réalisée dans la méthode init(). Une exception est levée en cas de problème durant le chargement et un candidat vide est ajouté à la liste.
+Deux contrôleurs ont été créés, un contrôleur principal qui prend en charge toutes les requêtes qui commencent par /election/* et un autre pour celles qui commencent par /user/* .
+Nos URLs ont été modifiées pour qu'elles correspondent à des URLs de ressouces en REST.
 
-## 2.2 Pattern Chaine de Responsabilité
+Nous avons implémenté les URLs suivantes : 
 
-Création et ajout des filtres Authentification et Autorisation dans le fichire web.xml .
+### Résultats 
+- /election/resultats (GET)
 
-### 2.2.1 
+### Candidats
+- /election/candidats (GET)
+- /election/candidats/noms (GET)
+- /election/candidats/{candidatId} (GET)
+- /election/candidats/update (POST)
 
-Création du filtre Authentification qui permet de vérifier l'existence d'une session utilisateur ou non et de rediriger un utilisateur non connecté essayant d'accéder à certaines ressources interdites.
+### Ballots
+- /election/ballots (GET)
+- /election/ballots (POST)
+- /election/ballots/{ballotId} (GET)
+- /election/ballots/{ballotId} (DELETE)
+- /election/ballots/byUser/{ballotId} (GET)
 
-### 2.2.2
+### Votes
+- /election/votes/{voteId} (GET)
+- /election/votes/byUser/{voteId} (GET)
+- /election/votes/byUser/{voteId} (PUT)
 
-Création du filtre Autorisation permettant à l'administrateur d'accéder à la liste des ballots.
+### Users
+- /users (GET)
+- /users/{userId} (GET)
+- /users/{userId}/nom (PUT)
+- /users/{userId}/ballot (GET)
+- /users/{userId}/vote (GET)
+- /users/login (POST)
+- /users/logout (POST)
 
-## 2.3 Pattern MVC
+## 2. Transactions sans états
+Nous avons supprimé l'utilisation de HttpSession pour la gestion de la session utilisateur, et utilisé la bibliothèque Java-JWT pour la remplacer par l'utilisation d'un token. Ce token sera utilisé pour les requêtes nécessitant une vérification de connexion.
 
-Création des servlets :
-- Controleur : controleur principal
-- VoteControleur : contrôle l'accès à la page vote.jsp si appelé via une méthode GET ou ballot.jsp si appelé via le formulaire de vote avec une méthode POST
-- DecoControleur : contrôleur de déconnexion
-- ResultatsControleur : comptabilise les votes et affiche les résultats de l'élection
-- UserControleur : affiche le profil utilisateur via la méthode GET et met à jour le nom d'utilisateur via la méthode POST
-- DeleteVoteControleur : supprime le ballot via une méthode POST
-- BallotControleur : affiche le ballot de l'utilisateur (GET)
-- ListBallotsControleur : affiche la liste des ballots
-
-## Gestion du cache
-
-Création d'un filtre qui intercepte les méthodes GET et POST sur /election/vote et /election/listBallot et vérifie l'attribut LastModifiedSince du Header de réponse. Cette fonctionnalité n'est pas encore opérationnelle. 
