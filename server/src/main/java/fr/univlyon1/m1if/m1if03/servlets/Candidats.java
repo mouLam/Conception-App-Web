@@ -10,7 +10,6 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -31,8 +30,7 @@ public class Candidats extends HttpServlet {
         // Rappel : la liste des candidats n'est initialisée qu'à la première connexion d'un utilisateur, dans la servlet Init.
         // Donc pas possible de mettre sa récupération dans la méthode init() de cette servlet, car elle peut être appelée avant.
         this.candidats = (Map<String, Candidat>) req.getServletContext().getAttribute("candidats");
-        HttpSession session = req.getSession(false);
-        User userSession = (User) session.getAttribute("user");
+        User userSession = (User) req.getServletContext().getAttribute("user");
 
         this.candidatsIds = new HashMap<>();
         int i = 0;
@@ -70,8 +68,7 @@ public class Candidats extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        User userSession = (User) session.getAttribute("user");
+        User userSession = (User) req.getServletContext().getAttribute("user");
         splitPathUri(req);
 
         if (userSession == null) {

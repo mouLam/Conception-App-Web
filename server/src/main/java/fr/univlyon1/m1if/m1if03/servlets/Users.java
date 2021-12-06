@@ -26,6 +26,7 @@ public class Users extends HttpServlet {
     Map<String, Ballot> ballots;
     List<Bulletin> bulletins;
     String [] pathUri;
+    User session;
 
     @Override
     @SuppressWarnings("unchecked")
@@ -34,6 +35,7 @@ public class Users extends HttpServlet {
         this.users = (Map<String, User>) config.getServletContext().getAttribute("users");
         this.bulletins = (List<Bulletin>) config.getServletContext().getAttribute("bulletins");
         this.ballots = (Map<String, Ballot>) config.getServletContext().getAttribute("ballots");
+        this.session = (User) config.getServletContext().getAttribute("user");
     }
 
     @Override
@@ -43,8 +45,9 @@ public class Users extends HttpServlet {
                 req.getServerPort() + req.getContextPath() + "/users/";
 
         splitPathUri(req);
-        HttpSession session = req.getSession(false);
-        User userSession = (User) session.getAttribute("user");
+        //HttpSession session = req.getSession(false);
+        //User userSession = (User) session.getAttribute("user");
+        User userSession = (User) req.getServletContext().getAttribute("user");
         if (userSession == null) {
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utilisateur non authentifié");
         }
@@ -103,7 +106,8 @@ public class Users extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         splitPathUri(req);
-        HttpSession session = req.getSession();
+        //HttpSession session = req.getSession();
+        //User session = (User) req.getServletContext().getAttribute("user");
         if (this.pathUri.length == 2) {
             if (this.pathUri[1].equals("login")) {
                 // Jackson ObjectMapper class and how to serialize Java objects into JSON
@@ -112,18 +116,18 @@ public class Users extends HttpServlet {
                 TypeReference<Map<String, String>> ref = new TypeReference<Map<String, String>>(){};
                 Map<String, String > body = mapper.readValue(req.getReader(), ref);
                 User newUser = new User(body.get("login"), body.get("nom"), body.get("admin").equals("true") );
+
                 // add in session
-                session = req.getSession(true);
-                session.setAttribute("user", newUser);
-                // add in users map
-                this.users.put(newUser.getLogin(), newUser);
+                //session = req.getSession(true);
+                req.getServletContext().setAttribute("user", newUser);
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else if (this.pathUri[1].equals("logout")) {
-                User userSession = (User) session.getAttribute("user");
+                User userSession = (User) req.getServletContext().getAttribute("user");
                 if (userSession == null) {
                     resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utilisateur non authentifié");
                 } else {
-                    session.invalidate();
+                    //session.invalidate();
+                    req.getServletContext().setAttribute("user", null);
                     //this.users.remove(userSession.getLogin());
                     resp.sendError(HttpServletResponse.SC_NO_CONTENT, "Successful operation");
                 }
@@ -139,8 +143,8 @@ public class Users extends HttpServlet {
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         splitPathUri(req);
-        HttpSession session = req.getSession(false);
-        User userSession = (User) session.getAttribute("user");
+        //HttpSession session = req.getSession(false);
+        User userSession = (User) req.getServletContext().getAttribute("user");
         if (userSession == null) {
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utilisateur non authentifié");
         }

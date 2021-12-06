@@ -37,8 +37,7 @@ public class Vote extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-        HttpSession session = request.getSession(false);
-        User userSession = (User) session.getAttribute("user");
+        User userSession = (User) request.getServletContext().getAttribute("user");
         splitPathUri(request);
 
         if (userSession == null) {
@@ -99,8 +98,7 @@ public class Vote extends HttpServlet {
         // Donc pas possible de mettre sa récupération dans la méthode init() de cette servlet, car elle peut être appelée avant.
         this.candidats = (Map<String, Candidat>) req.getServletContext().getAttribute("candidats");
 
-        HttpSession session = req.getSession(false);
-        User userSession = (User) session.getAttribute("user");
+        User userSession = (User) req.getServletContext().getAttribute("user");
         splitPathUri(req);
 
         if (userSession == null) {

@@ -39,17 +39,19 @@ public class AuthenticationFilter extends HttpFilter {
             }
         }
 
-        HttpSession session = req.getSession(false); // On récupère la session sans la créer
-        if(session != null && session.getAttribute("user") != null) {
+        //HttpSession session = req.getSession(false); // On récupère la session sans la créer
+        User session = (User) req.getServletContext().getAttribute("user");
+        if(session != null) {
             super.doFilter(req, res, chain);
         } else {
             String login = req.getParameter("login");
             if(req.getMethod().equals("POST") && login != null && !login.equals("")) {
-                session = req.getSession(true);
+                //session = req.getSession(true);
                 User user = new User(login,
                         req.getParameter("nom") != null ? req.getParameter("nom") : "",
                         req.getParameter("admin") != null && req.getParameter("admin").equals("on"));
-                session.setAttribute("user", user);
+                //session.setAttribute("user", user);
+                req.getServletContext().setAttribute("user", user);
                 this.users.put(user.getLogin(), user);
                 super.doFilter(req, res, chain);
             } else

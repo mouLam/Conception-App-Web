@@ -35,7 +35,7 @@ public class Ballots extends HttpServlet {
         this.ballots = (Map<String, Ballot>) req.getServletContext().getAttribute("ballots");
         this.votesIds = (Map<Integer, String>) req.getServletContext().getAttribute("votesIds");
         splitPathUri(req);
-        User user = (User) req.getSession(false).getAttribute("user");
+        User user = (User) req.getServletContext().getAttribute("user");
         if (user == null) {
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utilisateur non authentifié");
         }
@@ -109,8 +109,7 @@ public class Ballots extends HttpServlet {
         this.ballots = (Map<String, Ballot>) req.getServletContext().getAttribute("ballots");
         this.bulletins = (List<Bulletin>) req.getServletContext().getAttribute("bulletins");
         splitPathUri(req);
-        HttpSession session = req.getSession();
-        User userSession = (User) session.getAttribute("user");
+        User userSession = (User) req.getServletContext().getAttribute("user");
         if (userSession == null) {
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utilisateur non authentifié");
         }
@@ -157,7 +156,7 @@ public class Ballots extends HttpServlet {
 
         splitPathUri(req);
 
-        User user = (User) req.getSession(false).getAttribute("user");
+        User user = (User) req.getServletContext().getAttribute("user");
         if (user == null) {
             resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Utilisateur non authentifié");
         }
