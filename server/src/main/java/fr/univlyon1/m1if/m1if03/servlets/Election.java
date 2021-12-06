@@ -43,7 +43,7 @@ public class Election extends HttpServlet {
             this.getServletContext().getNamedDispatcher("Candidats").forward(req, resp);
         } else if (action.contains("resultats")) {
             this.getServletContext().getNamedDispatcher("Resultats").forward(req, resp);
-        }else if (action.contains("ballots")) {
+        }else if (action.contains("ballots") || action.contains("listBallots")) {
             this.getServletContext().getNamedDispatcher("Ballots").forward(req, resp);
         } else if (action.contains("votes")) {
             this.getServletContext().getNamedDispatcher("Vote").forward(req, resp);
@@ -55,9 +55,6 @@ public class Election extends HttpServlet {
                 break;
             case "deleteVote":
                 this.getServletContext().getNamedDispatcher("DeleteVote").forward(req, resp);
-                break;
-            case "listBallots":
-                this.getServletContext().getNamedDispatcher("Ballots").forward(req, resp);
                 break;
             /*default:
                 resp.sendError(HttpServletResponse.SC_NOT_FOUND);*/

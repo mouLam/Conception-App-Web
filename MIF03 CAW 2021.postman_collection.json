@@ -1,0 +1,571 @@
+{
+	"info": {
+		"_postman_id": "6274ed18-1806-465b-a6eb-a83eaa6b7af6",
+		"name": "MIF03 CAW 2021",
+		"author" : "Mouhamadou Lamine MBOUP && Océane Charlery",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Local",
+			"item": [
+				{
+					"name": "TP4",
+					"item": [
+						{
+							"name": "Users",
+							"item": [
+								{
+									"name": "All users",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v3_war/users",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"users"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Récupérer un utilisateur",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v3_war/users/test",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"users",
+												"test"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Login Admin",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"login\" : \"lamine\",\n    \"nom\" : \"lam\",\n    \"admin\" : true\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v3_war/users/login",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"users",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Login User",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"login\" : \"test\",\n    \"nom\" : \"test\",\n    \"admin\" : false\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v3_war/users/login",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"users",
+												"login"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update User name",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"nom\" : \"change\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v3_war/users/test/nom",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"users",
+												"test",
+												"nom"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "LogOut User",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v3_war/users/logout",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"users",
+												"logout"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get User vote",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v3_war/users/test/vote",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"users",
+												"test",
+												"vote"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get User Ballot",
+									"request": {
+										"method": "GET",
+										"header": [
+											{
+												"key": "",
+												"value": "",
+												"type": "text",
+												"disabled": true
+											}
+										],
+										"url": {
+											"raw": "http://localhost:8080/v3_war/users/test/ballot",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"users",
+												"test",
+												"ballot"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Resultats",
+							"item": [
+								{
+									"name": "Get résultats",
+									"request": {
+										"auth": {
+											"type": "bearer",
+											"bearer": [
+												{
+													"key": "token",
+													"value": "Bearer eyJhbGciOiJIUzI1NiJ9.eyJpYXQiOjE2Mjc4MjI2NDUsImV4cCI6MTYyNzgyOTg0NSwidXNlcklkIjo2LCJlbWFpbCI6Im1vdWxhbUBlbWFpbC5jb20iLCJmaXJzdE5hbWUiOiJNb3VoYW1hZG91IExhbWluZSIsImxhc3ROYW1lIjoiTUJPVVAifQ.zZKm9VN1x2vMTT2Bryd-wayq4_nrjesM1tpyBkfTa3k",
+													"type": "string"
+												}
+											]
+										},
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v3_war/election/resultats",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"election",
+												"resultats"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Candidats",
+							"item": [
+								{
+									"name": "Get Candidats URI",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v3_war/election/candidats",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"election",
+												"candidats"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get Candidats Noms",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v3_war/election/candidats/noms",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"election",
+												"candidats",
+												"noms"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get a Candidat from ID",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v3_war/election/candidats/0",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"election",
+												"candidats",
+												"0"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Candidats",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v3_war/election/candidats/update",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"election",
+												"candidats",
+												"update"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Ballots",
+							"item": [
+								{
+									"name": "Get list Ballots",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v3_war/election/ballots",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"election",
+												"ballots"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Create Ballot (Make a vote)",
+									"request": {
+										"method": "POST",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"nomCandidat\" : \"Touille\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v3_war/election/ballots",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"election",
+												"ballots"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get a Ballot",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v3_war/election/ballots/0",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"election",
+												"ballots",
+												"0"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get a Ballot of a User",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v3_war/election/ballots/byUser/test",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"election",
+												"ballots",
+												"byUser",
+												"test"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Delete a Ballot ( a vote)",
+									"request": {
+										"method": "DELETE",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v3_war/election/ballots/0",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"election",
+												"ballots",
+												"0"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						},
+						{
+							"name": "Votes",
+							"item": [
+								{
+									"name": "Get a Vote",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v3_war/election/votes/0",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"election",
+												"votes",
+												"0"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Get a Vote of a User",
+									"request": {
+										"method": "GET",
+										"header": [],
+										"url": {
+											"raw": "http://localhost:8080/v3_war/election/votes/byUser/test",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"election",
+												"votes",
+												"byUser",
+												"test"
+											]
+										}
+									},
+									"response": []
+								},
+								{
+									"name": "Update Vote of a User",
+									"request": {
+										"method": "PUT",
+										"header": [],
+										"body": {
+											"mode": "raw",
+											"raw": "{\n    \"nomCandidat\": \"Zefiling\"\n}",
+											"options": {
+												"raw": {
+													"language": "json"
+												}
+											}
+										},
+										"url": {
+											"raw": "http://localhost:8080/v3_war/election/votes/byUser/test",
+											"protocol": "http",
+											"host": [
+												"localhost"
+											],
+											"port": "8080",
+											"path": [
+												"v3_war",
+												"election",
+												"votes",
+												"byUser",
+												"test"
+											]
+										}
+									},
+									"response": []
+								}
+							]
+						}
+					]
+				}
+			]
+		}
+	]
+}

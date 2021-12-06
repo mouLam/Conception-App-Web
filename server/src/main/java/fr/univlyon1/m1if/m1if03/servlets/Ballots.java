@@ -6,6 +6,7 @@ import fr.univlyon1.m1if.m1if03.classes.Ballot;
 import fr.univlyon1.m1if.m1if03.classes.Bulletin;
 import fr.univlyon1.m1if.m1if03.classes.Candidat;
 import fr.univlyon1.m1if.m1if03.classes.User;
+import fr.univlyon1.m1if.m1if03.utils.ElectionM1if03JwtHelper;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.servlet.ServletException;
@@ -47,15 +48,22 @@ public class Ballots extends HttpServlet {
         // /election/ballots
         if (this.pathUri.length == 2 && this.pathUri[1].equals("ballots")) {
             assert user != null;
+            String token = (String) req.getAttribute("token");
             if (!user.isAdmin()) {
                 resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Utilisateur non administrateur");
+            } else {
+                List<String> urisVote = new ArrayList<>();
+                if (this.ballots.isEmpty()) {
+                    String ballot = "Il n'a pas encore de vote";
+                    sendDataAsJSON(resp, ballot);
+                } else {
+                    for (Integer id : this.votesIds.keySet()) {
+                        urisVote.add(url + id);
+                    }
+                    resp.setHeader("Authorization", (String) req.getAttribute("token"));
+                    sendDataAsJSON(resp, urisVote);
+                }
             }
-            List<String> urisVote = new ArrayList<>();
-
-            for (Integer id : this.votesIds.keySet()) {
-                urisVote.add(url + id);
-            }
-            sendDataAsJSON(resp, urisVote);
         }
 
         // /election/ballots/{ballotId}
@@ -71,6 +79,7 @@ public class Ballots extends HttpServlet {
                         , "Utilisateur non administrateur ou non propriétaire du ballot");
             } else {
                 String uriVote = url + ballotId;
+                resp.setHeader("Authorization", (String) req.getAttribute("token"));
                 sendDataAsJSON(resp, uriVote);
             }
 
@@ -92,6 +101,7 @@ public class Ballots extends HttpServlet {
             for (String u : this.ballots.keySet()) {
                 for (Integer i : this.votesIds.keySet()) {
                     if (this.votesIds.get(i).equals(u)) {
+                        resp.setHeader("Authorization", (String) req.getAttribute("token"));
                         sendDataAsJSON(resp, url + i);
                         break;
                     }
@@ -140,6 +150,7 @@ public class Ballots extends HttpServlet {
                 int length = this.ballots.size();
                 this.votesIds.put(length - 1, userSession.getLogin());
                 req.getServletContext().setAttribute("votesIds", this.votesIds);
+                resp.setHeader("Authorization", (String) req.getAttribute("token"));
                 resp.sendError(HttpServletResponse.SC_CREATED, "Ballot créé");
             }
 
@@ -181,7 +192,7 @@ public class Ballots extends HttpServlet {
                     req.getServletContext().setAttribute("bulletins", this.bulletins);
                     req.getServletContext().setAttribute("ballots", this.ballots);
                     req.getServletContext().setAttribute("voteIds", this.votesIds);
-
+                    resp.setHeader("Authorization", (String) req.getAttribute("token"));
                     resp.sendError(HttpServletResponse.SC_NO_CONTENT, "Ballot supprimé");
                 }
             }
