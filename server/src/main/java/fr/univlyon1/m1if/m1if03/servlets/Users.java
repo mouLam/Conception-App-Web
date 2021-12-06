@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import fr.univlyon1.m1if.m1if03.classes.Ballot;
 import fr.univlyon1.m1if.m1if03.classes.Bulletin;
 import fr.univlyon1.m1if.m1if03.classes.User;
+import fr.univlyon1.m1if.m1if03.utils.ElectionM1if03JwtHelper;
 import org.apache.commons.lang3.ArrayUtils;
 
 import javax.servlet.ServletConfig;
@@ -117,9 +118,16 @@ public class Users extends HttpServlet {
                 Map<String, String > body = mapper.readValue(req.getReader(), ref);
                 User newUser = new User(body.get("login"), body.get("nom"), body.get("admin").equals("true") );
 
+                String uriUser = req.getRequestURI() + "/" + newUser.getLogin();
+
+                String token = ElectionM1if03JwtHelper.generateToken(uriUser, newUser.isAdmin(), req);
+
+                //resp.setHeader("Authorization", "Bearer "+token);
+
                 // add in session
                 //session = req.getSession(true);
                 req.getServletContext().setAttribute("user", newUser);
+                sendDataAsJSON(resp, token);
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else if (this.pathUri[1].equals("logout")) {
                 User userSession = (User) req.getServletContext().getAttribute("user");

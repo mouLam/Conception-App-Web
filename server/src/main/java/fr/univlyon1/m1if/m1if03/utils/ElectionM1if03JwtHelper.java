@@ -18,7 +18,7 @@ import java.util.Date;
  */
 public class ElectionM1if03JwtHelper {
     private static final String SECRET = "monsecret2021";
-    private static final String ISSUER = "Election M1IF03";
+    private static final String ISSUER = "Election M1IF03 - C09";
     private static final long LIFETIME = 1800000; // Durée de vie d'un token : 30 minutes ; vous pouvez le modifier pour tester
     private static final Algorithm algorithm = Algorithm.HMAC256(SECRET);
     private static final JWTVerifier adminVerifier = JWT.require(algorithm).withClaim("admin", true).build(); // Reusable verifier instance

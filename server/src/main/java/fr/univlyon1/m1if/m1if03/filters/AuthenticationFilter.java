@@ -46,13 +46,6 @@ public class AuthenticationFilter extends HttpFilter {
         } else {
             String login = req.getParameter("login");
             if(req.getMethod().equals("POST") && login != null && !login.equals("")) {
-                //session = req.getSession(true);
-                User user = new User(login,
-                        req.getParameter("nom") != null ? req.getParameter("nom") : "",
-                        req.getParameter("admin") != null && req.getParameter("admin").equals("on"));
-                //session.setAttribute("user", user);
-                req.getServletContext().setAttribute("user", user);
-                this.users.put(user.getLogin(), user);
                 super.doFilter(req, res, chain);
             } else
                 res.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Vous devez être connecté pour accéder à cette page.");
