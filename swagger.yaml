@@ -1,0 +1,718 @@
+swagger: "2.0"
+info:
+  description: "Description de l'API du serveur de gestion d'une élection. Vous pouvez changer les valeurs de 'host' et 'basePath' pour l'adapter à votre machine. Les autres valeurs ne doivent pas être modifiées."
+  version: "1.0.0"
+  title: "Election M1IF03 - Groupe C09"
+
+host: "localhost:8080"
+basePath: "/v3_war"
+tags:
+- name: "resultats"
+  description: "Récupération des résultats"
+- name: "candidats"
+  description: "Gestion des candidats"
+- name: "ballots"
+  description: "Gestion des ballots"
+- name: "votes"
+  description: "Gestion des votes"
+- name: "users"
+  description: "Gestion des utilisateurs"
+schemes:
+- "http"
+paths:
+
+  /election/resultats:
+    get:
+      tags:
+      - "resultats"
+      summary: "Récupérer les résultats courants d'une election"
+      description: "Renvoie la liste des candidats et le nombre de votes pour chacun d'eux."
+      operationId: "getResultats"
+      produces:
+      - "application/json"
+      responses:
+        200:
+          description: "Redirection vers l'URL de la liste de votes dans l'élection"
+          schema:
+            $ref: "#/definitions/Resultats"
+
+  /election/candidats:
+    get:
+      tags:
+      - "candidats"
+      summary: "Récupérer la liste complète des candidats"
+      description: "Renvoie les URI de tous les candidats"
+      operationId: "getCandidats"
+      produces:
+      - "application/json"
+      - "application/xml"
+      parameters:
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Candidats"
+          examples:
+            application/json:
+              - "http://localhost:8080/v3_war/election/candidats/0"
+              - "http://localhost:8080/v3_war/election/candidats/1"
+            application/xml: "<candidats>\n  <candidat>http://localhost:8080/v3_war/election/candidats/0</candidat>\n  <candidat>http://localhost:8080/v3_war/election/candidats/1</candidat>\n </candidats>"
+            text/html: page HTML contenant la liste
+  /election/candidats/noms:
+    get:
+      tags:
+      - "candidats"
+      summary: "Récupérer la liste complète des noms des candidats"
+      description: "Renvoie les noms de tous les candidats"
+      operationId: "getCandidatNames"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/html"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/CandidatNames"
+          examples:
+            application/json:
+              - "Touille"
+              - "Zefiling"
+            application/xml: "<nomCandidats>\n  <nom>Touille</nom>\n  <nom>Zefiling</nom>\n </nomsCandidats>"
+            text/html: page HTML contenant la liste
+  /election/candidats/{candidatId}:
+    get:
+      tags:
+      - "candidats"
+      summary: "Récupérer un candidat"
+      description: "Renvoie une représentation complète d'un candidat."
+      operationId: "getCandidatById"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/html"
+      parameters:
+      - name: "candidatId"
+        in: "path"
+        description: "Id du candidat"
+        required: true
+        type: string
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Candidat"
+          examples:
+            application/json: "{\"prenom\":\"Sacha\",\"nom\":\"Touille\"}"
+            application/xml: "<Candidat>\n  <nom>Touille</nom>\n  <prenom>Sacha</prenom>\n </Candidat>"
+            text/html: page HTML décrivant le candidat
+        401:
+          description: "Utilisateur non authentifié"
+        404:
+          description: "Candidat non trouvé"
+      security:
+        - bearer_auth: []
+  /election/candidats/update:
+    post:
+      tags:
+      - "candidats"
+      summary: "Mettre à jour les candidats"
+      description: "Permet de recharger la liste de candidats au cas où le premier chargement ne se serait pas bien passé. Attention, si vous envoyez la requête en CORS, la spécificaiton CORS ne prévoit pas de répondre à une requête POST sans contenu (-> 403). Il faut donc spécifier un header Content-Type (par exemple : application/json) pour que la requête passe en CORS."
+      operationId: "loadCandidats"
+      consumes:
+      - "application/json"
+      - "application/x-www-form-urlencoded"
+      - "application/xml"
+      parameters:
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        204:
+          description: "Liste mise à jour"
+        401:
+          description: "Utilisateur non authentifié"
+        403:
+          description: "Utilisateur non administrateur"
+        500:
+          description: "Erreur lors du chargement de la liste"
+      security:
+        - bearer_auth: []
+
+  /election/ballots:
+    get:
+      tags:
+      - "ballots"
+      summary: "Récupérer la liste des ballots"
+      description: "Renvoie les URI des ballots."
+      operationId: "getBallots"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/html"
+      parameters:
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Ballots"
+          examples:
+            application/json:
+              - "http://localhost:8080/election/ballots/0"
+              - "http://localhost:8080/election/ballots/1"
+            application/xml: "<ballots>\n  <ballot>http://localhost:8080/election/ballots/0</ballot>\n  <ballot>http://localhost:8080/election/ballots/1</ballot>\n </ballots>"
+            text/html: page HTML contenant la liste
+        401:
+          description: "Utilisateur non authentifié"
+        403:
+          description: "Utilisateur non administrateur"
+      security:
+        - bearer_auth: []
+    post:
+      tags:
+      - "ballots"
+      summary: "Créer un ballot"
+      description: "Crée un nouveau ballot (nouveau vote de l'utilisateur)"
+      operationId: "addBallot"
+      consumes:
+      - "application/json"
+      - "application/x-www-form-urlencoded"
+      - "application/xml"
+      parameters:
+      - in: "body"
+        name: "vote"
+        description: "Bulletin de vote de l'utilisateur à partir duquel sera créé un ballot."
+        required: true
+        schema:
+          $ref: "#/definitions/Vote"
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        201:
+          description: "Ballot créé"
+          headers:
+            Location:
+              type: string
+              description: "URL du ballot créé"
+        400:
+          description: "Paramètres de la requête non acceptables"
+        401:
+          description: "Utilisateur non authentifié"
+      security:
+        - bearer_auth: []
+  /election/ballots/{ballotId}:
+    get:
+      tags:
+      - "ballots"
+      summary: "Retrouver un ballot"
+      description: "Renvoie une représentation d'un ballot avec uniquement l'URI du vote de l'utilisateur"
+      operationId: "getBallotById"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/html"
+      parameters:
+      - name: "ballotId"
+        in: "path"
+        description: "Id du ballot"
+        required: true
+        type: integer
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Ballot"
+          examples:
+            application/json:
+              - "http://localhost:8080/election/ballots/0"
+            application/xml: "<ballot>http://localhost:8080/election/ballots/1</ballot>"
+            text/html: page HTML contenant la liste
+        401:
+          description: "Utilisateur non authentifié"
+        403:
+          description: "Utilisateur non administrateur ou non propriétaire du ballot"
+        404:
+          description: "Ballot non trouvé"
+      security:
+        - bearer_auth: []
+    delete:
+      tags:
+      - "ballots"
+      summary: "Supprimer un ballot"
+      description: "Supprime le ballot (et donc le vote correspondant) dont l'id est en paramètre"
+      operationId: "deleteBallot"
+      parameters:
+      - name: "ballotId"
+        in: "path"
+        description: "Id du ballot"
+        required: true
+        type: integer
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        204:
+          description: "Ballot supprimé"
+        401:
+          description: "Utilisateur non authentifié"
+        403:
+          description: "Utilisateur non administrateur ou non propriétaire du ballot"
+        404:
+          description: "Ballot non trouvé"
+      security:
+        - bearer_auth: []
+  /election/ballots/byUser/{userLogin}:
+    get:
+      tags:
+      - "ballots"
+      summary: "Récupérer le ballot d'un utilisateur"
+      description: "Renvoie l'URI du ballot de l'utilisateur indiqué (s'il a déjà voté)"
+      operationId: "getBallotByUser"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/html"
+      parameters:
+      - name: "userLogin"
+        in: "path"
+        description: "Login de l'utilisateur"
+        required: true
+        type: string
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Ballot"
+          examples:
+            application/json:
+              - "http://localhost:8080/election/ballots/1"
+            application/xml: "<ballot>http://localhost:8080/election/ballots/1</ballot>"
+            text/html: page HTML contenant l'URI du vote
+        401:
+          description: "Utilisateur non authentifié"
+        403:
+          description: "Utilisateur non administrateur ou non propriétaire du ballot"
+        404:
+          description: "Utilisateur ou ballot non trouvé"
+      security:
+        - bearer_auth: []
+
+  /election/votes/{voteId}:
+    get:
+      tags:
+      - "votes"
+      summary: "Récupérer un vote"
+      description: "Renvoie une représentation vide d'un vote (permet de savoir si l'utilisateur en est propriétaire)"
+      operationId: "getVoteById"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/html"
+      parameters:
+      - name: "voteId"
+        in: "path"
+        description: "Id du vote"
+        required: true
+        type: integer
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/EmptyVote"
+        401:
+          description: "Utilisateur non authentifié"
+        403:
+          description: "Utilisateur non administrateur ou non propriétaire du vote"
+        404:
+          description: "Vote non trouvé"
+      security:
+        - bearer_auth: []
+  /election/votes/byUser/{userLogin}:
+    get:
+      tags:
+      - "votes"
+      summary: "Récupérer le vote d'un utilisateur"
+      description: "Renvoie l'URI du vote de l'utilisateur indiqué (s'il a déjà voté)"
+      operationId: "getVoteByUser"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/html"
+      parameters:
+      - name: "userLogin"
+        in: "path"
+        description: "Login de l'utilisateur"
+        required: true
+        type: string
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/EmptyVote"
+          examples:
+            application/json:
+              - "http://localhost:8080/election/votes/1"
+            application/xml: "<vote>http://localhost:8080/election/votes/1</vote>"
+            text/html: page HTML vide
+        401:
+          description: "Utilisateur non authentifié"
+        403:
+          description: "Utilisateur non administrateur ou non propriétaire du vote"
+        404:
+          description: "Utilisateur ou vote non trouvé"
+      security:
+        - bearer_auth: []
+    put:
+      tags:
+      - "votes"
+      summary: "Mettre à jour le vote d'un utilisateur"
+      description: "Met à jour le vote d'un utilisateur avec la valeur en paramètre, sans modifier son Id ni celle du ballot"
+      operationId: "updateVote"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      - "application/x-www-form-urlencoded"
+      parameters:
+      - name: "userLogin"
+        in: "path"
+        description: "Login de l'utilisateur"
+        required: true
+        type: string
+      - in: "body"
+        name: "candidat"
+        description: "Candidat choisi"
+        required: true
+        schema:
+          $ref: "#/definitions/NomCandidat"
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        204:
+          description: "Vote correctement modifié"
+        400:
+          description: "Paramètres de la requête non acceptables"
+        401:
+          description: "Utilisateur non authentifié"
+        403:
+          description: "Utilisateur non administrateur ou pas celui qui est logué"
+        404:
+          description: "Utilisateur ou vote non trouvé"
+      security:
+        - bearer_auth: []
+
+  /users:
+    get:
+      tags:
+      - "users"
+      summary: "Récupérer la liste des utilisateurs"
+      description: "Renvoie les URI de tous les utilisateurs"
+      operationId: "getAllUsers"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/html"
+      parameters:
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/Users"
+          examples:
+            application/json:
+              - "http://localhost:8080/users/toto"
+              - "http://localhost:8080/users/titi"
+            application/xml: "<users>\n  <user>http://localhost:8080/users/toto</user>\n  <user>http://localhost:8080/users/titi</user>\n</users>"
+            text/html: page HTML contenant la liste
+        401:
+          description: "Utilisateur non authentifié"
+        403:
+          description: "Utilisateur non administrateur"
+      security:
+        - bearer_auth: []
+  /users/{userLogin}:
+    get:
+      tags:
+      - "users"
+      summary: "Récupérer un utilisateur"
+      description: "Renvoie une représentation d'un utilisateur"
+      operationId: "getUserById"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/html"
+      parameters:
+      - name: "userLogin"
+        in: "path"
+        description: "Login de l'utilisateur"
+        required: true
+        type: string
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        200:
+          description: "successful operation"
+          schema:
+            $ref: "#/definitions/User"
+        401:
+          description: "Utilisateur non authentifié"
+        403:
+          description: "Utilisateur non administrateur ou pas celui qui est logué"
+        404:
+          description: "Utilisateur non trouvé"
+      security:
+        - bearer_auth: []
+
+  /users/{userLogin}/nom:
+    put:
+      tags:
+      - "users"
+      summary: "Mettre à jour le nom d'un utilisateur"
+      description: "Met à jour le champ nom d'un utilisateur avec la valeur en paramètre"
+      operationId: "updateNom"
+      consumes:
+      - "application/json"
+      - "application/xml"
+      - "application/x-www-form-urlencoded"
+      parameters:
+      - name: "userLogin"
+        in: "path"
+        description: "Login de l'utilisateur"
+        required: true
+        type: string
+      - in: "body"
+        name: "nom"
+        description: "Nom de l'utilisateur"
+        required: true
+        schema:
+          $ref: "#/definitions/NomUser"
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        204:
+          description: "User correctement modifié"
+        400:
+          description: "Paramètres de la requête non acceptables"
+        401:
+          description: "Utilisateur non authentifié"
+        403:
+          description: "Utilisateur non administrateur ou pas celui qui est logué"
+        404:
+          description: "Utilisateur non trouvé"
+      security:
+        - bearer_auth: []
+
+  /users/{userLogin}/ballot:
+    get:
+      tags:
+      - "users"
+      summary: "Récupérer le ballot d'un utilisateur"
+      description: "Renvoie l'URI du ballot de l'utilisateur demandé"
+      operationId: "getBallotByUserFromUser"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/html"
+      parameters:
+      - name: "userLogin"
+        in: "path"
+        description: "Id de l'utilisateur'"
+        required: true
+        type: string
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        303:
+          description: "Redirection vers l'URL du ballot de cet utilisateur"
+          headers:
+            Location:
+              type: string
+              description: "URL à interroger pour le ballot de cet utilisateur"
+        401:
+          description: "Utilisateur non authentifié"
+        403:
+          description: "Utilisateur non administrateur ou non propriétaire du ballot"
+      security:
+        - bearer_auth: []
+  /users/{userLogin}/vote:
+    get:
+      tags:
+      - "users"
+      summary: "Récupérer le vote d'un utilisateur"
+      description: "Renvoie l'URI du vote de l'utilisateur demandé"
+      operationId: "getVoteByUserFromUser"
+      produces:
+      - "application/json"
+      - "application/xml"
+      - "text/html"
+      parameters:
+      - name: "userLogin"
+        in: "path"
+        description: "Id de l'utilisateur'"
+        required: true
+        type: string
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        303:
+          description: "Redirection vers l'URL du vote de cet utilisateur"
+          headers:
+            Location:
+              type: string
+              description: "URL à interroger pour le vote de cet utilisateur"
+        401:
+          description: "Utilisateur non authentifié"
+        403:
+          description: "Utilisateur non administrateur ou non propriétaire du vote"
+      security:
+        - bearer_auth: []
+  /users/login:
+    post:
+      tags:
+      - "users"
+      summary: "Connecter un utilisateur"
+      description: "Connecte un utilisateur à l'aide d'un token JWT. Remarque : il est créé s'il n'existait pas déjà mais dans une application normale, il ne devrait pas l'être. D'où le code 204 et non 201."
+      operationId: "loginUser"
+      consumes:
+      - "application/json"
+      - "application/x-www-form-urlencoded"
+      - "application/xml"
+      parameters:
+      - name: "user"
+        in: "body"
+        description: "login de l'utilisateur"
+        required: true
+        schema:
+          $ref: "#/definitions/User"
+      responses:
+        204:
+          description: "Utilisateur logué."
+          headers:
+            Authorization:
+              type: string
+              description: "le token d'authentification"
+            Location:
+              type: string
+              description: "URL de l'utilisateur"
+        400:
+          description: "Paramètres de la requête non acceptables"
+  /users/logout:
+    post:
+      tags:
+      - "users"
+      summary: "Déconnexion de l'utilisateur connecté"
+      description: "Déconnecte l'utilisateur sans l'enlever de la liste. Si vous passez l'authentification dans des headers HTTP, cette méthode ne fait rien mais répond que l'opération s'est bien passée."
+      operationId: "logoutUser"
+      parameters:
+      - $ref: "#/securityDefinitions/bearer_auth"
+      responses:
+        204:
+          description: "successful operation"
+        401:
+          description: "Utilisateur non authentifié"
+
+securityDefinitions:
+  bearer_auth:
+    type: apiKey
+    in: header
+    name: Authorization
+
+definitions:
+  Resultats:
+    type: array
+    items:
+      $ref: "#/definitions/ResultatCandidat"
+    xml:
+      name: "resultats"
+  ResultatCandidat:
+    type: object
+    properties:
+      nomCandidat:
+        type: string
+        readOnly: true
+      votes:
+        type: integer
+        default: 0
+        readOnly: true
+    xml:
+      name: "resultat"
+  Candidats:
+    type: array
+    items:
+      type: string
+    xml:
+      name: "candidats"
+  CandidatNames:
+    type: array
+    items:
+      type: string
+    xml:
+      name: "nomsCandidats"
+  Candidat:
+    type: object
+    properties:
+      nomCandidat:
+        type: string
+        readOnly: true
+      prenomCandidat:
+        type: string
+        readOnly: true
+    xml:
+      name: "candidat"
+  Ballots:
+    type: array
+    items:
+      type: string
+    xml:
+      name: "ballots"
+  Ballot:
+    type: object
+    properties:
+      vote:
+        type: string
+    xml:
+      name: "ballot"
+  Vote:
+    type: object
+    properties:
+      nomCandidat:
+        type: string
+    xml:
+      name: vote
+  EmptyVote:
+    type: object
+
+  Users:
+    type: array
+    items:
+      type: string
+      xml:
+        name: "user"
+    xml:
+      name: "users"
+  User:
+    type: object
+    properties:
+      login:
+        type: string
+      nom:
+        type: string
+      admin:
+        type: boolean
+        default: "false"
+    xml:
+      name: "user"
+  NomUser:
+    type: object
+    properties:
+      nom:
+        type: string
+    xml:
+      name: "nomUser"
+  NomCandidat:
+    type: object
+    properties:
+      nomCandidat:
+        type: string
+    xml:
+      name: "nomCandidat"
+externalDocs:
+  description: "Voir le sujet du TP"
+  url: "https://perso.liris.cnrs.fr/lionel.medini/enseignement/M1IF03/#md=TP/md/TP4"

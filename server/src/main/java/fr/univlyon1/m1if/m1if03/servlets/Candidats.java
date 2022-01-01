@@ -61,7 +61,9 @@ public class Candidats extends HttpServlet {
                     resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Candidat non trouvé");
                 }
                 assert candidattrouve != null;
-                sendDataAsJSON(resp, candidattrouve.getPrenom() + " " + candidattrouve.getNom());
+                List<Candidat> candidats = new ArrayList<>();
+                candidats.add(candidattrouve);
+                sendDataAsJSON(resp, candidats);
             }
         }
     }
@@ -79,11 +81,13 @@ public class Candidats extends HttpServlet {
 
         if (this.pathUri.length == 3 && this.pathUri[2].equals("update")) { // /election/candidats/update
             this.candidats = (Map<String, Candidat>) req.getServletContext().getAttribute("candidats");
+            resp.setHeader("Authorization", (String) req.getAttribute("token"));
             if (this.candidats.size() == 0) {
                 resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR,
                         "Erreur lors du chargement de la liste");
             } else {
                 this.candidats = (Map<String, Candidat>) req.getServletContext().getAttribute("candidats");
+                resp.setHeader("Authorization", (String) req.getAttribute("token"));
                 if (this.candidats.size() > 0) {
                     resp.sendError(HttpServletResponse.SC_NO_CONTENT,
                             "liste mise à jour");

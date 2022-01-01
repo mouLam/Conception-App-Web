@@ -58,6 +58,7 @@ public class Vote extends HttpServlet {
                         "Utilisateur non administrateur ou non propriétaire du vote");
             }
             List<String> res = new ArrayList<>();
+            response.setHeader("Authorization", (String) request.getAttribute("token"));
             sendDataAsJSON(response, res);
         } else
             if (this.pathUri.length == 4
@@ -82,6 +83,8 @@ public class Vote extends HttpServlet {
                                 request.getServerPort() + "/election/votes/" +
                                 idVote;
                         uriVotant.add(url);
+                        response.setHeader("Authorization", (String) request.getAttribute("token"));
+
                         sendDataAsJSON(response, uriVotant);
                         break;
                     }
@@ -131,6 +134,7 @@ public class Vote extends HttpServlet {
                this.ballots.get(login).setBulletin(b);
                req.getServletContext().setAttribute("ballots", this.ballots);
                //sendDataAsJSON(resp, this.ballots.get(login).getBulletin().getCandidat().getNom());
+               resp.setHeader("Authorization", (String) req.getAttribute("token"));
                resp.sendError(HttpServletResponse.SC_NO_CONTENT, "Vote correctement modifié");
            }
         } else {
