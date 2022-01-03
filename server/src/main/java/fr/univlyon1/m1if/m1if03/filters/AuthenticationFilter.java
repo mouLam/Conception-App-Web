@@ -12,7 +12,9 @@ import java.util.Map;
 @WebFilter(filterName = "AuthenticationFilter", urlPatterns = "/*")
 public class AuthenticationFilter extends HttpFilter {
 
-    private final String[] authorizedURIs = {"/users/login", "/index.html", "/static", "/election/resultats", "/JS"}; // Manque "/", traité plus bas...
+    private final String[] authorizedURIs = {"/users/login", "/index.html",
+            "/static", "/election/resultats",
+            "/JS", "/JSP", "/election/candidats/noms"}; // Manque "/", traité plus bas...
 
     Map<String, User> users;
 

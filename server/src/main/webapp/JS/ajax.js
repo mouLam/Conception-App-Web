@@ -116,3 +116,16 @@ function getXMLTextContent(source)
         return source.text;
     }
 }
+
+function traiteXML(XMLDoc, id) {
+    const ulElement = document.getElementById(id);
+
+    const name = XMLDoc.getElementsByTagName('h')[0];
+    const nameContent = name.childNodes[0].nodeValue;
+    const score = XMLDoc.getElementsByTagName('m')[0];
+    const scoreContent = score.childNodes[0].nodeValue;
+    const li = XMLDoc.createElement("li");
+    li.innerText = nameContent + " : " + scoreContent;
+    ulElement.append(li);
+
+}

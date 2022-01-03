@@ -8,6 +8,8 @@
             integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
             crossorigin="anonymous">
     </script>
+    <script src="JS/ajax.js"></script>
+    <link rel="stylesheet" type="text/css" href="static/style.css" media="all">
 </head>
 
 <body>
@@ -29,9 +31,18 @@
 <section id='index' class='active'>
     <h2>Bienvenue sur l'application Web de la grande élection de 2022 !</h2>
     <p>Résultats courants de l'élection :</p>
-    <ul>
-        <li>...</li>
-    </ul>
+    <div id="ulIndex">
+        <ul id="cands">
+
+        </ul>
+    </div>
+    <!--<script>
+        function getEvery() {
+            loadXMLAsynchroneously('GET', '/scriptTP.js', true, 'cands');
+            console.log("5 secondes");
+            setTimeout("getEvery();", 3000);
+        }
+    </script>-->
     <!--
         A vous de modifier cette section pour qu'elle affiche les résultats en cours et qu'elle se recharge toutes les 5 secondes.
     -->
@@ -84,8 +95,9 @@
 
 <section id='candidats' class='inactive'>
     <h2>Voici la liste des différents candidats</h2>
-    <ul>
-        <li><a href="#candidat/Toto">Toto</a></li>
+    <ul id="listCands">
+<!--        <li><a href="#candidat/Toto">Tata</a></li>-->
+
     </ul>
     <!--
         TODO: générer dynamiquement cette section pour qu'elle affiche les bonnes données.
