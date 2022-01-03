@@ -19,13 +19,13 @@
     <h2 id="menuHeader">Menu</h2>
     <ul id="menuUl">
 
-        <li><a href='#index'>Accueil</a></li>
-        <li><a href='#connect'>Connexion</a></li>
-        <li><a href='#monCompte'>Mon compte</a></li>
-        <li><a href='#candidats'>Candidats</a></li>
-        <li><a href='#vote'>Voter</a></li>
-        <li><a href='#ballot'>Vérifier mon vote</a></li>
-        <li><a href='#deco'>Déconnexion</a></li>
+        <li id="index_link"><a href='#index'>Accueil</a></li>
+        <li id="login_link"><a href='#connect'>Connexion</a></li>
+        <li id="account_link"><a href='#monCompte'>Mon compte</a></li>
+        <li id="candidats_link"><a href='#candidats'>Candidats</a></li>
+        <li id="vote_form_link"><a href='#vote'>Voter</a></li>
+        <li id="vote_link"><a href='#ballot'>Vérifier mon vote</a></li>
+        <li id="logout_link"><a href='#deco'>Déconnexion</a></li>
     </ul>
 </aside>
 <section id='index' class='active'>
@@ -50,7 +50,7 @@
 
 <section id='connect' class='inactive'>
     <h2>Connectez-vous pour pouvoir voter</h2>
-    <form method="post" action="TODO">
+    <form method="post" action="" id="connexion">
         <p>
             <label for="loginForm">Entrez votre login :</label>
             <input type="text" name="loginForm" id="loginForm" autofocus>

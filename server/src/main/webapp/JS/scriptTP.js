@@ -12,6 +12,40 @@ $('#menuHeader').click(() => {
 });
 
 /**
+ * Connexion
+ */
+$("#loginForm").attr('required', '');
+$("#nomForm").attr('required', '');
+$('#connexion').on('submit',(e) => {
+    e.preventDefault();
+    sessionStorage.setItem('status', 'loggedIn');
+    console.log(sessionStorage);
+    console.log("form submitted ?");
+    $.ajax({
+        method : "POST",
+        url : URL + "/election/users/login",
+        contentType : "application/json",
+    }).done((response) => {
+        console.log("yes")
+        login = null;
+        token = null;
+        tokenWithBearer = null;
+    });
+});
+
+if(sessionStorage.getItem('status') == null){
+    $('#vote_link').hide();
+    $('#account_link').hide();
+    $('#vote_form_link').hide();
+}else{
+    $('#login_link').hide();
+    $('#vote_link').show();
+    $('#account_link').show();
+    $('#vote_form_link').show();
+}
+
+
+/**
  * Affichage
  */
 function affichageHash(hash) {
