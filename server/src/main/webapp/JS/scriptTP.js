@@ -39,7 +39,6 @@ function showUserConnectedOptions(bool) {
 
 if (sessionStorage.getItem('status') == null) {
     showUserConnectedOptions(false);
-
 }
 
 /**
@@ -90,30 +89,30 @@ function goToIndex() {
         if (login === null  || login === undefined || login === "") {
             showUserConnectedOptions(false);
             console.log("I don't have options")
-            for (let i = 0; i < response.Elections.length; i++) {
-                var nomCand = response.Elections[i].nomCandidat;
-                var votesCand = response.Elections[i].votes;
-                var new_li = $('<li></li>').addClass('candidat_'+i);
-                new_li.text(nomCand + " : " + votesCand);
-                new_li.appendTo('#cands');
-            }
         } else {
             showUserConnectedOptions(true);
             console.log("I have options");
+        }
+        for (let i = 0; i < response.Elections.length; i++) {
+            var nomCand = response.Elections[i].nomCandidat;
+            var votesCand = response.Elections[i].votes;
+            var new_li = $('<li></li>').addClass('candidat_'+i);
+            new_li.text(nomCand + " : " + votesCand);
+            new_li.appendTo('#cands');
         }
     });
 }
 
 function goToCandidatsNames() {
     console.log("In candidats link");
-    $.ajax({
-        method: "GET",
-        url: URL + "/election/candidats/noms",
-        dataType : "json"
-    }).done((response) => {
-        console.log(response);
-        $('#listCands').empty();
-        if (login === null || login === undefined || login === "") {
+    if (login === null || login === undefined || login === "") {
+        $.ajax({
+            method: "GET",
+            url: URL + "/election/candidats/noms",
+            dataType : "json"
+        }).done((response) => {
+            console.log(response);
+            $('#listCands').empty();
             showUserConnectedOptions(false);
             for (var key in response) {
                 var new_li = $('<li></li>');
@@ -121,9 +120,39 @@ function goToCandidatsNames() {
                 new_li.text(response[key]);
                 new_li.appendTo('#listCands');
             }
-        }
+        });
+    } else {
+        $.ajax({
+            method : "GET",
+            url : URL + "/election/candidats",
+            dataType : "json",
+            headers : {"Authorization" : `${tokenWithBearer}`}
+        }).done((response) => {
+            showUserConnectedOptions(true);
+            $('#listCands').empty();
 
-    });
+            for (let i = 0; i < response.length; i++) {
+                $.ajax({
+                    method : "GET",
+                    url : URL +`/election/candidats/${i}`,
+                    dataType : "json",
+                    headers : {"Authorization" : `${tokenWithBearer}`}
+                }).done((response) => {
+                    for (const responseKey in response) {
+                        let data = response[responseKey];
+                        console.log(data["nom"]);
+                        var new_li = $('<li></li>');
+                        let new_a = $('<a></a>');
+                        new_a.text(data["nom"]);
+                        new_a.attr("href", "#candidat");
+                        new_a.appendTo(new_li)
+                        new_li.appendTo('#listCands');
+                    }
+                });
+            }
+        });
+    }
+
 }
 
 function connectUser() {
