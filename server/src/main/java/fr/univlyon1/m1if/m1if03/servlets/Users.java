@@ -18,6 +18,7 @@ import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -114,7 +115,7 @@ public class Users extends HttpServlet {
         //User session = (User) req.getServletContext().getAttribute("user");
         if (this.pathUri.length == 2) {
             if (this.pathUri[1].equals("login")) {
-                // Jackson ObjectMapper class and how to serialize Java objects into JSON
+                // Jackson ObjectMapper c lass and how to serialize Java objects into JSON
                 // and deserialize JSON string into Java objects.
                 ObjectMapper mapper = new ObjectMapper();
                 TypeReference<Map<String, String>> ref = new TypeReference<Map<String, String>>(){};
@@ -124,11 +125,10 @@ public class Users extends HttpServlet {
                 String uriUser = req.getRequestURI() + "/" + newUser.getLogin();
 
                 String token = ElectionM1if03JwtHelper.generateToken(uriUser, newUser.isAdmin(), req);
-                resp.setHeader("Authorization", "Bearer "+token);
+                resp.setHeader("Authorization", "Bearer " + token);
                 req.getServletContext().setAttribute("user", newUser);
                 this.users.put(newUser.getLogin(), newUser);
                 req.getServletContext().setAttribute("users", this.users);
-                sendDataAsJSON(resp, token);
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else if (this.pathUri[1].equals("logout")) {
                 User userSession = (User) req.getServletContext().getAttribute("user");

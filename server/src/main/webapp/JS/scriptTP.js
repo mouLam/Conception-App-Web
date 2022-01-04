@@ -1,6 +1,8 @@
 let URL = "http://localhost:8080/v3_war"
 let login;
+let tokenWithBearer;
 let token;
+
 
 let menuForConnected = ["#monCompte", "#vote", "#ballot", "#deco"];
 
@@ -14,36 +16,31 @@ $('#menuHeader').click(() => {
 /**
  * Connexion
  */
+
 $("#loginForm").attr('required', '');
 $("#nomForm").attr('required', '');
-$('#connexion').on('submit',(e) => {
-    e.preventDefault();
-    sessionStorage.setItem('status', 'loggedIn');
-    console.log(sessionStorage);
-    console.log("form submitted ?");
-    $.ajax({
-        method : "POST",
-        url : URL + "/election/users/login",
-        contentType : "application/json",
-    }).done((response) => {
-        console.log("yes")
-        login = null;
-        token = null;
-        tokenWithBearer = null;
-    });
-});
 
-if(sessionStorage.getItem('status') == null){
-    $('#vote_link').hide();
-    $('#account_link').hide();
-    $('#vote_form_link').hide();
-}else{
-    $('#login_link').hide();
-    $('#vote_link').show();
-    $('#account_link').show();
-    $('#vote_form_link').show();
+
+function showUserConnectedOptions(bool) {
+    if(bool === false){
+        $('#vote_link').hide();
+        $('#account_link').hide();
+        $('#vote_form_link').hide();
+        $('#logout_link').hide();
+        $('#login_link').show();
+    }else{
+        $('#login_link').hide();
+        $('#vote_link').show();
+        $('#account_link').show();
+        $('#vote_form_link').show();
+        $('#logout_link').show();
+    }
 }
 
+if (sessionStorage.getItem('status') == null) {
+    showUserConnectedOptions(false);
+
+}
 
 /**
  * Affichage
@@ -55,7 +52,6 @@ function affichageHash(hash) {
     $(hash)
         .removeClass('inactive')
         .addClass('active');
-
 }
 
 /**
@@ -67,15 +63,33 @@ window.addEventListener('hashchange', (event) => {
     event.preventDefault();
 
     if (link === "index") {
-        console.log("In index link");
-        $.ajax({
-            method: "GET",
-            url: URL + "/election/resultats",
-            dataType : "json"
-        })
-        .done((response) => {
-            //console.log(response);
-            //console.log(response.Elections);
+        goToIndex();
+    } else if (link === "candidats") {
+        goToCandidatsNames();
+    } else if (link === "connect") {
+        connectUser();
+    } else if (link === "deco") {
+        disconnectUser();
+    }
+
+    console.log("Hash : " + hash);
+    affichageHash(hash);
+})
+
+/**
+ * Fonctions
+ */
+function goToIndex() {
+    console.log("In index link");
+    $.ajax({
+        method: "GET",
+        url: URL + "/election/resultats",
+        dataType : "json"
+    }).done((response) => {
+        $('#cands').empty();
+        if (login === null  || login === undefined || login === "") {
+            showUserConnectedOptions(false);
+            console.log("I don't have options")
             for (let i = 0; i < response.Elections.length; i++) {
                 var nomCand = response.Elections[i].nomCandidat;
                 var votesCand = response.Elections[i].votes;
@@ -83,24 +97,79 @@ window.addEventListener('hashchange', (event) => {
                 new_li.text(nomCand + " : " + votesCand);
                 new_li.appendTo('#cands');
             }
-        });
-    } else if (link === "candidats") {
-        console.log("In conenct link");
-        $.ajax({
-            method: "GET",
-            url: URL + "/election/candidats/noms",
-            dataType : "json"
-        }).done((response) => {
-            console.log(response);
+        } else {
+            showUserConnectedOptions(true);
+            console.log("I have options");
+        }
+    });
+}
+
+function goToCandidatsNames() {
+    console.log("In candidats link");
+    $.ajax({
+        method: "GET",
+        url: URL + "/election/candidats/noms",
+        dataType : "json"
+    }).done((response) => {
+        console.log(response);
+        $('#listCands').empty();
+        if (login === null || login === undefined || login === "") {
+            showUserConnectedOptions(false);
             for (var key in response) {
                 var new_li = $('<li></li>');
                 console.log(response[key]);
                 new_li.text(response[key]);
                 new_li.appendTo('#listCands');
             }
-        });
+        }
 
-    }
-    console.log("Hash : " + hash);
-    affichageHash(hash);
-})
+    });
+}
+
+function connectUser() {
+    $('#connexion').on('submit',(e) => {
+        e.preventDefault();
+        let formData = new FormData();
+        formData.append("login", $('#loginForm').val());
+        formData.append("nom", $('#nomForm').val());
+        formData.append("admin", $('#adminForm').is(':checked'));
+        let payload = JSON.stringify(Object.fromEntries(formData)) ;
+
+        sessionStorage.setItem('status', 'loggedIn');
+        console.log(sessionStorage);
+
+        $.ajax({
+            method : "POST",
+            url : URL + "/users/login",
+            contentType : "application/json",
+            dataType : "json",
+            data : payload,
+        }).done(function (response, textStatus, request) {
+            //console.log(request.getAllResponseHeaders());
+            tokenWithBearer = request.getResponseHeader("Authorization");
+            token = tokenWithBearer.replace("Bearer ", "");
+            login = $('#loginForm').val();
+            showUserConnectedOptions(true);
+            window.location.assign(window.location.origin + "/v3_war/index.html#index")
+        });
+    });
+}
+
+function disconnectUser() {
+    $('#deco').on("submit", (e) => {
+        e.preventDefault();
+        $.ajax({
+            method : "POST",
+            url : URL + "/users/logout",
+            contentType : "application/json",
+            dataType : "json",
+        }).done( () => {
+            window.location.assign(window.location.origin + "/v3_war/index.html#index");
+            sessionStorage.setItem("status", null);
+            login = null;
+            token = null;
+            tokenWithBearer = null;
+            showUserConnectedOptions(false);
+        });
+    });
+}
