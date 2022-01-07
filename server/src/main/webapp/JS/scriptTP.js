@@ -188,6 +188,29 @@ function goToVotePage(){
                 }
             });
         }
+        $('#vote-form').on('submit', (e) => {
+            e.preventDefault();
+            console.log("vote submitted");
+            sendVote();
+        });
+    });
+}
+
+function sendVote() {
+    console.log("inside send vote function");
+    let formData = new FormData();
+    formData.append("nomCandidat", $('#candidat-select').val());
+    let payload = JSON.stringify(Object.fromEntries(formData)) ;
+    console.log(formData);
+    $.ajax({
+        method : "POST",
+        url : URL + "/election/ballots",
+        contentType : "application/json",
+        dataType : "json",
+        headers : {"Authorization" : `${tokenWithBearer}`},
+        data : payload,
+    }).done((response) => {
+        window.location.assign(window.location.origin + "/v3_war/index.html#ballot");
     });
 }
 
