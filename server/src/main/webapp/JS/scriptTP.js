@@ -1,10 +1,12 @@
+
 let URL = "http://localhost:8080/v3_war"
 let login;
 let tokenWithBearer;
 let token;
 
-
-let menuForConnected = ["#monCompte", "#vote", "#ballot", "#deco"];
+let idsLinkTemplate = ["#index-template", "#monCompte-template",
+                    "#candidats-template", "#candidat-template",
+                    "#ballot-template"];
 
 /**
  * Plier et déplier le menu
@@ -14,12 +16,16 @@ $('#menuHeader').click(() => {
 });
 
 /**
+ *  Edition input du nom de l'utilisateur
+ */
+$('input').attr("contentEditable", "true");
+
+/**
  * Connexion
  */
 
 $("#loginForm").attr('required', '');
 $("#nomForm").attr('required', '');
-
 
 function showUserConnectedOptions(bool) {
     if(bool === false){
@@ -56,19 +62,30 @@ function affichageHash(hash) {
 /**
  * Routage
  */
-window.addEventListener('hashchange', (event) => {
+window.addEventListener('hashchange', () => {
     let hash = window.location.hash;
     let link = hash.replace('#', '').toString();
-    event.preventDefault();
 
-    if (link === "index") {
-        goToIndex();
-    } else if (link === "candidats") {
+    if (idsLinkTemplate.includes(`${hash}-template`)) {
+        console.log("YES");
+        if (link === "index") {
+            goToIndex();
+        }
+
+    }
+
+    if (link === "candidats") {
         goToCandidatsNames();
     } else if (link === "connect") {
         connectUser();
     } else if (link === "deco") {
         disconnectUser();
+    } else if (link === "monCompte") {
+        myAccount();
+        $("#changeNameAccount").on('submit', (e) => {
+            e.preventDefault();
+            changeName();
+        });
     }
 
     console.log("Hash : " + hash);
@@ -80,6 +97,7 @@ window.addEventListener('hashchange', (event) => {
  */
 function goToIndex() {
     console.log("In index link");
+    //let resultatsElection = [];
     $.ajax({
         method: "GET",
         url: URL + "/election/resultats",
@@ -93,13 +111,20 @@ function goToIndex() {
             showUserConnectedOptions(true);
             console.log("I have options");
         }
+        templateThis("#index-template",
+            {results : response.Elections},
+            "#index ul");
+
+        // OU BIEN
+        /*let json = {}
         for (let i = 0; i < response.Elections.length; i++) {
-            var nomCand = response.Elections[i].nomCandidat;
-            var votesCand = response.Elections[i].votes;
-            var new_li = $('<li></li>').addClass('candidat_'+i);
-            new_li.text(nomCand + " : " + votesCand);
-            new_li.appendTo('#cands');
-        }
+            json = {
+                nomCand : response.Elections[i].nomCandidat,
+                votesCand : response.Elections[i].votes
+            }
+            resultatsElection.push(json);
+            console.log("JSON : " + json.nomCand);
+        }*/
     });
 }
 
@@ -192,6 +217,7 @@ function disconnectUser() {
             url : URL + "/users/logout",
             contentType : "application/json",
             dataType : "json",
+            header : {"Authorization" : `${tokenWithBearer}`}
         }).done( () => {
             window.location.assign(window.location.origin + "/v3_war/index.html#index");
             sessionStorage.setItem("status", null);
@@ -201,4 +227,62 @@ function disconnectUser() {
             showUserConnectedOptions(false);
         });
     });
+}
+
+function myAccount() {
+    console.log("In account link");
+    $('#errMsg').empty()
+    $.ajax({
+        method: "GET",
+        url: URL + `/users/${login}`,
+        dataType : "json",
+        headers : {"Authorization" : `${tokenWithBearer}`}
+    }).done((response) => {
+        //console.log(response);
+        $("#login").text(response["login"]);
+        $("#nom").text(response["nom"]);
+        $("#admin").text(response["admin"]);
+    }).fail((error) => {
+        $('#errMsg').text("La requête s'est terminée en échec. Infos : "
+            + JSON.stringify(error));
+    });
+}
+
+function changeName() {
+    console.log("In account changeName link");
+    let formData = new FormData();
+    let nom = $('#nomChange').val();
+    formData.append("nom", nom);
+    let payload = JSON.stringify(Object.fromEntries(formData));
+    $.ajax({
+        method: "PUT",
+        url: URL + `/users/${login}/nom`,
+        data: payload,
+        dataType: "json",
+        header: {
+            "Content-Type": "application/json;charset=UTF-8",
+            "Authorization": `${tokenWithBearer}`,
+            "Cache-Control" : "no-cache"
+        },
+        contentType: "application/json"
+    }).done((response) => {
+        window.location.assign(window.location.origin + "/v3_war/index.html#monCompte");
+        $('#nom').empty().text(response["nom"]);
+        $('#nomChange').val("");
+
+    }).fail((error) => {
+        console.log(error);
+    });
+
+}
+
+/**
+ * Mustache templating
+ */
+function templateThis(idScriptToTemplate, data, idHtmlElement) {
+    let template = $(idScriptToTemplate).html();
+    Mustache.parse(template);
+    let rendered = Mustache.render(template, data);
+    console.log("Data in template : " + data);
+    $(`${idHtmlElement}`).html(rendered);
 }

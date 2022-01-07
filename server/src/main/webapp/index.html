@@ -8,6 +8,9 @@
             integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
             crossorigin="anonymous">
     </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"
+            integrity="sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="JS/ajax.js"></script>
     <link rel="stylesheet" type="text/css" href="static/style.css" media="all">
 </head>
@@ -31,11 +34,9 @@
 <section id='index' class='active'>
     <h2>Bienvenue sur l'application Web de la grande élection de 2022 !</h2>
     <p>Résultats courants de l'élection :</p>
-    <div id="ulIndex">
-        <ul id="cands">
+    <ul id="cands">
 
-        </ul>
-    </div>
+    </ul>
     <!--<script>
         function getEvery() {
             loadXMLAsynchroneously('GET', '/scriptTP.js', true, 'cands');
@@ -47,6 +48,12 @@
         A vous de modifier cette section pour qu'elle affiche les résultats en cours et qu'elle se recharge toutes les 5 secondes.
     -->
 </section>
+
+<script id="index-template" type="x-tmpl-mustache">
+    {{#results}}
+        <li> <span id="{{nomCandidat}}"> {{nomCandidat}} - {{votes}} vote(s)</span></li>
+    {{/results}}
+</script>
 
 <section id='connect' class='inactive'>
     <h2>Connectez-vous pour pouvoir voter</h2>
@@ -75,9 +82,9 @@
         <li>Nom : <span id="nom"></span></li>
         <li>Admin : <span id="admin"></span></li>
     </ul>
-    <form method="post" action="TODO">
+    <form method="post" action="" id="changeNameAccount">
         <p>Modifier mon nom :
-            <input type="text" name="nom">
+            <input type="text" name="nom" id="nomChange">
             <input type="submit" value="Modifier">
         </p>
     </form>
@@ -143,6 +150,6 @@
     </div>
 </footer>
 
+<script src="https://unpkg.com/mustache@latest"></script>
 <script type="text/javascript" src="JS/scriptTP.js"></script>
-
 </html>
