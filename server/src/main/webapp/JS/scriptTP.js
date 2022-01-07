@@ -66,15 +66,9 @@ window.addEventListener('hashchange', () => {
     let hash = window.location.hash;
     let link = hash.replace('#', '').toString();
 
-    if (idsLinkTemplate.includes(`${hash}-template`)) {
-        console.log("YES");
-        if (link === "index") {
-            goToIndex();
-        }
-
-    }
-
-    if (link === "candidats") {
+    if (link === "index") {
+        goToIndex();
+    } else if (link === "candidats") {
         goToCandidatsNames();
     } else if (link === "connect") {
         connectUser();
@@ -116,17 +110,6 @@ function goToIndex() {
         templateThis("#index-template",
             {results : response.Elections},
             "#index ul");
-
-        // OU BIEN
-        /*let json = {}
-        for (let i = 0; i < response.Elections.length; i++) {
-            json = {
-                nomCand : response.Elections[i].nomCandidat,
-                votesCand : response.Elections[i].votes
-            }
-            resultatsElection.push(json);
-            console.log("JSON : " + json.nomCand);
-        }*/
     });
 }
 
@@ -141,23 +124,21 @@ function goToCandidatsNames() {
             console.log(response);
             $('#listCands').empty();
             showUserConnectedOptions(false);
-            for (var key in response) {
-                var new_li = $('<li></li>');
-                console.log(response[key]);
-                new_li.text(response[key]);
-                new_li.appendTo('#listCands');
-            }
+            templateThis("#candidats-template",
+                {candidatsUserNotConnected : response},
+                "#candidats ul");
         });
     } else {
+        let datas = [];
         $.ajax({
             method : "GET",
             url : URL + "/election/candidats",
             dataType : "json",
             headers : {"Authorization" : `${tokenWithBearer}`}
         }).done((response) => {
+            console.log("First : " + response)
             showUserConnectedOptions(true);
             $('#listCands').empty();
-
             for (let i = 0; i < response.length; i++) {
                 $.ajax({
                     method : "GET",
@@ -165,21 +146,18 @@ function goToCandidatsNames() {
                     dataType : "json",
                     headers : {"Authorization" : `${tokenWithBearer}`}
                 }).done((response) => {
-                    for (const responseKey in response) {
+                    for (let responseKey in response) {
                         let data = response[responseKey];
-                        console.log(data["nom"]);
-                        var new_li = $('<li></li>');
-                        let new_a = $('<a></a>');
-                        new_a.text(data["nom"]);
-                        new_a.attr("href", "#candidat");
-                        new_a.appendTo(new_li)
-                        new_li.appendTo('#listCands');
+                        // data = { prenom : "", nom : "" }
+                        datas.push(data);
                     }
+                    templateThis("#candidats-template",
+                        {candidatsUserConnected : datas},
+                        "#candidats ul");
                 });
             }
         });
     }
-
 }
 
 function goToVotePage(){
@@ -271,10 +249,10 @@ function myAccount() {
         dataType : "json",
         headers : {"Authorization" : `${tokenWithBearer}`}
     }).done((response) => {
-        //console.log(response);
-        $("#login").text(response["login"]);
-        $("#nom").text(response["nom"]);
-        $("#admin").text(response["admin"]);
+        console.log(response);
+        templateThis("#monCompte-template",
+                {infoUser : response},
+                        "#monCompte ul");
     }).fail((error) => {
         $('#errMsg').text("La requête s'est terminée en échec. Infos : "
             + JSON.stringify(error));
@@ -302,7 +280,6 @@ function changeName() {
         window.location.assign(window.location.origin + "/v3_war/index.html#monCompte");
         $('#nom').empty().text(response["nom"]);
         $('#nomChange').val("");
-
     }).fail((error) => {
         console.log(error);
     });

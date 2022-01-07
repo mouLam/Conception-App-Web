@@ -48,7 +48,6 @@
         A vous de modifier cette section pour qu'elle affiche les résultats en cours et qu'elle se recharge toutes les 5 secondes.
     -->
 </section>
-
 <script id="index-template" type="x-tmpl-mustache">
     {{#results}}
         <li> <span id="{{nomCandidat}}"> {{nomCandidat}} - {{votes}} vote(s)</span></li>
@@ -78,9 +77,7 @@
 <section id='monCompte' class='inactive'>
     <h2>Mon compte</h2>
     <ul id='compteList'>
-        <li>Login : <span id="login"></span></li>
-        <li>Nom : <span id="nom"></span></li>
-        <li>Admin : <span id="admin"></span></li>
+
     </ul>
     <form method="post" action="" id="changeNameAccount">
         <p>Modifier mon nom :
@@ -90,6 +87,14 @@
     </form>
     <p><a href='#deco'>Déconnexion</a></p>
 </section>
+<script id="monCompte-template" type="x-tmpl-mustache">
+    {{#infoUser}}
+        <li>Login : <span id="login">{{login}}</span></li>
+        <li>Nom : <span id="nom">{{nom}}</span></li>
+        <li>Admin : <span id="admin">{{admin}}</span></li>
+    {{/infoUser}}
+</script>
+
 <section id='deco' class='inactive'>
     <h2>Déconnexion</h2>
     <form method="post" action="" id="disconnect">
@@ -110,6 +115,17 @@
         TODO: générer dynamiquement cette section pour qu'elle affiche les bonnes données.
     -->
 </section>
+<script id="candidats-template" type="x-tmpl-mustache">
+    {{#candidatsUserNotConnected}}
+        <li>{{.}}</li>
+    {{/candidatsUserNotConnected}}
+
+    {{#candidatsUserConnected}}
+        <li><a href="#candidat">{{nom}}</a></li>
+    {{/candidatsUserConnected}}
+</script>
+
+
 <section id='candidat' class='inactive'>
     <h2>Informations sur un candidat</h2>
     <p>Nom complet : ... ...</p>
