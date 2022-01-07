@@ -86,6 +86,8 @@ window.addEventListener('hashchange', () => {
             e.preventDefault();
             changeName();
         });
+    } else if (link === "vote") {
+        goToVotePage();
     }
 
     console.log("Hash : " + hash);
@@ -178,6 +180,37 @@ function goToCandidatsNames() {
         });
     }
 
+}
+
+function goToVotePage(){
+    console.log("In vote link");
+    $.ajax({
+        method : "GET",
+        url : URL + "/election/candidats",
+        dataType : "json",
+        headers : {"Authorization" : `${tokenWithBearer}`}
+    }).done((response) => {
+        showUserConnectedOptions(true);
+        $('#candidat-select').empty();
+
+        for (let i = 0; i < response.length; i++) {
+            $.ajax({
+                method : "GET",
+                url : URL +`/election/candidats/${i}`,
+                dataType : "json",
+                headers : {"Authorization" : `${tokenWithBearer}`}
+            }).done((response) => {
+                for (const responseKey in response) {
+                    let data = response[responseKey];
+                    console.log(data["nom"]);
+                    var new_opt = $('<option></option>');
+                    new_opt.text(data["nom"]);
+                    new_opt.attr("href", "#candidat");
+                    new_opt.appendTo('#candidat-select');
+                }
+            });
+        }
+    });
 }
 
 function connectUser() {
