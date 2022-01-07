@@ -34,19 +34,7 @@
 <section id='index' class='active'>
     <h2>Bienvenue sur l'application Web de la grande élection de 2022 !</h2>
     <p>Résultats courants de l'élection :</p>
-    <ul id="cands">
-
-    </ul>
-    <!--<script>
-        function getEvery() {
-            loadXMLAsynchroneously('GET', '/scriptTP.js', true, 'cands');
-            console.log("5 secondes");
-            setTimeout("getEvery();", 3000);
-        }
-    </script>-->
-    <!--
-        A vous de modifier cette section pour qu'elle affiche les résultats en cours et qu'elle se recharge toutes les 5 secondes.
-    -->
+    <ul id="cands"></ul>
 </section>
 <script id="index-template" type="x-tmpl-mustache">
     {{#results}}
