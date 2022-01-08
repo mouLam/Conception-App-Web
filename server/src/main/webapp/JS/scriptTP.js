@@ -80,6 +80,8 @@ $(document).ready(function() {
             });
         } else if (link === "vote") {
             goToVotePage();
+        } else if (link === "ballot") {
+            goToUserBallot();
         }
 
         console.log("Hash : " + hash);
@@ -177,6 +179,7 @@ $(document).ready(function() {
                         dataType : "json",
                         headers : {"Authorization" : `${tokenWithBearer}`}
                     }).done((response) => {
+                        console.log(response);
                         for (let responseKey in response) {
                             let data = response[responseKey];
                             candidates.push(data);
@@ -190,6 +193,26 @@ $(document).ready(function() {
                     e.preventDefault();
                     sendVote();
                 });
+            });
+        }
+    }
+
+    function goToUserBallot(){
+        if (login === null || login === undefined || login === ""){
+            window.location.assign(window.location.origin + "/v3_war/index.html#index");
+        }else {
+            console.log("inside ballot function");
+            $.ajax({
+                method: "GET",
+                //url: URL + "/election/ballots/byUser/" + sessionStorage.getItem("login"),
+                url: URL + `/election/ballots/byUser/${login}`,
+                contentType: "application/json",
+                dataType: "json",
+                headers: {"Authorization": `${tokenWithBearer}`},
+            }).done((response) => {
+                console.log(response);
+                //templateThis("#ballot-template", {});
+                //window.location.assign(window.location.origin + "/v3_war/index.html#ballot");
             });
         }
     }
@@ -212,6 +235,8 @@ $(document).ready(function() {
         });
     }
 
+    function deleteVote() {}
+
     function connectUser() {
         $('#connexion').on('submit',(e) => {
             e.preventDefault();
@@ -222,6 +247,7 @@ $(document).ready(function() {
             let payload = JSON.stringify(Object.fromEntries(formData)) ;
 
             sessionStorage.setItem('status', 'loggedIn');
+            sessionStorage.setItem('login', $('#loginForm').val());
             console.log(sessionStorage);
 
             $.ajax({

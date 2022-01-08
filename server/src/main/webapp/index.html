@@ -129,9 +129,16 @@
 <section id='ballot' class='inactive'>
     <h2>Ma preuve de vote</h2>
     <p>Votre vote a bien été enrgistré.</p>
-    <form method="post" action="TODO"><input type="submit" name="action" value="Supprimer votre vote"></form>
+    <form method="post" action="">
+        <input type="submit" name="action" value="Supprimer votre vote">
+    </form>
     <!-- TODO : vérifier le ballot avant d'afficher ce contenu et le remplacer par un autre message si l'utilisateur n'a pas voté.-->
 </section>
+<script id="ballot-template" type="x-tmpl-mustache">
+    {{#ballotUserConnected}}
+        <h3>{{vote}}</h3>
+    {{/ballotUserConnected}}
+</script>
 
 </body>
 <footer>
