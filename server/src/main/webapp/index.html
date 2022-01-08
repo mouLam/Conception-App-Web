@@ -1,7 +1,7 @@
 <!doctype html>
 <html lang="fr">
 <head>
-    <title>&Eacute;lection M1IF03</title>
+    <title>&Eacute;lections M1IF03</title>
     <meta charset="UTF-8">
     <script
             src="https://code.jquery.com/jquery-3.6.0.js"
@@ -31,6 +31,7 @@
         <li id="logout_link"><a href='#deco'>Déconnexion</a></li>
     </ul>
 </aside>
+
 <section id='index' class='active'>
     <h2>Bienvenue sur l'application Web de la grande élection de 2022 !</h2>
     <p>Résultats courants de l'élection :</p>
@@ -38,7 +39,7 @@
 </section>
 <script id="index-template" type="x-tmpl-mustache">
     {{#results}}
-        <li> <span id="{{nomCandidat}}"> {{nomCandidat}} - {{votes}} vote(s)</span></li>
+        <li><span id="{{nomCandidat}}">{{nomCandidat}} - {{votes}} vote(s)</span></li>
     {{/results}}
 </script>
 
@@ -62,6 +63,7 @@
         </p>
     </form>
 </section>
+
 <section id='monCompte' class='inactive'>
     <h2>Mon compte</h2>
     <ul id='compteList'>
@@ -95,13 +97,8 @@
 
 <section id='candidats' class='inactive'>
     <h2>Voici la liste des différents candidats</h2>
-    <ul id="listCands">
-<!--        <li><a href="#candidat/Toto">Toto</a></li>-->
-
-    </ul>
-    <!--
-        TODO: générer dynamiquement cette section pour qu'elle affiche les bonnes données.
-    -->
+    <ul id="listCands"></ul>
+    <!--TODO: générer dynamiquement cette section pour qu'elle affiche les bonnes données.-->
 </section>
 <script id="candidats-template" type="x-tmpl-mustache">
     {{#candidatsUserNotConnected}}
@@ -113,45 +110,37 @@
     {{/candidatsUserConnected}}
 </script>
 
-
 <section id='candidat' class='inactive'>
     <h2>Informations sur un candidat</h2>
     <p>Nom complet : ... ...</p>
-
-    <p><a href="#deco">Déconnexion</a></p>
 </section>
 
 <section id='vote' class='inactive'>
     <h2>Voter !</h2>
     <form method="post" action="" id="vote-form">
-        <p>
-            <label for="candidat-select">Sélectionnez un candidat :</label>
-            <select name="candidat" id="candidat-select">
-                <option value="">...</option>
-            </select>
-        </p>
-        <p>
-            <input type="submit" name="action" value="Envoyer votre vote">
-        </p>
+        <label for="candidat-select">Sélectionnez un candidat :</label>
+        <select name="candidat" id="candidat-select">
+            <!--option value="">...</option-->
+        </select>
+        <input type="submit" name="action" value="Envoyer votre vote">
     </form>
-    <p><a href="#deco">Déconnexion</a></p>
 </section>
+<script id="vote-template" type="x-tmpl-mustache">
+    {{#voteUserConnected}}
+        <option id="{{nom}}">{{nom}}</option>
+    {{/voteUserConnected}}
+</script>
+
 <section id='ballot' class='inactive'>
     <h2>Ma preuve de vote</h2>
     <p>Votre vote a bien été enrgistré.</p>
-    <form method="post" action="TODO">
-        <p><input type="submit" name="action" value="Supprimer votre vote"></p>
-    </form>
-    <!--
-        TODO : vérifier le ballot avant d'afficher ce contenu et le remplacer par un autre message si l'utilisateur n'a pas voté.
-    -->
-    <p><a href='#deco'>Déconnexion</a></p>
+    <form method="post" action="TODO"><input type="submit" name="action" value="Supprimer votre vote"></form>
+    <!-- TODO : vérifier le ballot avant d'afficher ce contenu et le remplacer par un autre message si l'utilisateur n'a pas voté.-->
 </section>
+
 </body>
 <footer>
-    <div>
-        <p> @Author : MBOUP Mouhamadou Lamine | CHARLERY Oc&eacute;ane </p>
-    </div>
+    <div><p> @Author : MBOUP Mouhamadou Lamine | CHARLERY Oc&eacute;ane </p></div>
 </footer>
 
 <script src="https://unpkg.com/mustache@latest"></script>
