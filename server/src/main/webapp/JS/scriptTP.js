@@ -158,6 +158,7 @@ $(document).ready(function() {
     }
 
     function goToVotePage(){
+        let candidates = [];
         if (login === null || login === undefined || login === ""){
             window.location.assign(window.location.origin + "/v3_war/index.html#index");
         }else{
@@ -176,19 +177,17 @@ $(document).ready(function() {
                         dataType : "json",
                         headers : {"Authorization" : `${tokenWithBearer}`}
                     }).done((response) => {
-                        for (const responseKey in response) {
+                        for (let responseKey in response) {
                             let data = response[responseKey];
-                            console.log(data["nom"]);
-                            var new_opt = $('<option></option>');
-                            new_opt.text(data["nom"]);
-                            new_opt.attr("href", "#candidat");
-                            new_opt.appendTo('#candidat-select');
+                            candidates.push(data);
                         }
+                        templateThis("#vote-template",
+                            {voteUserConnected : candidates},
+                            "#vote select");
                     });
                 }
                 $('#vote-form').on('submit', (e) => {
                     e.preventDefault();
-                    console.log("vote submitted");
                     sendVote();
                 });
             });

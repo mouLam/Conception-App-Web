@@ -66,16 +66,13 @@
 
 <section id='monCompte' class='inactive'>
     <h2>Mon compte</h2>
-    <ul id='compteList'>
-
-    </ul>
+    <ul id='compteList'></ul>
     <form method="post" action="" id="changeNameAccount">
         <p>Modifier mon nom :
             <input type="text" name="nom" id="nomChange">
             <input type="submit" value="Modifier">
         </p>
     </form>
-    <p><a href='#deco'>Déconnexion</a></p>
 </section>
 <script id="monCompte-template" type="x-tmpl-mustache">
     {{#infoUser}}
@@ -119,9 +116,7 @@
     <h2>Voter !</h2>
     <form method="post" action="" id="vote-form">
         <label for="candidat-select">Sélectionnez un candidat :</label>
-        <select name="candidat" id="candidat-select">
-            <!--option value="">...</option-->
-        </select>
+        <select name="candidat" id="candidat-select"></select>
         <input type="submit" name="action" value="Envoyer votre vote">
     </form>
 </section>
