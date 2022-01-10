@@ -192,6 +192,7 @@ $(document).ready(function() {
                 $('#vote-form').on('submit', (e) => {
                     e.preventDefault();
                     sendVote();
+                    window.location.assign(window.location.origin + "/v3_war/index.html#ballot");
                 });
             });
         }
@@ -204,15 +205,22 @@ $(document).ready(function() {
             console.log("inside ballot function");
             $.ajax({
                 method: "GET",
-                //url: URL + "/election/ballots/byUser/" + sessionStorage.getItem("login"),
                 url: URL + `/election/ballots/byUser/${login}`,
                 contentType: "application/json",
                 dataType: "json",
                 headers: {"Authorization": `${tokenWithBearer}`},
             }).done((response) => {
-                console.log(response);
-                //templateThis("#ballot-template", {});
-                //window.location.assign(window.location.origin + "/v3_war/index.html#ballot");
+                let id = response.split("/").at(-1);
+                $.ajax({
+                    method: "GET",
+                    url : URL + `/election/votes/${id}`,
+                    contentType: "application/json",
+                    dataType: "json",
+                    headers: {"Authorization": `${tokenWithBearer}`}
+                }).done((response) => {
+                    console.log(JSON.stringify(response));
+                    window.location.assign(window.location.origin + "/v3_war/index.html#ballot");
+                });
             });
         }
     }
@@ -229,9 +237,11 @@ $(document).ready(function() {
             contentType : "application/json",
             dataType : "json",
             headers : {"Authorization" : `${tokenWithBearer}`},
-            data : payload,
-        }).done(() => {
+            data : payload
+        }).done((response) => {
+            console.log("avant");
             window.location.assign(window.location.origin + "/v3_war/index.html#ballot");
+            console.log("après");
         });
     }
 
