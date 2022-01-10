@@ -6,6 +6,7 @@ $(document).ready(function() {
     let login;
     let tokenWithBearer;
     let token;
+    let voteId;
 
     /**
      * Plier et déplier le menu
@@ -205,20 +206,25 @@ $(document).ready(function() {
                 method: "GET",
                 url: URL + `/election/ballots/byUser/${login}`,
                 contentType: "application/json",
-                dataType: "json",
                 headers: {"Authorization": `${tokenWithBearer}`},
             }).done((response) => {
-                let id = response.split("/").at(-1);
+                voteId = response.split("/").at(-1);
                 $.ajax({
                     method: "GET",
-                    url : URL + `/election/votes/${id}`,
+                    url : URL + `/election/votes/${voteId}`,
                     contentType: "application/json",
-                    dataType: "json",
                     headers: {"Authorization": `${tokenWithBearer}`}
                 }).done((response) => {
                     console.log(JSON.stringify(response));
                     window.location.assign(window.location.origin + "/v3_war/index.html#ballot");
                 });
+            }).fail(() => {
+                alert("Vous n'avez pas encore voté");
+            });
+
+            $('#delete-vote').on('submit',(e) => {
+                e.preventDefault();
+                deleteVote(voteId);
             });
         }
     }
@@ -232,7 +238,7 @@ $(document).ready(function() {
             url : URL + "/election/ballots",
             contentType : "application/json",
             headers : {"Authorization" : `${tokenWithBearer}`},
-            data : `${payload}`,
+            data : payload,
         }).done(() => {
             goToUserBallot();
         }).fail((error) => {
@@ -240,7 +246,18 @@ $(document).ready(function() {
         });
     }
 
-    function deleteVote() {}
+    function deleteVote(id) {
+        $.ajax({
+            method : "DELETE",
+            url : URL + `/election/ballots/${id}`,
+            contentType : "application/json",
+            headers : {"Authorization" : `${tokenWithBearer}`}
+        }).done(() => {
+            console.log("Votre vote a bien été supprimé");
+        }).fail((error) => {
+            console.log(error);
+        });
+    }
 
     function connectUser() {
         $('#connexion').on('submit',(e) => {
