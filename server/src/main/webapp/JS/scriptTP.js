@@ -179,7 +179,6 @@ $(document).ready(function() {
                         dataType : "json",
                         headers : {"Authorization" : `${tokenWithBearer}`}
                     }).done((response) => {
-                        console.log(response);
                         for (let responseKey in response) {
                             let data = response[responseKey];
                             candidates.push(data);
@@ -192,7 +191,6 @@ $(document).ready(function() {
                 $('#vote-form').on('submit', (e) => {
                     e.preventDefault();
                     sendVote();
-                    window.location.assign(window.location.origin + "/v3_war/index.html#ballot");
                 });
             });
         }
@@ -226,22 +224,19 @@ $(document).ready(function() {
     }
 
     function sendVote() {
-        console.log("inside send vote function");
         let formData = new FormData();
         formData.append("nomCandidat", $('#candidat-select').val());
         let payload = JSON.stringify(Object.fromEntries(formData)) ;
-        console.log(formData);
         $.ajax({
             method : "POST",
             url : URL + "/election/ballots",
             contentType : "application/json",
-            dataType : "json",
             headers : {"Authorization" : `${tokenWithBearer}`},
-            data : payload
-        }).done((response) => {
-            console.log("avant");
-            window.location.assign(window.location.origin + "/v3_war/index.html#ballot");
-            console.log("après");
+            data : `${payload}`,
+        }).done(() => {
+            goToUserBallot();
+        }).fail((error) => {
+            console.log(error);
         });
     }
 
@@ -267,7 +262,6 @@ $(document).ready(function() {
                 dataType : "json",
                 data : payload,
             }).done(function (response, textStatus, request) {
-                //console.log(request.getAllResponseHeaders());
                 tokenWithBearer = request.getResponseHeader("Authorization");
                 token = tokenWithBearer.replace("Bearer ", "");
                 login = $('#loginForm').val();
