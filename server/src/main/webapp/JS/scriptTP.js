@@ -223,7 +223,7 @@ $(document).ready(function() {
 
     function goToUserBallot(){
         if (login === null || login === undefined || login === ""){
-            window.location.assign(window.location.origin + "/v3_war/index.html#index");
+            window.location.assign(URL + "/client/index.html#index");
         }else {
             console.log("inside ballot function");
             $.ajax({
@@ -243,7 +243,7 @@ $(document).ready(function() {
                     templateThis("#ballot-template",
                         {ballotUserConnected : {"nom": response[0], "prenom":response[1]}} ,
                         "#vote-result");
-                    window.location.assign(window.location.origin + "/v3_war/index.html#ballot");
+                    window.location.assign(URL + "/client/index.html#ballot");
                 });
             }).fail(() => {
                 alert("Vous n'avez pas encore voté");
@@ -331,7 +331,7 @@ $(document).ready(function() {
                 token = tokenWithBearer.replace("Bearer ", "");
                 login = $('#loginForm').val();
                 showUserConnectedOptions(true);
-                window.location.assign(window.location.origin + "/v3_war/index.html#index")
+                window.location.assign(URL + "/client/index.html#index")
             });
         });
     }
@@ -393,7 +393,7 @@ $(document).ready(function() {
             },
             contentType: "application/json"
         }).done((response) => {
-            window.location.assign(window.location.origin + "/v3_war/index.html#monCompte");
+            window.location.assign(URL + "/client/index.html#monCompte");
             $('#nom').empty().text(response["nom"]);
             $('#nomChange').val("");
         }).fail((error) => {
