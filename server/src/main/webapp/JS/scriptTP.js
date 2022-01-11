@@ -1,5 +1,6 @@
 $(document).ready(function() {
     let URL = "https://192.168.75.41/api";
+    let URL2 = "https://192.168.75.41/v3_war";
     //let URL = "http://localhost:8080";
 
     /* Appliquer le hash index par défaut au premier chargement de la page */
@@ -100,7 +101,7 @@ $(document).ready(function() {
         console.log("In index link");
         $.ajax({
             method: "GET",
-            url: URL + "/election/resultats",
+            url: URL2 + "/election/resultats",
             dataType : "json"
         }).done((response) => {
             $('#cands').empty();
@@ -122,7 +123,7 @@ $(document).ready(function() {
         if (login === null || login === undefined || login === "") {
             $.ajax({
                 method: "GET",
-                url: URL + "/election/candidats/noms",
+                url: URL2 + "/election/candidats/noms",
                 dataType : "json"
             }).done((response) => {
                 console.log(response);
@@ -136,7 +137,7 @@ $(document).ready(function() {
             let datas = [];
             $.ajax({
                 method : "GET",
-                url : URL + "/election/candidats",
+                url : URL2 + "/election/candidats",
                 dataType : "json",
                 headers : {"Authorization" : `${tokenWithBearer}`}
             }).done((response) => {
@@ -156,7 +157,7 @@ $(document).ready(function() {
                     let id = ids[i];
                     $.ajax({
                         method : "GET",
-                        url : URL +`/election/candidats/${id}`,
+                        url : URL2 +`/election/candidats/${id}`,
                         dataType : "json",
                         headers : {"Authorization" : `${tokenWithBearer}`}
                     }).done((response) => {
@@ -188,7 +189,7 @@ $(document).ready(function() {
         }else{
             $.ajax({
                 method : "GET",
-                url : URL + "/election/candidats",
+                url : URL2 + "/election/candidats",
                 dataType : "json",
                 headers : {"Authorization" : `${tokenWithBearer}`}
             }).done((response) => {
@@ -197,7 +198,7 @@ $(document).ready(function() {
                 for (let i = 0; i < response.length; i++) {
                     $.ajax({
                         method : "GET",
-                        url : URL +`/election/candidats/${i}`,
+                        url : URL2 +`/election/candidats/${i}`,
                         dataType : "json",
                         headers : {"Authorization" : `${tokenWithBearer}`}
                     }).done((response) => {
@@ -225,14 +226,14 @@ $(document).ready(function() {
             console.log("inside ballot function");
             $.ajax({
                 method: "GET",
-                url: URL + `/election/ballots/byUser/${login}`,
+                url: URL2 + `/election/ballots/byUser/${login}`,
                 contentType: "application/json",
                 headers: {"Authorization": `${tokenWithBearer}`},
             }).done((response) => {
                 voteId = response.split("/").at(-1);
                 $.ajax({
                     method: "GET",
-                    url : URL + `/election/votes/${voteId}`,
+                    url : URL2 + `/election/votes/${voteId}`,
                     contentType: "application/json",
                     headers: {"Authorization": `${tokenWithBearer}`}
                 }).done((response) => {
@@ -256,7 +257,7 @@ $(document).ready(function() {
         let payload = JSON.stringify(Object.fromEntries(formData)) ;
         $.ajax({
             method : "POST",
-            url : URL + "/election/ballots",
+            url : URL2 + "/election/ballots",
             contentType : "application/json",
             headers : {"Authorization" : `${tokenWithBearer}`},
             data : payload,
@@ -270,7 +271,7 @@ $(document).ready(function() {
     function deleteVote(id) {
         $.ajax({
             method : "DELETE",
-            url : URL + `/election/ballots/${id}`,
+            url : URL2 + `/election/ballots/${id}`,
             contentType : "application/json",
             headers : {"Authorization" : `${tokenWithBearer}`}
         }).done(() => {
@@ -284,7 +285,7 @@ $(document).ready(function() {
         const  id = $('#candidats ul li').attr("id")
         $.ajax({
             method : "GET",
-            url : URL + `/election/candidats/${id}`,
+            url : URL2 + `/election/candidats/${id}`,
             dataType : "json",
             headers : {"Authorization" : `${tokenWithBearer}`}
         }).done((response) => {
@@ -309,7 +310,7 @@ $(document).ready(function() {
 
             $.ajax({
                 method : "POST",
-                url : URL + "/users/login",
+                url : URL2 + "/users/login",
                 contentType : "application/json",
                 dataType : "json",
                 data : payload,
@@ -328,7 +329,7 @@ $(document).ready(function() {
             e.preventDefault();
             $.ajax({
                 method : "POST",
-                url : URL + "/users/logout",
+                url : URL2 + "/users/logout",
                 contentType : "application/json",
                 dataType : "json",
                 header : {"Authorization" : `${tokenWithBearer}`}
@@ -348,7 +349,7 @@ $(document).ready(function() {
         $('#errMsg').empty()
         $.ajax({
             method: "GET",
-            url: URL + `/users/${login}`,
+            url: URL2 + `/users/${login}`,
             dataType : "json",
             headers : {"Authorization" : `${tokenWithBearer}`}
         }).done((response) => {
@@ -370,7 +371,7 @@ $(document).ready(function() {
         let payload = JSON.stringify(Object.fromEntries(formData));
         $.ajax({
             method: "PUT",
-            url: URL + `/users/${login}/nom`,
+            url: URL2 + `/users/${login}/nom`,
             data: payload,
             dataType: "json",
             header: {
