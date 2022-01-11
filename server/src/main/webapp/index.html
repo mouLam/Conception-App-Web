@@ -103,14 +103,19 @@
     {{/candidatsUserNotConnected}}
 
     {{#candidatsUserConnected}}
-        <li><a href="#candidat">{{nom}}</a></li>
+        <li id={{id}}><a href="#candidat">{{nom}}</a></li>
     {{/candidatsUserConnected}}
 </script>
 
 <section id='candidat' class='inactive'>
     <h2>Informations sur un candidat</h2>
-    <p>Nom complet : ... ...</p>
+    <div> </div>
 </section>
+<script id="candidat-template" type="x-tmpl-mustache">
+    {{#infoCandidat}}
+        <p>Nom complet : {{prenom}} {{nom}} </p>
+    {{/infoCandidat}}
+</script>
 
 <section id='vote' class='inactive'>
     <h2>Voter !</h2>

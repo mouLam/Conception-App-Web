@@ -82,6 +82,8 @@ $(document).ready(function() {
             goToVotePage();
         } else if (link === "ballot") {
             goToUserBallot();
+        } else if (link === "candidat") {
+            getCandidatInfo();
         }
 
         console.log("Hash : " + hash);
@@ -135,20 +137,37 @@ $(document).ready(function() {
                 dataType : "json",
                 headers : {"Authorization" : `${tokenWithBearer}`}
             }).done((response) => {
-                console.log("First : " + response)
+                //console.log("Resp : " + JSON.stringify(response))
                 showUserConnectedOptions(true);
                 $('#listCands').empty();
-                for (let i = 0; i < response.length; i++) {
+                let ids = [];
+                for (const idsKey in response) {
+                    let resp = response[idsKey].split("/");
+                    let id = resp[resp.length - 1];
+                    ids.push(id);
+                }
+
+                console.log("TAB : " + JSON.stringify(ids))
+
+                for (let i = 0; i < ids.length; i++) {
+                    let id = ids[i];
                     $.ajax({
                         method : "GET",
-                        url : URL +`/election/candidats/${i}`,
+                        url : URL +`/election/candidats/${id}`,
                         dataType : "json",
                         headers : {"Authorization" : `${tokenWithBearer}`}
                     }).done((response) => {
                         for (let responseKey in response) {
+                            console.log("res2 : ", response);
+                            console.log("resKey : ", responseKey);
                             let data = response[responseKey];
+                            let infos = {
+                                prenom : data["prenom"],
+                                nom : data["nom"],
+                                id : id
+                            }
                             // data = { prenom : "", nom : "" }
-                            datas.push(data);
+                            datas.push(infos);
                         }
                         templateThis("#candidats-template",
                             {candidatsUserConnected : datas},
@@ -241,6 +260,20 @@ $(document).ready(function() {
     }
 
     function deleteVote() {}
+
+    function getCandidatInfo() {
+        const  id = $('#candidats ul li').attr("id")
+        $.ajax({
+            method : "GET",
+            url : URL + `/election/candidats/${id}`,
+            dataType : "json",
+            headers : {"Authorization" : `${tokenWithBearer}`}
+        }).done((response) => {
+            templateThis("#candidat-template",
+                {infoCandidat : response},
+                "#candidat div");
+        })
+    }
 
     function connectUser() {
         $('#connexion').on('submit',(e) => {
@@ -344,7 +377,6 @@ $(document).ready(function() {
         let template = $(idScriptToTemplate).html();
         Mustache.parse(template);
         let rendered = Mustache.render(template, data);
-        console.log("Data in template : " + data);
         $(`${idHtmlElement}`).html(rendered);
     }
 });
