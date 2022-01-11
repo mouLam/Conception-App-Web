@@ -1,41 +1,172 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="fr">
 <head>
+    <title>&Eacute;lections M1IF03</title>
     <meta charset="UTF-8">
-    <title>Vote - accueil</title>
-    <link rel="stylesheet" type="text/css" href="static/vote.css">
+    <script
+            src="https://code.jquery.com/jquery-3.6.0.js"
+            integrity="sha256-H+K7U5CnXl1h5ywQfKtSj8PCmoN9aaq30gDh27Xc0jk="
+            crossorigin="anonymous">
+    </script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"
+            integrity="sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg=="
+            crossorigin="anonymous" referrerpolicy="no-referrer"></script>
+    <link rel="stylesheet" type="text/css" href="static/style.css" media="all">
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 </head>
+
 <body>
-<header>
-    <h1 class="header-titre">Bienvenue sur notre application de vote révolutionnaire !</h1>
-</header>
-<main id="contenu" class="wrapper">
-    <aside class="menu">
-        <h2>Menu</h2>
-        <ul>
-            <li><a href="election/resultats">Résultats</a></li>
-        </ul>
-    </aside>
-    <article class="contenu">
-        <form method="post" action="users/login">
-            <h2>Connectez-vous pour pouvoir voter</h2>
+<h1>&Eacute;lections M1IF03</h1>
+<div id="errMsg"></div>
+<aside>
+    <h2 id="menuHeader">Menu</h2>
+    <ul id="menuUl">
+
+        <li id="index_link"><a href='#index'>Accueil</a></li>
+        <li id="login_link"><a href='#connect'>Connexion</a></li>
+        <li id="account_link"><a href='#monCompte'>Mon compte</a></li>
+        <li id="candidats_link"><a href='#candidats'>Candidats</a></li>
+        <li id="vote_form_link"><a href='#vote'>Voter</a></li>
+        <li id="vote_link"><a href='#ballot'>Vérifier mon vote</a></li>
+        <li id="logout_link"><a href='#deco'>Déconnexion</a></li>
+    </ul>
+</aside>
+
+<section id='index' class='active'>
+    <h2>Bienvenue sur l'application Web de la grande élection de 2022 !</h2>
+    <p>Résultats courants de l'élection :</p>
+    <ul id="cands"></ul>
+</section>
+<script id="index-template" type="x-tmpl-mustache">
+    {{#results}}
+        <li><span id="{{nomCandidat}}">{{nomCandidat}} - {{votes}} vote(s)</span></li>
+    {{/results}}
+</script>
+
+<section id='connect' class='inactive row'>
+    <h3>Connectez-vous pour pouvoir voter</h3>
+    <form class="col s6" method="post" action="" id="connexion">
+
+        <!-------LOGIN------->
+        <div class="input-field row s3">
+            <label for="loginForm">Login</label>
+            <input class="validate" type="text" name="loginForm" id="loginForm">
+        </div>
+
+
+        <!-------NOM------->
+        <div class="input-field row s3">
+            <label for="nomForm">Nom</label>
+            <input class="validate" type="text" name="nomForm" id="nomForm">
+        </div>
+
+        <!-------CHECKBOX------->
+        <div class="input-field row s3">
             <p>
-                <label for="login">Entrez votre login :</label>
-                <input type="text" name="login" id="login" autofocus>
+                <label for="adminForm">
+                    <input type="checkbox" name="adminForm" id="adminForm">
+                    <span>Êtes-vous administrateur ?</span>
+                </label>
             </p>
-            <p>
-                <label for="nom">Entrez votre nom :</label>
-                <input type="text" name="nom" id="nom">
-            </p>
-            <p>
-                <label for="admin">Êtes-vous administrateur ?</label>
-                <input type="checkbox" name="admin" id="admin">
-            </p>
-            <p>
-                <input type="submit" name="action" value="Connexion">
-            </p>
-        </form>
-    </article>
-</main>
+        </div>
+
+        <input class="waves-effect waves-light btn" type="submit" name="action" value="Connexion">
+    </form>
+</section>
+
+<section id='monCompte' class='inactive'>
+    <h2>Mon compte</h2>
+    <ul id='compteList'></ul>
+    <form method="post" action="" id="changeNameAccount">
+        <p>Modifier mon nom :
+            <input type="text" name="nom" id="nomChange">
+            <input class="waves-effect waves-light btn" type="submit" value="Modifier">
+        </p>
+    </form>
+</section>
+<script id="monCompte-template" type="x-tmpl-mustache">
+    {{#infoUser}}
+        <li>Login : <span id="login">{{login}}</span></li>
+        <li>Nom : <span id="nom">{{nom}}</span></li>
+        <li>Admin : <span id="admin">{{admin}}</span></li>
+    {{/infoUser}}
+</script>
+
+<section id='deco' class='inactive'>
+    <h2>Déconnexion</h2>
+    <form method="post" action="" id="disconnect">
+        <p>Cliquez ici pour vous déconnecter :
+            <input class="waves-effect waves-light btn" type="submit" value="Deconnexion">
+        </p>
+    </form>
+    <p><a href='#index'>Retour à la page d'accueil</a></p>
+</section>
+
+<section id='candidats' class='inactive'>
+    <h2>Voici la liste des différents candidats</h2>
+    <ul id="listCands"></ul>
+    <!--TODO: générer dynamiquement cette section pour qu'elle affiche les bonnes données.-->
+</section>
+<script id="candidats-template" type="x-tmpl-mustache">
+    {{#candidatsUserNotConnected}}
+        <li>{{.}}</li>
+    {{/candidatsUserNotConnected}}
+
+    {{#candidatsUserConnected}}
+        <li id={{id}}><a href="#candidat">{{nom}}</a></li>
+    {{/candidatsUserConnected}}
+</script>
+
+<section id='candidat' class='inactive'>
+    <h2>Informations sur un candidat</h2>
+    <div> </div>
+</section>
+<script id="candidat-template" type="x-tmpl-mustache">
+    {{#infoCandidat}}
+        <p>Nom complet : {{prenom}} {{nom}} </p>
+    {{/infoCandidat}}
+</script>
+
+<section class="row inactive" id="vote">
+    <h3>Votez</h3>
+    <form class="col s12" method="post" action="" id="vote-form">
+        <div class="input-field col s3">
+            <label for="candidat-select" style="display: none">Sélectionnez un candidat :</label>
+            <select class="row" name="candidat" id="candidat-select" style="display: block;"></select>
+            <input class="waves-effect waves-light btn" type="submit" name="action" value="Envoyer votre vote">
+        </div>
+    </form>
+</section>
+<script id="vote-template" type="x-tmpl-mustache">
+    {{#voteUserConnected}}
+        <option id="{{nom}}">{{nom}}</option>
+    {{/voteUserConnected}}
+</script>
+
+<section id='ballot' class='inactive'>
+    <h2>Ma preuve de vote</h2>
+    <div id="vote-result"></div>
+    <form method="post" action="" id="delete-vote">
+        <input class="waves-effect waves-light btn" type="submit" name="action" value="Supprimer votre vote" id="del-btn">
+    </form>
+</section>
+<script id="ballot-template" type="x-tmpl-mustache">
+    {{#ballotUserConnected}}
+        <p>{{prenom}} {{nom}}</p>
+    {{/ballotUserConnected}}
+    {{#ballotUserConnectedDelete}}
+        <p>Votre vote a bien été supprimé</p>
+    {{/ballotUserConnectedDelete}}
+</script>
+
 </body>
+<footer>
+    <div><p> @Author : MBOUP Mouhamadou Lamine | CHARLERY Oc&eacute;ane </p></div>
+</footer>
+
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
+<script src="https://unpkg.com/mustache@latest"></script>
+<script type="text/javascript" src="JS/scriptTP.js"></script>
 </html>

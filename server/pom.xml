@@ -53,21 +53,12 @@
       <artifactId>commons-lang3</artifactId>
       <version>3.11</version>
     </dependency>
-    <!-- https://mvnrepository.com/artifact/com.auth0/java-jwt -->
-    <dependency>
-      <groupId>com.auth0</groupId>
-      <artifactId>java-jwt</artifactId>
-      <version>3.18.2</version>
-    </dependency>
-
     <!-- https://mvnrepository.com/artifact/org.opendaylight.controller.thirdparty/org.apache.catalina.filters.CorsFilter -->
-    <dependency>
+    <!--dependency>
       <groupId>org.opendaylight.controller.thirdparty</groupId>
       <artifactId>org.apache.catalina.filters.CorsFilter</artifactId>
       <version>7.0.42</version>
-    </dependency>
-
-
+    </dependency-->
 
   </dependencies>
 

@@ -58,6 +58,8 @@ public class Vote extends HttpServlet {
                         "Utilisateur non administrateur ou non propriétaire du vote");
             }
             List<String> res = new ArrayList<>();
+            res.add(this.ballots.get(this.votesIds.get(idVote)).getBulletin().getCandidat().getNom());
+            res.add(this.ballots.get(this.votesIds.get(idVote)).getBulletin().getCandidat().getPrenom());
             response.setHeader("Authorization", (String) request.getAttribute("token"));
             sendDataAsJSON(response, res);
         } else

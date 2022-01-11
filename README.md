@@ -1,55 +1,29 @@
-# TP4 - v3 - C09
+# TP5 - v3 - C09
 
-## 1. Important
-    
-Les tests ont été réalisés qu'au niveau du logiciel __Postman__ donc avec données de format JSON.
-Aucunes modifications ont été faites au niveau de nos JSP.
+## API
 
-### - Fichier YAML : 
+L'API a été déployée sur notre VM à cette adresse : http://192.168.75.41:8080/v3/ 
 
-- Cliquez sur ce lien pour visionner  [le fichier Swagger](swagger.yaml).
+Cependant depuis la VM, visiblement seule une requête (celle de _/election/resultats_ avec l'url : http://192.168.75.41:8080/v3/election/resultats ) marche (sur Postman aussi).
 
-### - Collection de requêtes :
+Comme vous nous avez expliqué lors de la présentation, ce problème pourrait être dû à la non configuration du CORS.
 
-- Lien de notre collection de [requêtes sur Postman](MIF03%20CAW%202021.postman_collection.json)
+### Solution à ce problème :
 
-## 2. Ressources
+Afin que vous puissez visualiser le travail établit tout au long de ce projet, il est fortement recommandé d'exécuter le programme en `LOCALHOST`.
 
-Deux contrôleurs ont été créés, un contrôleur principal qui prend en charge toutes les requêtes qui commencent par /election/* et un autre pour celles qui commencent par /user/* .
-Nos URLs ont été modifiées pour qu'elles correspondent à des URLs de ressouces en REST.
+Adresse du lien en localhost : http://localhost:8080/v3_war/index.html
 
-Nous avons implémenté les URLs suivantes : 
+Ceci montre que nous avons bien implémenté l'API (COMPLET) demandé.
 
-### Résultats 
-- /election/resultats (GET)
+## Client
 
-### Candidats
-- /election/candidats (GET)
-- /election/candidats/noms (GET)
-- /election/candidats/{candidatId} (GET)
-- /election/candidats/update (POST)
+Nous avons utilisé notre API pour les requêtes, cependant notre API n'est pas fonctionnelle sur la VM. Le client peut tout de même être utilisé en **local host**.
 
-### Ballots
-- /election/ballots (GET)
-- /election/ballots (POST)
-- /election/ballots/{ballotId} (GET)
-- /election/ballots/{ballotId} (DELETE)
-- /election/ballots/byUser/{ballotId} (GET)
+Pour visualiser que le déploiement du client marche, vous pouvez aller sur ce lien : https://192.168.75.41/api/client
 
-### Votes
-- /election/votes/{voteId} (GET)
-- /election/votes/byUser/{voteId} (GET)
-- /election/votes/byUser/{voteId} (PUT)
+Remarque : Aucunes requêtes vers notre API n'a marché à cause du problème relevé ci-dessus.
 
-### Users
-- /users (GET)
-- /users/{userId} (GET)
-- /users/{userId}/nom (PUT)
-- /users/{userId}/ballot (GET)
-- /users/{userId}/vote (GET)
-- /users/login (POST)
-- /users/logout (POST)
-
-## 3. Transactions sans états
-Nous avons supprimé l'utilisation de HttpSession pour la gestion de la session utilisateur, et utilisé la bibliothèque Java-JWT pour la remplacer par l'utilisation d'un token. Ce token sera utilisé pour les requêtes nécessitant une vérification de connexion.
+### Bibliothèques
+Nous avons utilisé [JQuery](https://jquery.com), [Mustache](https://github.com/janl/mustache.js), [Materialize](https://materializecss.com) et [JWT Web Tokens](https://jwt.io/).
 
