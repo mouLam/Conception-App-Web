@@ -238,7 +238,6 @@ $(document).ready(function() {
                     contentType: "application/json",
                     headers: {"Authorization": `${tokenWithBearer}`}
                 }).done((response) => {
-
                     console.log(JSON.stringify(response));
                     templateThis("#ballot-template",
                         {ballotUserConnected : {"nom": response[0], "prenom":response[1]}} ,
@@ -267,6 +266,7 @@ $(document).ready(function() {
             headers : {"Authorization" : `${tokenWithBearer}`},
             data : payload,
         }).done(() => {
+            $('#del-btn').prop('disabled', false);
             goToUserBallot();
         }).fail((error) => {
             console.log(error);
@@ -280,7 +280,7 @@ $(document).ready(function() {
             contentType : "application/json",
             headers : {"Authorization" : `${tokenWithBearer}`}
         }).done(() => {
-            console.log("Votre vote a bien été supprimé");
+            $('#del-btn').prop('disabled', true);
             templateThis("#ballot-template",
                 {ballotUserConnectedDelete: "Votre vote a bien été supprimé"},
                 "#vote-result");
