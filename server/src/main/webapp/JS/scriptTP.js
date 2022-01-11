@@ -1,8 +1,8 @@
 $(document).ready(function() {
+    let URL = "https://192.168.75.41/client"
     /* Appliquer le hash index par défaut au premier chargement de la page */
-    window.location.assign(window.location.origin + "/v3_war/index.html#index");
+    window.location.assign(URL + "/index.html#index");
 
-    let URL = "https://192.168.75.41/api/v3"
     let login;
     let tokenWithBearer;
     let token;
