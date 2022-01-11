@@ -203,9 +203,11 @@ $(document).ready(function() {
                             let data = response[responseKey];
                             candidates.push(data);
                         }
+                        console.log(candidates);
                         templateThis("#vote-template",
                             {voteUserConnected : candidates},
-                            "#vote select");
+                            "#candidat-select");
+                        console.log("template this");
                     });
                 }
                 $('#vote-form').on('submit', (e) => {
@@ -234,7 +236,11 @@ $(document).ready(function() {
                     contentType: "application/json",
                     headers: {"Authorization": `${tokenWithBearer}`}
                 }).done((response) => {
+
                     console.log(JSON.stringify(response));
+                    templateThis("#ballot-template",
+                        {ballotUserConnected : {"nom": response[0], "prenom":response[1]}} ,
+                        "#vote-result");
                     window.location.assign(window.location.origin + "/v3_war/index.html#ballot");
                 });
             }).fail(() => {
@@ -273,8 +279,14 @@ $(document).ready(function() {
             headers : {"Authorization" : `${tokenWithBearer}`}
         }).done(() => {
             console.log("Votre vote a bien été supprimé");
+            templateThis("#ballot-template",
+                {ballotUserConnectedDelete: "Votre vote a bien été supprimé"},
+                "#vote-result");
         }).fail((error) => {
             console.log(error);
+            templateThis("ballot-template",
+                "Une erreur est survenue, votre vote n'a pas pu être supprimé",
+                "#vote-result");
         });
     }
 
