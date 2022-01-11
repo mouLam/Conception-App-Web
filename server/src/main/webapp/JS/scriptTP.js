@@ -2,7 +2,7 @@ $(document).ready(function() {
     /* Appliquer le hash index par défaut au premier chargement de la page */
     window.location.assign(window.location.origin + "/v3_war/index.html#index");
 
-    let URL = "http://localhost:8080/v3_war"
+    let URL = "https://192.168.75.41/api/v3"
     let login;
     let tokenWithBearer;
     let token;
