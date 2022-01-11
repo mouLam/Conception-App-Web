@@ -1,55 +1,13 @@
-# TP4 - v3 - C09
+# TP5 - v3 - C09
 
-## 1. Important
-    
-Les tests ont été réalisés qu'au niveau du logiciel __Postman__ donc avec données de format JSON.
-Aucunes modifications ont été faites au niveau de nos JSP.
+## API
 
-### - Fichier YAML : 
+L'API a été déployée sur notre VM à cette adresse : https://192.168.75.41/api/client/
+Toutes les requêtes demandées fonctionnent, cependant, une erreur de CORS empêche le bon déploiement de notre API sur la VM. Les requêtes peuvent cependant être testées en local host.  
 
-- Cliquez sur ce lien pour visionner  [le fichier Swagger](swagger.yaml).
+## Client
 
-### - Collection de requêtes :
+Nous avons utilisé notre API pour les requêtes, cependant notre API n'est pas fonctionnelle sur la VM. Le client peut tout de même être utilisé en local host.
 
-- Lien de notre collection de [requêtes sur Postman](MIF03%20CAW%202021.postman_collection.json)
-
-## 2. Ressources
-
-Deux contrôleurs ont été créés, un contrôleur principal qui prend en charge toutes les requêtes qui commencent par /election/* et un autre pour celles qui commencent par /user/* .
-Nos URLs ont été modifiées pour qu'elles correspondent à des URLs de ressouces en REST.
-
-Nous avons implémenté les URLs suivantes : 
-
-### Résultats 
-- /election/resultats (GET)
-
-### Candidats
-- /election/candidats (GET)
-- /election/candidats/noms (GET)
-- /election/candidats/{candidatId} (GET)
-- /election/candidats/update (POST)
-
-### Ballots
-- /election/ballots (GET)
-- /election/ballots (POST)
-- /election/ballots/{ballotId} (GET)
-- /election/ballots/{ballotId} (DELETE)
-- /election/ballots/byUser/{ballotId} (GET)
-
-### Votes
-- /election/votes/{voteId} (GET)
-- /election/votes/byUser/{voteId} (GET)
-- /election/votes/byUser/{voteId} (PUT)
-
-### Users
-- /users (GET)
-- /users/{userId} (GET)
-- /users/{userId}/nom (PUT)
-- /users/{userId}/ballot (GET)
-- /users/{userId}/vote (GET)
-- /users/login (POST)
-- /users/logout (POST)
-
-## 3. Transactions sans états
-Nous avons supprimé l'utilisation de HttpSession pour la gestion de la session utilisateur, et utilisé la bibliothèque Java-JWT pour la remplacer par l'utilisation d'un token. Ce token sera utilisé pour les requêtes nécessitant une vérification de connexion.
-
+### Bibliothèques
+Nous avons utilisé[JQuery](https://jquery.com), [Moustache](https://github.com/janl/mustache.js) et [Materialize](https://materializecss.com).
