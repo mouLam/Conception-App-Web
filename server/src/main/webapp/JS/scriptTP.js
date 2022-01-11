@@ -1,6 +1,6 @@
 $(document).ready(function() {
     let URL = "https://192.168.75.41/api";
-    let URL2 = "https://192.168.75.41/v3_war";
+    let URL2 = "http://192.168.75.41:8080/v3";
     //let URL = "http://localhost:8080";
 
     /* Appliquer le hash index par défaut au premier chargement de la page */
