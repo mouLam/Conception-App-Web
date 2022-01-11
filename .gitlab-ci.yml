@@ -34,5 +34,5 @@ deploy:
     - cd server/
     - ls -l
     - mvn clean package
-    - scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY /builds/p2107661/mif03_c09/server/target/client.war gitlabci@192.168.75.41:/opt/tomcat/webapps/client.war
+    #- scp -o StrictHostKeyChecking=no -i $CI_SSH_KEY /builds/p2107661/mif03_c09/server/target/client.war gitlabci@192.168.75.41:/opt/tomcat/webapps/client.war
 
