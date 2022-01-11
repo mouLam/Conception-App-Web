@@ -13,6 +13,9 @@
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
     <script src="JS/ajax.js"></script>
     <link rel="stylesheet" type="text/css" href="static/style.css" media="all">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
+    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
+    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
 </head>
 
 <body>
@@ -46,21 +49,31 @@
 <section id='connect' class='inactive'>
     <h2>Connectez-vous pour pouvoir voter</h2>
     <form method="post" action="" id="connexion">
-        <p>
-            <label for="loginForm">Entrez votre login :</label>
-            <input type="text" name="loginForm" id="loginForm" autofocus>
-        </p>
-        <p>
-            <label for="nomForm">Entrez votre nom :</label>
-            <input type="text" name="nomForm" id="nomForm">
-        </p>
-        <p>
+        <label for="loginForm">Login</label>
+        <input type="text" name="loginForm" id="loginForm">
+
+        <label for="nomForm">Nom</label>
+        <input type="text" name="nomForm" id="nomForm">
+
+
+        <!-------CHECKBOX------->
+        <div class="mdc-form-field">
+            <div class="mdc-checkbox">
+                <input class="mdc-checkbox__native-control" type="checkbox" name="adminForm" id="adminForm">
+                <div class="mdc-checkbox__background">
+                    <svg class="mdc-checkbox__checkmark"
+                         viewBox="0 0 24 24">
+                        <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
+                    </svg>
+                    <div class="mdc-checkbox__mixedmark"></div>
+                </div>
+                <div class="mdc-checkbox__ripple"></div>
+            </div>
             <label for="adminForm">Êtes-vous administrateur ?</label>
-            <input type="checkbox" name="adminForm" id="adminForm">
-        </p>
-        <p>
-            <input type="submit" name="action" value="Connexion">
-        </p>
+        </div>
+
+
+        <input class="mdc-button mdc-button--raised" type="submit" name="action" value="Connexion">
     </form>
 </section>
 
@@ -70,7 +83,7 @@
     <form method="post" action="" id="changeNameAccount">
         <p>Modifier mon nom :
             <input type="text" name="nom" id="nomChange">
-            <input type="submit" value="Modifier">
+            <input class="mdc-button mdc-button--raised" type="submit" value="Modifier">
         </p>
     </form>
 </section>
@@ -86,7 +99,7 @@
     <h2>Déconnexion</h2>
     <form method="post" action="" id="disconnect">
         <p>Cliquez ici pour vous déconnecter :
-            <input type="submit" value="Deconnexion">
+            <input class="mdc-button mdc-button--raised" type="submit" value="Deconnexion">
         </p>
     </form>
     <p><a href='#index'>Retour à la page d'accueil</a></p>
@@ -122,7 +135,7 @@
     <form method="post" action="" id="vote-form">
         <label for="candidat-select">Sélectionnez un candidat :</label>
         <select name="candidat" id="candidat-select"></select>
-        <input type="submit" name="action" value="Envoyer votre vote">
+        <input class="mdc-button mdc-button--raised" type="submit" name="action" value="Envoyer votre vote">
     </form>
 </section>
 <script id="vote-template" type="x-tmpl-mustache">
@@ -135,7 +148,7 @@
     <h2>Ma preuve de vote</h2>
     <p>Votre vote a bien été enregistré.</p>
     <form method="post" action="" id="delete-vote">
-        <input type="submit" name="action" value="Supprimer votre vote">
+        <input class="mdc-button mdc-button--raised" type="submit" name="action" value="Supprimer votre vote">
     </form>
     <!-- TODO : vérifier le ballot avant d'afficher ce contenu et le remplacer par un autre message si l'utilisateur n'a pas voté.-->
 </section>
