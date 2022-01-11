@@ -1,5 +1,5 @@
 $(document).ready(function() {
-    let URL = "https://192.168.75.41/api/"
+    let URL = "https://192.168.75.41/api"
 
     /* Appliquer le hash index par défaut au premier chargement de la page */
     window.location.assign(window.location.origin + "/client/index.html#index");
