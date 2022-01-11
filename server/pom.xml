@@ -88,7 +88,7 @@
           <version>3.2.2</version>
           <configuration>
             <webXml>src\main\webapp\WEB-INF\web.xml</webXml>
-            <warName>client</warName>
+            <warName>v3</warName>
           </configuration>
 
         </plugin>

@@ -1,15 +1,15 @@
 $(document).ready(function() {
-    let URL = "https://192.168.75.41/api";
-    let URL2 = "http://192.168.75.41:8080/v3";
-    //let URL = "http://localhost:8080";
+    //let URL = "https://192.168.75.41/api";
+    //let URL2 = "http://192.168.75.41:8080/v3";
+    let URL = "http://localhost:8080/v3_war";
 
     /* Appliquer le hash index par défaut au premier chargement de la page */
-    window.location.assign(URL + "/client/index.html#index");
+    //window.location.assign(URL + "/client/index.html#index");
+    window.location.assign(window.location.origin + "/v3_war/index.html#index");
 
     let login;
     let tokenWithBearer;
     let token;
-    let voteId;
 
     /**
      * Plier et déplier le menu
@@ -101,7 +101,7 @@ $(document).ready(function() {
         console.log("In index link");
         $.ajax({
             method: "GET",
-            url: URL2 + "/election/resultats",
+            url: URL + "/election/resultats",
             dataType : "json"
         }).done((response) => {
             $('#cands').empty();
@@ -123,7 +123,7 @@ $(document).ready(function() {
         if (login === null || login === undefined || login === "") {
             $.ajax({
                 method: "GET",
-                url: URL2 + "/election/candidats/noms",
+                url: URL + "/election/candidats/noms",
                 dataType : "json"
             }).done((response) => {
                 console.log(response);
@@ -137,7 +137,7 @@ $(document).ready(function() {
             let datas = [];
             $.ajax({
                 method : "GET",
-                url : URL2 + "/election/candidats",
+                url : URL + "/election/candidats",
                 dataType : "json",
                 headers : {"Authorization" : `${tokenWithBearer}`}
             }).done((response) => {
@@ -157,7 +157,7 @@ $(document).ready(function() {
                     let id = ids[i];
                     $.ajax({
                         method : "GET",
-                        url : URL2 +`/election/candidats/${id}`,
+                        url : URL +`/election/candidats/${id}`,
                         dataType : "json",
                         headers : {"Authorization" : `${tokenWithBearer}`}
                     }).done((response) => {
@@ -189,7 +189,7 @@ $(document).ready(function() {
         }else{
             $.ajax({
                 method : "GET",
-                url : URL2 + "/election/candidats",
+                url : URL + "/election/candidats",
                 dataType : "json",
                 headers : {"Authorization" : `${tokenWithBearer}`}
             }).done((response) => {
@@ -198,7 +198,7 @@ $(document).ready(function() {
                 for (let i = 0; i < response.length; i++) {
                     $.ajax({
                         method : "GET",
-                        url : URL2 +`/election/candidats/${i}`,
+                        url : URL +`/election/candidats/${i}`,
                         dataType : "json",
                         headers : {"Authorization" : `${tokenWithBearer}`}
                     }).done((response) => {
@@ -206,11 +206,10 @@ $(document).ready(function() {
                             let data = response[responseKey];
                             candidates.push(data);
                         }
-                        console.log(candidates);
+                        //console.log(candidates);
                         templateThis("#vote-template",
                             {voteUserConnected : candidates},
                             "#candidat-select");
-                        console.log("template this");
                     });
                 }
                 $('#vote-form').on('submit', (e) => {
@@ -223,27 +222,28 @@ $(document).ready(function() {
 
     function goToUserBallot(){
         if (login === null || login === undefined || login === ""){
-            window.location.assign(URL + "/client/index.html#index");
+            window.location.assign(window.location.origin + "/v3_war/index.html#index");
         }else {
             console.log("inside ballot function");
             $.ajax({
                 method: "GET",
-                url: URL2 + `/election/ballots/byUser/${login}`,
+                url: URL + `/election/ballots/byUser/${login}`,
                 contentType: "application/json",
                 headers: {"Authorization": `${tokenWithBearer}`},
             }).done((response) => {
-                voteId = response.split("/").at(-1);
+                let list = response.split("/");
+                let id = list[list.length - 1];
                 $.ajax({
                     method: "GET",
-                    url : URL2 + `/election/votes/${voteId}`,
+                    url : URL + `/election/votes/${id}`,
                     contentType: "application/json",
                     headers: {"Authorization": `${tokenWithBearer}`}
                 }).done((response) => {
-                    console.log(JSON.stringify(response));
+                    window.location.assign(window.location.origin + "/v3_war/index.html#ballot");
                     templateThis("#ballot-template",
                         {ballotUserConnected : {"nom": response[0], "prenom":response[1]}} ,
                         "#vote-result");
-                    window.location.assign(URL + "/client/index.html#ballot");
+
                 });
             }).fail(() => {
                 alert("Vous n'avez pas encore voté");
@@ -251,7 +251,7 @@ $(document).ready(function() {
 
             $('#delete-vote').on('submit',(e) => {
                 e.preventDefault();
-                deleteVote(voteId);
+                deleteVote();
             });
         }
     }
@@ -262,7 +262,7 @@ $(document).ready(function() {
         let payload = JSON.stringify(Object.fromEntries(formData)) ;
         $.ajax({
             method : "POST",
-            url : URL2 + "/election/ballots",
+            url : URL + "/election/ballots",
             contentType : "application/json",
             headers : {"Authorization" : `${tokenWithBearer}`},
             data : payload,
@@ -274,30 +274,41 @@ $(document).ready(function() {
         });
     }
 
-    function deleteVote(id) {
+    function deleteVote() {
         $.ajax({
-            method : "DELETE",
-            url : URL2 + `/election/ballots/${id}`,
-            contentType : "application/json",
+            method : "GET",
+            url : URL + `/election/ballots/byUser/${login}`,
+            dataType : "json",
             headers : {"Authorization" : `${tokenWithBearer}`}
-        }).done(() => {
-            $('#del-btn').prop('disabled', true);
-            templateThis("#ballot-template",
-                {ballotUserConnectedDelete: "Votre vote a bien été supprimé"},
-                "#vote-result");
-        }).fail((error) => {
-            console.log(error);
-            templateThis("ballot-template",
-                "Une erreur est survenue, votre vote n'a pas pu être supprimé",
-                "#vote-result");
+        }).done((response) => {
+            //console.log(JSON.stringify(response))
+            let list = response.split("/");
+            let id = list[list.length - 1];
+            $.ajax({
+                method : "DELETE",
+                url : URL + `/election/ballots/${id}`,
+                contentType : "application/json",
+                headers : {"Authorization" : `${tokenWithBearer}`}
+            }).done(() => {
+                $('#del-btn').prop('disabled', true);
+                templateThis("#ballot-template",
+                    {ballotUserConnectedDelete: "Votre vote a bien été supprimé"},
+                    "#vote-result");
+            }).fail((error) => {
+                console.log(error);
+                templateThis("ballot-template",
+                    "Une erreur est survenue, votre vote n'a pas pu être supprimé",
+                    "#vote-result");
+            });
         });
+
     }
 
     function getCandidatInfo() {
         const  id = $('#candidats ul li').attr("id")
         $.ajax({
             method : "GET",
-            url : URL2 + `/election/candidats/${id}`,
+            url : URL + `/election/candidats/${id}`,
             dataType : "json",
             headers : {"Authorization" : `${tokenWithBearer}`}
         }).done((response) => {
@@ -322,7 +333,7 @@ $(document).ready(function() {
 
             $.ajax({
                 method : "POST",
-                url : URL2 + "/users/login",
+                url : URL + "/users/login",
                 contentType : "application/json",
                 dataType : "json",
                 data : payload,
@@ -331,7 +342,7 @@ $(document).ready(function() {
                 token = tokenWithBearer.replace("Bearer ", "");
                 login = $('#loginForm').val();
                 showUserConnectedOptions(true);
-                window.location.assign(URL + "/client/index.html#index")
+                window.location.assign(window.location.origin + "/v3_war/index.html#index")
             });
         });
     }
@@ -341,7 +352,7 @@ $(document).ready(function() {
             e.preventDefault();
             $.ajax({
                 method : "POST",
-                url : URL2 + "/users/logout",
+                url : URL + "/users/logout",
                 contentType : "application/json",
                 dataType : "json",
                 header : {"Authorization" : `${tokenWithBearer}`}
@@ -361,11 +372,11 @@ $(document).ready(function() {
         $('#errMsg').empty()
         $.ajax({
             method: "GET",
-            url: URL2 + `/users/${login}`,
+            url: URL + `/users/${login}`,
             dataType : "json",
             headers : {"Authorization" : `${tokenWithBearer}`}
         }).done((response) => {
-            console.log(response);
+            //console.log(response);
             templateThis("#monCompte-template",
                 {infoUser : response},
                 "#monCompte ul");
@@ -383,7 +394,7 @@ $(document).ready(function() {
         let payload = JSON.stringify(Object.fromEntries(formData));
         $.ajax({
             method: "PUT",
-            url: URL2 + `/users/${login}/nom`,
+            url: URL + `/users/${login}/nom`,
             data: payload,
             dataType: "json",
             header: {
@@ -393,7 +404,7 @@ $(document).ready(function() {
             },
             contentType: "application/json"
         }).done((response) => {
-            window.location.assign(URL + "/client/index.html#monCompte");
+            window.location.assign(window.location.origin + "/v3_war/index.html#monCompte");
             $('#nom').empty().text(response["nom"]);
             $('#nomChange').val("");
         }).fail((error) => {
