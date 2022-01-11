@@ -1,2 +1,5 @@
 .active { display: block; }
 .inactive { display: none; }
+body {
+    padding: 1em;
+}

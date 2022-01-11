@@ -11,15 +11,13 @@
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.7/handlebars.min.js"
             integrity="sha512-RNLkV3d+aLtfcpEyFG8jRbnWHxUqVZozacROI4J2F1sTaDqo1dPQYs01OMi1t1w9Y2FdbSCDSQ2ZVdAC8bzgAg=="
             crossorigin="anonymous" referrerpolicy="no-referrer"></script>
-    <script src="JS/ajax.js"></script>
     <link rel="stylesheet" type="text/css" href="static/style.css" media="all">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <link href="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.css" rel="stylesheet">
-    <script src="https://unpkg.com/material-components-web@latest/dist/material-components-web.min.js"></script>
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">
 </head>
 
 <body>
-<h1>&Eacute;lection M1IF03</h1>
+<h1>&Eacute;lections M1IF03</h1>
 <div id="errMsg"></div>
 <aside>
     <h2 id="menuHeader">Menu</h2>
@@ -46,34 +44,34 @@
     {{/results}}
 </script>
 
-<section id='connect' class='inactive'>
-    <h2>Connectez-vous pour pouvoir voter</h2>
-    <form method="post" action="" id="connexion">
-        <label for="loginForm">Login</label>
-        <input type="text" name="loginForm" id="loginForm">
+<section id='connect' class='inactive row'>
+    <h3>Connectez-vous pour pouvoir voter</h3>
+    <form class="col s6" method="post" action="" id="connexion">
 
-        <label for="nomForm">Nom</label>
-        <input type="text" name="nomForm" id="nomForm">
-
-
-        <!-------CHECKBOX------->
-        <div class="mdc-form-field">
-            <div class="mdc-checkbox">
-                <input class="mdc-checkbox__native-control" type="checkbox" name="adminForm" id="adminForm">
-                <div class="mdc-checkbox__background">
-                    <svg class="mdc-checkbox__checkmark"
-                         viewBox="0 0 24 24">
-                        <path class="mdc-checkbox__checkmark-path" fill="none" d="M1.73,12.91 8.1,19.28 22.79,4.59"/>
-                    </svg>
-                    <div class="mdc-checkbox__mixedmark"></div>
-                </div>
-                <div class="mdc-checkbox__ripple"></div>
-            </div>
-            <label for="adminForm">Êtes-vous administrateur ?</label>
+        <!-------LOGIN------->
+        <div class="input-field row s3">
+            <label for="loginForm">Login</label>
+            <input class="validate" type="text" name="loginForm" id="loginForm">
         </div>
 
 
-        <input class="mdc-button mdc-button--raised" type="submit" name="action" value="Connexion">
+        <!-------NOM------->
+        <div class="input-field row s3">
+            <label for="nomForm">Nom</label>
+            <input class="validate" type="text" name="nomForm" id="nomForm">
+        </div>
+
+        <!-------CHECKBOX------->
+        <div class="input-field row s3">
+            <p>
+                <label for="adminForm">
+                    <input type="checkbox" name="adminForm" id="adminForm">
+                    <span>Êtes-vous administrateur ?</span>
+                </label>
+            </p>
+        </div>
+
+        <input class="waves-effect waves-light btn" type="submit" name="action" value="Connexion">
     </form>
 </section>
 
@@ -83,7 +81,7 @@
     <form method="post" action="" id="changeNameAccount">
         <p>Modifier mon nom :
             <input type="text" name="nom" id="nomChange">
-            <input class="mdc-button mdc-button--raised" type="submit" value="Modifier">
+            <input class="waves-effect waves-light btn" type="submit" value="Modifier">
         </p>
     </form>
 </section>
@@ -99,7 +97,7 @@
     <h2>Déconnexion</h2>
     <form method="post" action="" id="disconnect">
         <p>Cliquez ici pour vous déconnecter :
-            <input class="mdc-button mdc-button--raised" type="submit" value="Deconnexion">
+            <input class="waves-effect waves-light btn" type="submit" value="Deconnexion">
         </p>
     </form>
     <p><a href='#index'>Retour à la page d'accueil</a></p>
@@ -130,12 +128,14 @@
     {{/infoCandidat}}
 </script>
 
-<section id='vote' class='inactive'>
-    <h2>Voter !</h2>
-    <form method="post" action="" id="vote-form">
-        <label for="candidat-select">Sélectionnez un candidat :</label>
-        <select name="candidat" id="candidat-select"></select>
-        <input class="mdc-button mdc-button--raised" type="submit" name="action" value="Envoyer votre vote">
+<section class="row inactive" id="vote">
+    <h3>Votez</h3>
+    <form class="col s12" method="post" action="" id="vote-form">
+        <div class="input-field col s3">
+            <label for="candidat-select" style="display: none">Sélectionnez un candidat :</label>
+            <select class="row" name="candidat" id="candidat-select" style="display: block;"></select>
+            <input class="waves-effect waves-light btn" type="submit" name="action" value="Envoyer votre vote">
+        </div>
     </form>
 </section>
 <script id="vote-template" type="x-tmpl-mustache">
@@ -146,16 +146,18 @@
 
 <section id='ballot' class='inactive'>
     <h2>Ma preuve de vote</h2>
-    <p>Votre vote a bien été enregistré.</p>
+    <div id="vote-result"></div>
     <form method="post" action="" id="delete-vote">
-        <input class="mdc-button mdc-button--raised" type="submit" name="action" value="Supprimer votre vote">
+        <input class="waves-effect waves-light btn" type="submit" name="action" value="Supprimer votre vote" id="del-btn">
     </form>
-    <!-- TODO : vérifier le ballot avant d'afficher ce contenu et le remplacer par un autre message si l'utilisateur n'a pas voté.-->
 </section>
 <script id="ballot-template" type="x-tmpl-mustache">
     {{#ballotUserConnected}}
-        <h3>{{vote}}</h3>
+        <p>{{prenom}} {{nom}}</p>
     {{/ballotUserConnected}}
+    {{#ballotUserConnectedDelete}}
+        <p>Votre vote a bien été supprimé</p>
+    {{/ballotUserConnectedDelete}}
 </script>
 
 </body>
@@ -163,6 +165,8 @@
     <div><p> @Author : MBOUP Mouhamadou Lamine | CHARLERY Oc&eacute;ane </p></div>
 </footer>
 
+<!-- Compiled and minified JavaScript -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/js/materialize.min.js"></script>
 <script src="https://unpkg.com/mustache@latest"></script>
 <script type="text/javascript" src="JS/scriptTP.js"></script>
 </html>
