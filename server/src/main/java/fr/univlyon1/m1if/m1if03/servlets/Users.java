@@ -79,11 +79,6 @@ public class Users extends HttpServlet {
             String loginInURI = this.pathUri[1];
             String lastValueURI = this.pathUri[2];
             if (lastValueURI.equals("ballot")) {  // /users/{userId}/ballot
-                /*if (req.getHeader("Authorization") == null || !req.getHeader("Authorization").contains("Bearer ")) {
-                    resp.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE,
-                            "Authorization header must be correct or not null");
-                } else
-                */
                 if ( ! (userSession.isAdmin() ||
                         this.ballots.containsKey(userSession.getLogin())) ) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -119,7 +114,7 @@ public class Users extends HttpServlet {
         //User session = (User) req.getServletContext().getAttribute("user");
         if (this.pathUri.length == 2) {
             if (this.pathUri[1].equals("login")) {
-                // Jackson ObjectMapper class and how to serialize Java objects into JSON
+                // Jackson ObjectMapper c lass and how to serialize Java objects into JSON
                 // and deserialize JSON string into Java objects.
                 ObjectMapper mapper = new ObjectMapper();
                 TypeReference<Map<String, String>> ref = new TypeReference<Map<String, String>>(){};
@@ -129,11 +124,10 @@ public class Users extends HttpServlet {
                 String uriUser = req.getRequestURI() + "/" + newUser.getLogin();
 
                 String token = ElectionM1if03JwtHelper.generateToken(uriUser, newUser.isAdmin(), req);
-                resp.setHeader("Authorization", "Bearer "+token);
+                resp.setHeader("Authorization", "Bearer " + token);
                 req.getServletContext().setAttribute("user", newUser);
                 this.users.put(newUser.getLogin(), newUser);
                 req.getServletContext().setAttribute("users", this.users);
-                //sendDataAsJSON(resp, token);
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else if (this.pathUri[1].equals("logout")) {
                 User userSession = (User) req.getServletContext().getAttribute("user");

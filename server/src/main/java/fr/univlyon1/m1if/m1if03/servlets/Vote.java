@@ -58,40 +58,42 @@ public class Vote extends HttpServlet {
                         "Utilisateur non administrateur ou non propriétaire du vote");
             }
             List<String> res = new ArrayList<>();
+            res.add(this.ballots.get(this.votesIds.get(idVote)).getBulletin().getCandidat().getNom());
+            res.add(this.ballots.get(this.votesIds.get(idVote)).getBulletin().getCandidat().getPrenom());
             response.setHeader("Authorization", (String) request.getAttribute("token"));
             sendDataAsJSON(response, res);
         } else
-            if (this.pathUri.length == 4
-                    && this.pathUri[1].equals("votes")
-                    && this.pathUri[2].equals("byUser") ) { // /election/votes/byUser{userId}
-                String loginUri = this.pathUri[3];
-                if (this.ballots.get(loginUri) == null) {
-                    response.sendError(HttpServletResponse.SC_NOT_FOUND, "Utilisateur ou vote non trouvé");
-                }
-                assert userSession != null;
-                if ( !(userSession.isAdmin() ||
-                        this.ballots.containsKey(userSession.getLogin())) ) {
-                    response.sendError(HttpServletResponse.SC_FORBIDDEN,
-                            "Utilisateur non administrateur ou non propriétaire du ballot");
-                }
-
-                for (Integer idVote : this.votesIds.keySet()) {
-                    if (this.votesIds.get(idVote).equals(loginUri)) {
-                        List<String> uriVotant = new ArrayList<>();
-                        String url = request.getScheme() + "://" +
-                                request.getServerName() + ":" +
-                                request.getServerPort() + "/election/votes/" +
-                                idVote;
-                        uriVotant.add(url);
-                        response.setHeader("Authorization", (String) request.getAttribute("token"));
-
-                        sendDataAsJSON(response, uriVotant);
-                        break;
-                    }
-                }
-            } else {
-                response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Paramètres de la requéte non acceptables");
+        if (this.pathUri.length == 4
+                && this.pathUri[1].equals("votes")
+                && this.pathUri[2].equals("byUser") ) { // /election/votes/byUser{userId}
+            String loginUri = this.pathUri[3];
+            if (this.ballots.get(loginUri) == null) {
+                response.sendError(HttpServletResponse.SC_NOT_FOUND, "Utilisateur ou vote non trouvé");
             }
+            assert userSession != null;
+            if ( !(userSession.isAdmin() ||
+                    this.ballots.containsKey(userSession.getLogin())) ) {
+                response.sendError(HttpServletResponse.SC_FORBIDDEN,
+                        "Utilisateur non administrateur ou non propriétaire du ballot");
+            }
+
+            for (Integer idVote : this.votesIds.keySet()) {
+                if (this.votesIds.get(idVote).equals(loginUri)) {
+                    List<String> uriVotant = new ArrayList<>();
+                    String url = request.getScheme() + "://" +
+                            request.getServerName() + ":" +
+                            request.getServerPort() + "/election/votes/" +
+                            idVote;
+                    uriVotant.add(url);
+                    response.setHeader("Authorization", (String) request.getAttribute("token"));
+
+                    sendDataAsJSON(response, uriVotant);
+                    break;
+                }
+            }
+        } else {
+            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "Paramètres de la requéte non acceptables");
+        }
     }
 
     @Override
@@ -111,32 +113,32 @@ public class Vote extends HttpServlet {
         if (this.pathUri.length == 4
                 && this.pathUri[1].equals("votes")
                 && this.pathUri[2].equals("byUser")) {
-           String login = this.pathUri[3];
-           if ( !(userSession.isAdmin() || login.equals(userSession.getLogin()))) {
-               resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Utilisateur non administrateur ou pas celui qui est logué");
-           }
-           if (this.ballots.get(login) == null){
-               resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Utilisateur ou vote non trouvé");
-           } else {
-               ObjectMapper mapper = new ObjectMapper();
-               TypeReference<Map<String, String>> ref = new TypeReference<Map<String, String>>(){};
-               Map<String, String > body = mapper.readValue(req.getReader(), ref);
-               String nomNewCandidat = body.get("nomCandidat");
-               if (this.candidats.get(nomNewCandidat) == null) {
-                   resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Candidat choisi non trouvé");
-               }
-               Candidat c = this.candidats.get(nomNewCandidat);
-               Bulletin ancien = this.ballots.get(login).getBulletin();
-               this.bulletins.remove(ancien);
-               Bulletin b = new Bulletin(c);
-               this.bulletins.add(b);
-               req.getServletContext().setAttribute("bulletins", this.bulletins);
-               this.ballots.get(login).setBulletin(b);
-               req.getServletContext().setAttribute("ballots", this.ballots);
-               //sendDataAsJSON(resp, this.ballots.get(login).getBulletin().getCandidat().getNom());
-               resp.setHeader("Authorization", (String) req.getAttribute("token"));
-               resp.sendError(HttpServletResponse.SC_NO_CONTENT, "Vote correctement modifié");
-           }
+            String login = this.pathUri[3];
+            if ( !(userSession.isAdmin() || login.equals(userSession.getLogin()))) {
+                resp.sendError(HttpServletResponse.SC_FORBIDDEN, "Utilisateur non administrateur ou pas celui qui est logué");
+            }
+            if (this.ballots.get(login) == null){
+                resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Utilisateur ou vote non trouvé");
+            } else {
+                ObjectMapper mapper = new ObjectMapper();
+                TypeReference<Map<String, String>> ref = new TypeReference<Map<String, String>>(){};
+                Map<String, String > body = mapper.readValue(req.getReader(), ref);
+                String nomNewCandidat = body.get("nomCandidat");
+                if (this.candidats.get(nomNewCandidat) == null) {
+                    resp.sendError(HttpServletResponse.SC_NOT_FOUND, "Candidat choisi non trouvé");
+                }
+                Candidat c = this.candidats.get(nomNewCandidat);
+                Bulletin ancien = this.ballots.get(login).getBulletin();
+                this.bulletins.remove(ancien);
+                Bulletin b = new Bulletin(c);
+                this.bulletins.add(b);
+                req.getServletContext().setAttribute("bulletins", this.bulletins);
+                this.ballots.get(login).setBulletin(b);
+                req.getServletContext().setAttribute("ballots", this.ballots);
+                //sendDataAsJSON(resp, this.ballots.get(login).getBulletin().getCandidat().getNom());
+                resp.setHeader("Authorization", (String) req.getAttribute("token"));
+                resp.sendError(HttpServletResponse.SC_NO_CONTENT, "Vote correctement modifié");
+            }
         } else {
             resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "Parametres de requête non acceptable");
         }
