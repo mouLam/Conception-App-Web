@@ -130,7 +130,6 @@ public class Users extends HttpServlet {
 
                 String token = ElectionM1if03JwtHelper.generateToken(uriUser, newUser.isAdmin(), req);
                 resp.setHeader("Authorization", "Bearer "+token);
-                resp.setHeader("Accept", "*/*");
                 req.getServletContext().setAttribute("user", newUser);
                 this.users.put(newUser.getLogin(), newUser);
                 req.getServletContext().setAttribute("users", this.users);
@@ -196,6 +195,7 @@ public class Users extends HttpServlet {
         this.pathUri = uri.split("/");
         this.pathUri = ArrayUtils.removeElement(this.pathUri, "api"); // delete /v3_war
         this.pathUri = ArrayUtils.removeElement(this.pathUri, "v3_war"); // delete /v3_war
+        this.pathUri = ArrayUtils.removeElement(this.pathUri, "v3"); // delete /v3_war
         this.pathUri = ArrayUtils.removeElement(this.pathUri, "");
     }
 
