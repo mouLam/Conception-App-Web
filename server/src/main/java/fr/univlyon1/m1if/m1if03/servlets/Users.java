@@ -79,6 +79,11 @@ public class Users extends HttpServlet {
             String loginInURI = this.pathUri[1];
             String lastValueURI = this.pathUri[2];
             if (lastValueURI.equals("ballot")) {  // /users/{userId}/ballot
+                /*if (req.getHeader("Authorization") == null || !req.getHeader("Authorization").contains("Bearer ")) {
+                    resp.sendError(HttpServletResponse.SC_NOT_ACCEPTABLE,
+                            "Authorization header must be correct or not null");
+                } else
+                */
                 if ( ! (userSession.isAdmin() ||
                         this.ballots.containsKey(userSession.getLogin())) ) {
                     resp.sendError(HttpServletResponse.SC_FORBIDDEN,
@@ -128,7 +133,7 @@ public class Users extends HttpServlet {
                 req.getServletContext().setAttribute("user", newUser);
                 this.users.put(newUser.getLogin(), newUser);
                 req.getServletContext().setAttribute("users", this.users);
-                sendDataAsJSON(resp, token);
+                //sendDataAsJSON(resp, token);
                 resp.setStatus(HttpServletResponse.SC_NO_CONTENT);
             } else if (this.pathUri[1].equals("logout")) {
                 User userSession = (User) req.getServletContext().getAttribute("user");
