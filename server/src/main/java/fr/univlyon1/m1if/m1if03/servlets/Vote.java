@@ -149,7 +149,9 @@ public class Vote extends HttpServlet {
     private void splitPathUri(HttpServletRequest request) {
         String uri = request.getRequestURI();
         this.pathUri = uri.split("/");
+        this.pathUri = ArrayUtils.removeElement(this.pathUri, "api"); // delete /v3_war
         this.pathUri = ArrayUtils.removeElement(this.pathUri, "v3_war"); // delete /v3_war
+        this.pathUri = ArrayUtils.removeElement(this.pathUri, "v3"); // delete /v3_war
         this.pathUri = ArrayUtils.removeElement(this.pathUri, "");
     }
 
