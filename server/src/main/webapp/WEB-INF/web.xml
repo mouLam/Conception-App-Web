@@ -31,7 +31,7 @@
     </init-param>
     <init-param>
       <param-name>cors.allowed.headers</param-name>
-      <param-value>Content-Type,Accept,Authorization</param-value>
+      <param-value>Content-Type,Authorization</param-value>
     </init-param>
   </filter>
   <filter-mapping>
