@@ -15,7 +15,11 @@
     <filter-class>org.apache.catalina.filters.CorsFilter</filter-class>
     <init-param>
       <param-name>cors.allowed.origins</param-name>
-      <param-value>https://editor.swagger.io</param-value>
+        <param-value>
+          https://editor.swagger.io,
+          https://192.168.75.41/api/v3,
+          http://192.168.75.41:8080/v3
+        </param-value>
     </init-param>
     <init-param>
       <param-name>cors.allowed.methods</param-name>
