@@ -1,3 +1,12 @@
+# Parties
+## P1 : Infrastructure côté serveur (serveur Web, protocole HTTP, PHP)
+## P2 : Programmation côté serveur 2 (servlets / JSP)
+## P3 : Design patterns et cache
+## P4 : Web API (programmation REST)
+## P5 : Programmation côté client (JavaScript, XHR, AJAX, DOM, jQuery)
+## P6 : Performance des applications Web
+## P7 : Optimisation d'une Single-Page Application
+
 # TP5 - v3 - C09
 
 ## API
